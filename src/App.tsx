@@ -1,4 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { Block } from "./style/ui";
+import Navigator from "./components/Navigator";
+import Header from "./components/Header";
 
 function App() {
   const location = useLocation();
@@ -11,6 +14,7 @@ function App() {
       break;
     case "/market":
       pageType = "market";
+
       break;
     case "/cart":
       pageType = "cart";

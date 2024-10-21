@@ -26,7 +26,7 @@ export const Text = {
     `,
     Notice200: styled.span<StyleText>`
         display: inline-block;
-        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
         font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size200)};
         color: ${({ color }) => (color ? theme.color[color] : theme.color.Black)};
         cursor: ${props => props.pointer && "pointer"};
@@ -47,8 +47,15 @@ export const Text = {
     `,
     TitleMenu200: styled.span<StyleText>`
         display: inline-block;
-        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
         font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size500)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Black)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    TitleMenu300: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size550)};
         color: ${({ color }) => (color ? theme.color[color] : theme.color.Black)};
         cursor: ${props => props.pointer && "pointer"};
     `,
@@ -61,7 +68,7 @@ export const Text = {
     `,
     HugeWarning: styled.span<StyleText>`
         display: inline-block;
-        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
         font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size600)};
         color: ${({ color }) => (color ? theme.color[color] : theme.color.White)};
         cursor: ${props => props.pointer && "pointer"};
