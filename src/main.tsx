@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router/router";
+import { router } from "./router";
 import theme from "./style/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import GlobalStyle from "./style/GlobalStyle";
