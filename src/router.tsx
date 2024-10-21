@@ -7,30 +7,31 @@ import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        children: [
-            {
-                path: "home",
-                element: <Home />,
-            },
-            {
-                path: "products",
-                element: <Market />,
-            },
-            {
-                path: "search",
-                element: <Search />,
-            },
-            {
-                path: "cart",
-                element: <Cart />,
-            },
-            {
-                path: "profile",
-                element: <Profile />,
-            },
-        ],
-    },
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "market",
+
+        element: <Market />,
+      },
+      {
+        path: "search",
+        element: <Search />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
+  },
 ]);
