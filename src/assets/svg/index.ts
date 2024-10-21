@@ -1,5 +1,7 @@
+export { default as BannerEx } from "./BannerEx";
 export { default as Cart } from "./Cart";
 export { default as CartDisabled } from "./CartDisabled";
+export { default as FooterLogo } from "./FooterLogo";
 export { default as HeaderBackArrow } from "./HeaderBackArrow";
 export { default as HeaderLogo } from "./HeaderLogo";
 export { default as Home } from "./Home";
