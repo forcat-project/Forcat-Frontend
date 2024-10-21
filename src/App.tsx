@@ -14,7 +14,6 @@ function App() {
       break;
     case "/market":
       pageType = "market";
-
       break;
     case "/cart":
       pageType = "cart";
