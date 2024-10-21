@@ -27,7 +27,16 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    font-family: 'Pretendard-Regular';
+    overflow: hidden;
+    scroll-behavior: smooth;
+    background-color: #e8e8e8;
 }
 ol, ul {
 	list-style: none;
