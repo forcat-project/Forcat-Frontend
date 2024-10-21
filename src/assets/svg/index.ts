@@ -1,6 +1,7 @@
 export { default as Cart } from "./Cart";
 export { default as CartDisabled } from "./CartDisabled";
 export { default as HeaderBackArrow } from "./HeaderBackArrow";
+export { default as HeaderLogo } from "./HeaderLogo";
 export { default as Home } from "./Home";
 export { default as HomeDisabled } from "./HomeDisabled";
 export { default as Market } from "./Market";
