@@ -2,35 +2,41 @@ import "styled-components";
 
 declare module "styled-components" {
     export type DefaultThemeColorKey =
-        | "black"
-        | "white"
-        | "gray100" // Dark Charcoal
-        | "gray200" // Charcoal Gray
-        | "gray300" // Medium Gray
-        | "gray400" // Soft Gray
-        | "gray500" // Light Gray
-        | "gray600" // Very Light Gray
-        | "red";
-}
+        | "Black" // #000000
+        | "Gray" // #939292
+        | "Yellow" // #F4B647
+        | "Light" // #F6ECD7
+        | "White" // #ffffff
+        | "Warning" // #D4564B
+        | "Gray100" // #F3F3F6  -- [ Light Gray ]
+        | "Gray200" // #E8E8E8
+        | "Gray300" // #C9CBD4
+        | "Gray400" // #A7A9B7
+        | "Gray500" // #80818C
+        | "Gray600"; // #383840 -- [ Dark Gray ]
 
-export interface DefaultTheme {
-    color: {
-        [key in DefaultThemeColorKey]: string;
-    };
-    size: {
-        size50: string;
-        size100: string;
-        size200: string;
-        size250: string;
-        size300: string;
-        size400: string;
-        size500: string;
-    };
-    weight: {
-        Light: string;
-        Normal: string;
-        Medium: string;
-        SemiBold: string;
-        Bold: string;
-    };
+    export type DefaultThemeSizeKey =
+        | "size100" // 10px
+        | "size200" // 12px
+        | "size300" // 13px
+        | "size400" // 14px
+        | "size500" // 17px
+        | "size600"; // 64px
+
+    export type DefaultThemeWeightKey =
+        | "Normal" // 400
+        | "SemiBold" // 600
+        | "Bold"; // 700
+
+    export interface DefaultTheme {
+        color: {
+            [key in DefaultThemeColorKey]: string;
+        };
+        size: {
+            [key in DefaultThemeSizeKey]: string;
+        };
+        weight: {
+            [key in DefaultThemeWeightKey]: string;
+        };
+    }
 }

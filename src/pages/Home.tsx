@@ -1,9 +1,12 @@
-import { Block, Text } from "../style/ui";
+import { Block, Button, Input, Text } from "../style/ui";
 
 export default function Home() {
     return (
         <Block.FlexBox>
-            <Text.MainTitle color="black">example</Text.MainTitle>
+            <Text.Menu>example</Text.Menu>
+            <Input.InfoBox placeholder="선택해 주세요" />
+            <Button.Confirm />
+            <Button.Select />
         </Block.FlexBox>
     );
 }

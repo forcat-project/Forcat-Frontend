@@ -1,31 +1,31 @@
 import { DefaultTheme } from "styled-components";
 
 const fontColor = {
-    black: "#191919",
-    white: "#fff",
-    gray100: "#262626", // Dark Charcoal
-    gray200: "#3D3D3D", // Charcoal Gray
-    gray300: "#9A9A9A", // Medium Gray
-    gray400: "#ACABA9", // Soft Gray
-    gray500: "#D4D4D4", // Light Gray
-    gray600: "#E3E2E0", // Very Light Gray
-    red: "#F65F5F",
+    Black: "#000000",
+    Gray: "#939292",
+    Yellow: "#F4B647",
+    Light: "#F6ECD7",
+    White: "#ffffff",
+    Warning: "#D4564B",
+    Gray100: "#F3F3F6", // [ Light Gray ]
+    Gray200: "#E8E8E8",
+    Gray300: "#C9CBD4",
+    Gray400: "#A7A9B7",
+    Gray500: "#80818C",
+    Gray600: "#383840", // [ Dark Gray ]
 };
 
 const fontSize = {
-    size50: "10px",
-    size100: "12px",
-    size200: "14px",
-    size250: "15px",
-    size300: "18px",
-    size400: "24px",
-    size500: "32px",
+    size100: "10px",
+    size200: "12px",
+    size300: "13px",
+    size400: "14px",
+    size500: "17px",
+    size600: "64px",
 };
 
 const fontWeight = {
-    Light: "300",
     Normal: "400",
-    Medium: "500",
     SemiBold: "600",
     Bold: "700",
 };
