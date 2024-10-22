@@ -5,6 +5,7 @@ import Market from "./pages/Market";
 import Search from "./pages/Search";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
+import CategoryDetail from "./pages/Search/categoryDetail";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "search",
         element: <Search />,
+      },
+      {
+        path: "/search/:category_id",
+        element: <CategoryDetail />,
       },
       {
         path: "cart",
