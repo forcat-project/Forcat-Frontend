@@ -11,15 +11,17 @@ import {
     Search,
     SearchDisabled,
 } from "../../assets/svg";
-import { Block, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../style/ui";
 
 export default function Navigator() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const isMarket = /^\/market\/\d+$/.test(location.pathname);
+
     const navItems = [
         {
-            icon: location.pathname.startsWith("/market") ? <Market width={31} /> : <MarketDisabled width={31} />,
+            icon: location.pathname === "/market" ? <Market width={31} /> : <MarketDisabled width={31} />,
             label: "마켓",
             path: "/market",
         },
@@ -48,33 +50,49 @@ export default function Navigator() {
     return (
         <Block.AbsoluteBox
             width="599px"
-            height="103px"
+            height="93px"
             bottom="0"
+            bgColor="white"
             style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
         >
             <Block.FlexBox>
-                {navItems.map((item, index) => {
-                    const isActive = location.pathname.startsWith(item.path);
+                {!isMarket &&
+                    navItems.map((item, index) => {
+                        const isActive = location.pathname.startsWith(item.path);
 
-                    return (
-                        <Block.FlexBox
-                            key={index}
-                            width="100%"
-                            height="100px"
-                            justifyContent="center"
-                            alignItems="center"
-                            direction="column"
-                            gap="10px"
-                            pointer
-                            onClick={() => navigate(item.path)}
-                        >
-                            {item.icon}
-                            <Text.Notice200 style={{ color: isActive ? "#000" : "#C9CBD4" }}>
-                                {item.label}
-                            </Text.Notice200>
-                        </Block.FlexBox>
-                    );
-                })}
+                        return (
+                            <Block.FlexBox
+                                key={index}
+                                width="100%"
+                                height="100px"
+                                justifyContent="center"
+                                alignItems="center"
+                                direction="column"
+                                gap="10px"
+                                pointer
+                                onClick={() => navigate(item.path)}
+                            >
+                                {item.icon}
+                                <Text.Notice200 style={{ color: isActive ? "#000" : "#C9CBD4" }}>
+                                    {item.label}
+                                </Text.Notice200>
+                            </Block.FlexBox>
+                        );
+                    })}
+
+                {isMarket && (
+                    <Block.FlexBox
+                        width="100%"
+                        height="93px"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap="12px"
+                        pointer
+                    >
+                        <Button.CartButton>장바구니</Button.CartButton>
+                        <Button.BuyButton>구매하기</Button.BuyButton>
+                    </Block.FlexBox>
+                )}
             </Block.FlexBox>
         </Block.AbsoluteBox>
     );

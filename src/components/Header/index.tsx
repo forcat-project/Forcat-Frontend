@@ -17,7 +17,7 @@ export default function Header({ pageType }: HeaderProps) {
 
     return (
         <>
-            <Block.AbsoluteBox width="599px" height="103px" top="0">
+            <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
                 <Block.FlexBox padding="31px 25px" justifyContent="space-between" alignItems="center">
                     {pageType === "home" && (
                         <>

@@ -62,7 +62,7 @@ export default function Market() {
 const MarketContainer = styled.div`
     flex: 1;
     margin-top: 103px; /* header 높이만큼 위쪽 여백 추가 */
-    margin-bottom: 103px; /* navigator 높이만큼 아래쪽 여백 추가 */
+    margin-bottom: 93px; /* navigator 높이만큼 아래쪽 여백 추가 */
     overflow-y: auto; /* 스크롤 가능 */
     padding: 20px;
 `;
