@@ -19,6 +19,14 @@ export default function Navigator() {
 
     const isMarket = /^\/market\/\d+$/.test(location.pathname);
 
+    const handleCartButtonClick = () => {
+        navigate("/cart");
+    };
+
+    const handleBuyButtonClick = () => {
+        // 구매하기 페이지로 연결 필요
+    };
+
     const navItems = [
         {
             icon: location.pathname === "/market" ? <Market width={31} /> : <MarketDisabled width={31} />,
@@ -89,8 +97,8 @@ export default function Navigator() {
                         gap="12px"
                         pointer
                     >
-                        <Button.CartButton>장바구니</Button.CartButton>
-                        <Button.BuyButton>구매하기</Button.BuyButton>
+                        <Button.CartButton onClick={handleCartButtonClick}>장바구니</Button.CartButton>
+                        <Button.BuyButton onClick={handleBuyButtonClick}>구매하기</Button.BuyButton>
                     </Block.FlexBox>
                 )}
             </Block.FlexBox>

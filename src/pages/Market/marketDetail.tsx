@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Block, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
+import styled from "styled-components";
 
 export default function MarketDetail() {
     const { productId } = useParams();
 
-    const [productDetail, setProductDetail] = useState<IProduct | null>();
+    const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
 
     useEffect(() => {
@@ -35,16 +36,17 @@ export default function MarketDetail() {
             <Block.FlexBox margin="89px 0" justifyContent="center" style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 {productDetail ? (
                     <Block.FlexBox direction="column" alignItems="center" padding="30px 21px" gap="20px">
-                        <Img.AngledIcon
-                            width="599px"
-                            height="100vh"
-                            src={productDetail.thumbnail_url}
-                            alt={productDetail.name}
-                        />
+                        <ProductImageContainer>
+                            <Img.AngledIcon width="599px" src={productDetail.thumbnail_url} alt={productDetail.name} />
+                            {productDetail.remain_count === 0 && (
+                                <SoldoutBox width="100%" height="100%">
+                                    SOLD OUT
+                                </SoldoutBox>
+                            )}
+                        </ProductImageContainer>
 
                         <Block.FlexBox direction="column" gap="9px">
                             <Text.Notice200 color="Gray"> {productDetail.company}</Text.Notice200>
-
                             <Text.TitleMenu100>{productDetail.name}</Text.TitleMenu100>
 
                             <Block.FlexBox direction="column">
@@ -58,9 +60,11 @@ export default function MarketDetail() {
                                                 <Text.Discount color="Warning">
                                                     {Math.floor(Number(productDetail.discount_rate)).toLocaleString()}%
                                                 </Text.Discount>
-
                                                 <Text.Discount color="Black">
-                                                    {Math.floor(productDetail.price).toLocaleString()}원
+                                                    {Math.floor(
+                                                        Number(productDetail.discounted_price)
+                                                    ).toLocaleString()}
+                                                    원
                                                 </Text.Discount>
                                             </Block.FlexBox>
                                         </>
@@ -95,3 +99,23 @@ export default function MarketDetail() {
         </>
     );
 }
+
+const ProductImageContainer = styled.div`
+    position: relative;
+`;
+
+const SoldoutBox = styled.div<{ width?: string; height?: string }>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    width: ${props => props.width || "100%"};
+    height: ${props => props.height || "100%"};
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+`;
