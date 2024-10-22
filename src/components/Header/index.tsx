@@ -3,10 +3,9 @@ import {
   HeaderLogo,
   Home,
   Profile,
-  Search,
+  Search as SearchIcon, // Search 아이콘
 } from "../../assets/svg";
-// import Search from "../../pages/Search";
-import { Block, Text } from "../../style/ui";
+import { Block, Text, Input } from "../../style/ui";
 
 type PageType = "market" | "search" | "home" | "cart" | "profile";
 
@@ -44,7 +43,26 @@ export default function Header({ pageType }: HeaderProps) {
           {pageType === "market" && (
             <>
               <Text.TitleMenu300> 마켓 </Text.TitleMenu300>
-              <Search width={31} />
+              <SearchIcon width={31} />
+            </>
+          )}
+
+          {pageType === "search" && (
+            <>
+              {/* 검색바와 검색 아이콘을 포함한 레이아웃 */}
+              <Block.FlexBox
+                width="100%"
+                padding="8px 16px"
+                border="1px solid #e0e0e0"
+                borderRadius="24px"
+                alignItems="center"
+              >
+                <Input.Search
+                  width="100%"
+                  placeholder="검색어를 입력해주세요"
+                />
+                <SearchIcon width={24} style={{ marginLeft: "10px" }} />
+              </Block.FlexBox>
             </>
           )}
         </Block.FlexBox>
