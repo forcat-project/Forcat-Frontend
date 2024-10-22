@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
+import { Block } from "../../style/ui";
 
 export default function Market() {
     const [products, setProducts] = useState<IProducts[]>([]);
@@ -84,9 +85,9 @@ export default function Market() {
                         <ProductImageContainer>
                             <ProductImage src={product.thumbnail_url} alt={product.name} />
                             {product.remain_count === 0 && (
-                                <SoldoutBox width="100%" height="100%">
+                                <Block.SoldoutBox width="100%" height="100%">
                                     SOLD OUT
-                                </SoldoutBox>
+                                </Block.SoldoutBox>
                             )}
                         </ProductImageContainer>
                         <ProductDetails>
