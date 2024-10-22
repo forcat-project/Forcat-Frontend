@@ -14,5 +14,5 @@ export interface IProduct {
     price: number;
     discount_rate?: string;
     remain_count?: number;
-    purchase_coun?: number;
+    purchase_count?: number;
 }

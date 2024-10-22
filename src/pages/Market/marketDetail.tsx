@@ -31,7 +31,18 @@ export default function MarketDetail() {
         <>
             <Header pageType="marketDetail" />
 
-            {productDetail ? productDetail?.name : "로딩중"}
+            {productDetail ? (
+                <>
+                    {productDetail.name}
+
+                    {productDetail.price}
+                    {productDetail.discount_rate}
+                    {productDetail.company}
+                    {productDetail.remain_count}
+                </>
+            ) : (
+                "로딩중"
+            )}
         </>
     );
 }
