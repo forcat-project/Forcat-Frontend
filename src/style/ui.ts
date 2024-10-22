@@ -10,6 +10,7 @@ type StyleText = {
 };
 
 export const Text = {
+
   Mini: styled.span<StyleText>`
     display: inline-block;
     font-weight: ${({ weight }) =>
@@ -85,6 +86,22 @@ export const Text = {
     color: ${({ color }) => (color ? theme.color[color] : theme.color.White)};
     cursor: ${(props) => props.pointer && "pointer"};
   `,
+      OriginalPrice: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size200)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Gray)};
+        cursor: ${props => props.pointer && "pointer"};
+        text-decoration: line-through;
+    `,
+    Discount: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size400)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Warning)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+
 };
 
 // 재사용 될 블록
@@ -202,6 +219,32 @@ export const Button = {
     background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
     cursor: pointer;
   `,
+  CartButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 273px;
+        height: 53px;
+        border: 1px solid #f4b647;
+        border-radius: 19px;
+        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+        border: ${props => props.border};
+    `,
+    BuyButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 273px;
+        height: 53px;
+        border-radius: 19px;
+        color: #fff; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f4b647; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+        border: ${props => props.border};
+    `,
+
 };
 
 // 재사용 될 이미지

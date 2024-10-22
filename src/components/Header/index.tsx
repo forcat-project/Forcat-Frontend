@@ -1,3 +1,5 @@
+ 
+import { useNavigate } from "react-router-dom";
 import {
   HeaderBackArrow,
   HeaderLogo,
@@ -6,17 +8,32 @@ import {
   Search as SearchIcon, // Search 아이콘
 } from "../../assets/svg";
 import { Block, Text, Input } from "../../style/ui";
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-type PageType = "market" | "search" | "home" | "cart" | "profile";
+type PageType = "market" | "search" | "home" | "cart" | "profile" | "marketDetail";
 
 interface HeaderProps {
-  pageType: PageType;
+    pageType: PageType;
 }
 
 export default function Header({ pageType }: HeaderProps) {
+
+ const navigate = useNavigate();
+    const handleBackButtonClick = () => {
+        navigate(-1);
+    };
   return (
     <>
-      <Block.AbsoluteBox width="599px" height="103px" top="0">
+      <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
         <Block.FlexBox padding="31px 25px" justifyContent="space-between">
           {pageType === "home" && (
             <>
@@ -27,7 +44,7 @@ export default function Header({ pageType }: HeaderProps) {
 
           {pageType === "cart" && (
             <>
-              <HeaderBackArrow width={24} />
+              <HeaderBackArrow width={24} onClick={handleBackButtonClick}  />
               <Text.TitleMenu300> 장바구니 </Text.TitleMenu300>
               <Home width={21} />
             </>
@@ -65,8 +82,16 @@ export default function Header({ pageType }: HeaderProps) {
               </Block.FlexBox>
             </>
           )}
+ {pageType === "marketDetail" && (
+                        <>
+                            <HeaderBackArrow width={24} onClick={handleBackButtonClick} cursor="pointer" />
+                            <Text.TitleMenu300> 상품 상세 </Text.TitleMenu300>
+                            <Cart width={21} style={{ visibility: "hidden" }} />
+                        </>
+                    )}
         </Block.FlexBox>
       </Block.AbsoluteBox>
     </>
   );
+ 
 }

@@ -5,6 +5,7 @@ import Market from "./pages/Market";
 import Search from "./pages/Search";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
+import MarketDetail from "./pages/Market/marketDetail";
 import CategoryDetail from "./pages/Search/categoryDetail";
 
 export const router = createBrowserRouter([

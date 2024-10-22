@@ -82,9 +82,10 @@ export default function Home() {
             <Text.Menu>Some dummy text for the example.</Text.Menu>
           </Block.FlexBox>
         </Block.FlexBox>
+ 
 
-        <Footer />
-      </Block.FlexBox>
-    </>
-  );
+                <Footer />
+            </Block.FlexBox>
+        </>
+    );
 }

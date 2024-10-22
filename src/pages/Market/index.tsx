@@ -1,23 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
-interface Product {
-  product_id: number;
-  thumbnail_url: string;
-  name: string;
-  price: number;
-  discount_rate: string;
-  discounted_price: number;
-  company: string;
-  remain_count: number;
-}
+import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 hook
+import { IProduct } from "../../interfaces/product";
 
 export default function Market() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<AxiosError | null>(null);
-  const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [error, setError] = useState<AxiosError | null>(null);
+    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
+
+   const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
   const navigate = useNavigate();
@@ -100,6 +93,7 @@ export default function Market() {
     return <div>Error: {error.message}</div>;
   }
 
+    
   return (
     <MarketContainer>
       <ProductGrid>
@@ -145,6 +139,7 @@ export default function Market() {
       {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
     </MarketContainer>
   );
+
 }
 
 // Styled components
@@ -174,9 +169,10 @@ const ProductCard = styled.div`
   border-radius: 10px;
   transition: box-shadow 0.3s;
 
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 `;
 
 const ProductImageContainer = styled.div`
@@ -186,11 +182,12 @@ const ProductImageContainer = styled.div`
 `;
 
 const ProductImage = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
 `;
 
+ 
 const ProductDetails = styled.div`
   text-align: left;
   margin-top: 10px;
@@ -206,17 +203,18 @@ const ProductCompany = styled.div`
 const ProductName = styled.div`
   margin: 10px 0;
   font-size: 12px;
+ 
 `;
 
 const ProductPrice = styled.div`
-  font-size: 14px;
-  color: #333;
+    font-size: 14px;
+    color: #333;
 `;
 
 const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  color: #999;
-  margin-right: 10px;
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
 `;
 
 const DiscountRate = styled.span`
@@ -244,4 +242,5 @@ const SoldoutBox = styled.div<{ width?: string; height?: string }>`
   top: 0;
   left: 0;
   z-index: 2;
+
 `;
