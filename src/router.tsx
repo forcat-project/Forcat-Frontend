@@ -5,39 +5,43 @@ import Market from "./pages/Market";
 import Search from "./pages/Search";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
-import MarketDetail from "./pages/Market/marketDetail";
 import CategoryDetail from "./pages/Search/categoryDetail";
+import MarketDetail from "./pages/Market/marketDetail";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "market",
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            {
+                path: "home",
+                element: <Home />,
+            },
+            {
+                path: "market",
 
-        element: <Market />,
-      },
-      {
-        path: "search",
-        element: <Search />,
-      },
-      {
-        path: "/search/:category_id",
-        element: <CategoryDetail />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-    ],
-  },
+                element: <Market />,
+            },
+            {
+                path: "search",
+                element: <Search />,
+            },
+            {
+                path: "/search/:category_id",
+                element: <CategoryDetail />,
+            },
+            {
+                path: "market/:productId",
+                element: <MarketDetail />,
+            },
+            {
+                path: "cart",
+                element: <Cart />,
+            },
+            {
+                path: "profile",
+                element: <Profile />,
+            },
+        ],
+    },
 ]);

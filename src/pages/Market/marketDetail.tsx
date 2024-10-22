@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { IProduct } from "../../interfaces/product";
 import { Block, Img, Text } from "../../style/ui";
+import { IProduct } from "../../interfaces/product";
 
 export default function MarketDetail() {
     const { productId } = useParams();
