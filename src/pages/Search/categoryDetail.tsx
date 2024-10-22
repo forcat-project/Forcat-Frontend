@@ -92,7 +92,9 @@ export default function CategoryDetail() {
                                         <DiscountedPrice>{Math.round(product.discounted_price)}원</DiscountedPrice>
                                     </>
                                 ) : (
-                                    <DiscountedPrice>{Math.round(product.price)}원</DiscountedPrice>
+                                    <>
+                                        <DiscountedPrice>{Math.round(product.price)}원</DiscountedPrice>
+                                    </>
                                 )}
                             </ProductPrice>
                         </ProductItem>

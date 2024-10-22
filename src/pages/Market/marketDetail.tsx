@@ -48,10 +48,27 @@ export default function MarketDetail() {
                             <Text.TitleMenu100>{productDetail.name}</Text.TitleMenu100>
 
                             <Block.FlexBox direction="column">
-                                <Text.OriginalPrice>{productDetail.price}원</Text.OriginalPrice>
-                                <Block.FlexBox width="100%" gap="7px">
-                                    <Text.Discount color="Warning"> {productDetail.discount_rate}% </Text.Discount>
-                                    <Text.Discount color="Black">{productDetail.price}원</Text.Discount>
+                                <Block.FlexBox width="100%" direction="column" gap="7px">
+                                    {Number(productDetail.discount_rate) > 0 ? (
+                                        <>
+                                            <Text.OriginalPrice>
+                                                {Math.floor(productDetail.price).toLocaleString()}원
+                                            </Text.OriginalPrice>
+                                            <Block.FlexBox gap="10px">
+                                                <Text.Discount color="Warning">
+                                                    {Math.floor(Number(productDetail.discount_rate)).toLocaleString()}%
+                                                </Text.Discount>
+
+                                                <Text.Discount color="Black">
+                                                    {Math.floor(productDetail.price).toLocaleString()}원
+                                                </Text.Discount>
+                                            </Block.FlexBox>
+                                        </>
+                                    ) : (
+                                        <Text.Discount color="Black">
+                                            {Math.floor(productDetail.price).toLocaleString()}원
+                                        </Text.Discount>
+                                    )}
                                 </Block.FlexBox>
                             </Block.FlexBox>
                         </Block.FlexBox>
