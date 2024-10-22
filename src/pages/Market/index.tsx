@@ -122,13 +122,19 @@ export default function Market() {
               <ProductPrice>
                 {product.discount_rate !== "0.00" ? (
                   <>
-                    <OriginalPrice>{product.price}원</OriginalPrice>
+                    <OriginalPrice>{Math.round(product.price)}원</OriginalPrice>
+                    <br />
+                    <DiscountRate>
+                      {Math.round(Number(product.discount_rate))}%
+                    </DiscountRate>
                     <DiscountedPrice>
-                      {product.discounted_price}원
+                      {Math.round(product.discounted_price)}원
                     </DiscountedPrice>
                   </>
                 ) : (
-                  <>{product.discounted_price}원</>
+                  <DiscountedPrice>
+                    {Math.round(product.price)}원
+                  </DiscountedPrice>
                 )}
               </ProductPrice>
             </ProductDetails>
@@ -146,19 +152,19 @@ const MarketContainer = styled.div`
   flex: 1;
   margin-top: 103px;
   margin-bottom: 103px;
-  overflow-y: scroll; /* 스크롤 가능 */
+  overflow-y: scroll;
   padding: 20px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
   }
 `;
 
 const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열로 배치 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 `;
 
@@ -194,6 +200,7 @@ const ProductCompany = styled.div`
   color: #999;
   font-size: 12px;
   margin-top: 5px;
+  font-weight: bold;
 `;
 
 const ProductName = styled.div`
@@ -212,8 +219,14 @@ const OriginalPrice = styled.span`
   margin-right: 10px;
 `;
 
+const DiscountRate = styled.span`
+  color: #fa7586;
+  margin-right: 10px;
+  font-weight: bold;
+`;
+
 const DiscountedPrice = styled.span`
-  color: red;
+  color: #333;
   font-weight: bold;
 `;
 
