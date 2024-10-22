@@ -2,18 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 hook
-
-interface Product {
-    product_id: number;
-    thumbnail_url: string;
-    name: string;
-    price: number;
-    discount_rate: string;
-    discounted_price: number;
-}
+import { IProduct } from "../../interfaces/product";
 
 export default function Market() {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
