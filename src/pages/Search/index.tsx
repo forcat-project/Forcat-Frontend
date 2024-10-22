@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 
 interface Category {
   category_id: number;
@@ -12,6 +13,7 @@ export default function Search() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
+  const navigate = useNavigate(); // useNavigate 훅 선언
 
   // API 호출 함수
   const fetchCategories = () => {
@@ -52,7 +54,10 @@ export default function Search() {
           categories
             .find((cat) => cat.category_id === selectedCategory)
             ?.subcategories?.map((subcategory) => (
-              <SubcategoryItem key={subcategory.category_id}>
+              <SubcategoryItem
+                key={subcategory.category_id}
+                onClick={() => navigate(`/search/${subcategory.category_id}`)} // subcategory.category_id로 navigate 경로 수정
+              >
                 {subcategory.name}
               </SubcategoryItem>
             ))}
@@ -65,7 +70,6 @@ export default function Search() {
 const Container = styled.div`
   display: flex;
   margin-top: 100px; /* 헤더 영역을 고려한 여백 설정 */
-  /* padding: 10px; */
   box-sizing: border-box;
 `;
 
