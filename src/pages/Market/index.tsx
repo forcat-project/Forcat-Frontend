@@ -10,13 +10,14 @@ interface Product {
   price: number;
   discount_rate: string;
   discounted_price: number;
-  company: string; // company 필드 추가
+  company: string;
+  remain_count: number;
 }
 
 export default function Market() {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
-  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -29,7 +30,6 @@ export default function Market() {
       })
       .then((response) => {
         setProducts(response.data.results); // 상품 데이터 저장
-        console.log(response.request);
         console.log("받은 데이터:", response.data.results); // 콘솔에 데이터 출력
       })
       .catch((error: AxiosError) => {
@@ -48,23 +48,28 @@ export default function Market() {
         {products.map((product) => (
           <ProductCard
             key={product.product_id}
-            onClick={() => navigate(`/market/${product.product_id}`)} // 클릭 시 상세 페이지로 이동
+            onClick={() => navigate(`/market/${product.product_id}`)}
           >
-            <ProductImage src={product.thumbnail_url} alt={product.name} />
+            <ProductImageContainer>
+              <ProductImage src={product.thumbnail_url} alt={product.name} />
+              {product.remain_count === 0 && (
+                <SoldoutBox width="100%" height="100%">
+                  SOLD OUT
+                </SoldoutBox>
+              )}
+            </ProductImageContainer>
             <ProductDetails>
-              <ProductCompany>{product.company}</ProductCompany>{" "}
-              {/* 회사명 표시 */}
+              <ProductCompany>{product.company}</ProductCompany>
               <ProductName>{product.name}</ProductName>
               <ProductPrice>
-                {product.discount_rate !== "0.00" && (
+                {product.discount_rate !== "0.00" ? (
                   <>
                     <OriginalPrice>{product.price}원</OriginalPrice>
                     <DiscountedPrice>
                       {product.discounted_price}원
                     </DiscountedPrice>
                   </>
-                )}
-                {product.discount_rate === "0.00" && (
+                ) : (
                   <>{product.discounted_price}원</>
                 )}
               </ProductPrice>
@@ -100,6 +105,12 @@ const ProductCard = styled.div`
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
+`;
+
+const ProductImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
 `;
 
 const ProductImage = styled.img`
@@ -138,4 +149,21 @@ const OriginalPrice = styled.span`
 const DiscountedPrice = styled.span`
   color: red;
   font-weight: bold;
+`;
+
+// SoldoutBox 수정: width, height props를 Styled Component 내부에서 처리하여 DOM에 전달되지 않게 함
+const SoldoutBox = styled.div<{ width?: string; height?: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); // 반투명 검정색 배경
+  color: white; // 흰색 텍스트
+  font-size: 18px;
+  font-weight: bold;
+  width: ${(props) => props.width || "100%"}; // 가로 크기를 props로 받아 적용
+  height: ${(props) => props.height || "100%"}; // 세로 크기를 props로 받아 적용
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 `;
