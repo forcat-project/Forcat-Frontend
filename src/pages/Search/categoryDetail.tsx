@@ -1,16 +1,26 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
+import Header from "../../components/Header"; // Header 컴포넌트 import
 import { IProducts } from "../../interfaces/product";
 
-export default function Market() {
+export default function CategoryDetail() {
+  const { category_id } = useParams<{ category_id: string }>();
+  const location = useLocation();
+  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수 추가
+
+  // location.state에서 categoryName을 가져오고, 만약 없으면 빈 문자열로 설정
+  const initialCategoryName =
+    (location.state as { categoryName: string })?.categoryName || "";
+
+  const [categoryName, setCategoryName] = useState<string>(initialCategoryName);
   const [products, setProducts] = useState<IProducts[]>([]);
-  const [error, setError] = useState<AxiosError | null>(null);
   const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
+  const [error, setError] = useState<AxiosError | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
-  const navigate = useNavigate();
+
   // 스크롤 이벤트 처리 함수
   const handleScroll = useCallback(() => {
     if (isFetching || !hasMore) return;
@@ -20,28 +30,40 @@ export default function Market() {
       setIsFetching(true);
     }
   }, [isFetching, hasMore]);
+
+  // 스크롤 이벤트 리스너 추가 및 제거
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-  // API 요청 함수
+
+  // 카테고리 이름을 불러오는 API 호출
+  const fetchCategoryName = () => {
+    axios
+      .get(`http://125.189.109.17/api/categories/${category_id}`)
+      .then((response) => {
+        setCategoryName(response.data.name); // 받아온 이름을 상태로 설정
+      })
+      .catch((error: AxiosError) => {
+        setError(error);
+      });
+  };
+
+  // 제품 목록 불러오는 API 호출
   const fetchProducts = (cursor: string | null = null) => {
-    if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
+    if (isFetching || !hasMore) return;
+
     setIsFetching(true); // 데이터 요청 상태 설정
     axios
       .get("http://125.189.109.17/api/products", {
         params: {
-          name: null,
-          categories: null,
-          cursor: cursor ? decodeURIComponent(cursor) : null, // 이중 인코딩 방지
+          categories: category_id,
+          cursor: cursor ? decodeURIComponent(cursor) : null,
         },
       })
       .then((response) => {
         const { results, next } = response.data;
-        console.log("받은 results:", results); // 받은 results 값 출력
-        // 기존 상품에 새로운 상품 추가
-        setProducts((prevProducts) => [...prevProducts, ...results]);
-        // 다음 cursor 값을 설정 (URL 쿼리 파라미터에서 추출)
+        setProducts((prevProducts) => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가
         const nextCursor = next
           ? new URL(next).search
               .slice(1)
@@ -50,80 +72,98 @@ export default function Market() {
           : null;
         const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
         setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
-        console.log("받은 원본 cursor:", originalCursor); // 저장된 cursor 출력
         setHasMore(Boolean(next)); // 더 이상 데이터가 없으면 false로 설정
         setIsFetching(false); // 데이터 요청 완료
       })
       .catch((error: AxiosError) => {
         setError(error);
         setIsFetching(false);
-        console.error("통신 실패:", error.message);
       });
   };
-  // 컴포넌트가 마운트되었을 때 처음 API 호출
+
   useEffect(() => {
-    if (!isFetching && products.length === 0) {
-      fetchProducts(); // 처음 로딩 시 API 호출
+    if (category_id) {
+      if (!categoryName) {
+        fetchCategoryName(); // 카테고리 이름 불러오기
+      }
+      fetchProducts(); // 첫 제품 목록 호출
     }
-  }, []); // 빈 배열로 설정하여 컴포넌트가 처음 마운트될 때만 실행
+  }, [category_id, categoryName]);
+
   // cursor 값이 변경될 때마다 추가 데이터 요청
   useEffect(() => {
     if (cursor && !isFetching) {
       fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
     }
   }, [cursor]);
+
   // 데이터가 로드 중이거나 없을 때
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
   return (
-    <MarketContainer>
-      <ProductGrid>
-        {products.map((product) => (
-          <ProductCard
-            key={product.product_id}
-            onClick={() => navigate(`/market/${product.product_id}`)}
-          >
-            <ProductImageContainer>
-              <ProductImage src={product.thumbnail_url} alt={product.name} />
-              {product.remain_count === 0 && (
-                <SoldoutBox width="100%" height="100%">
-                  SOLD OUT
-                </SoldoutBox>
-              )}
-            </ProductImageContainer>
-            <ProductDetails>
-              <ProductCompany>{product.company}</ProductCompany>
-              <ProductName>{product.name}</ProductName>
-              <ProductPrice>
-                {product.discount_rate !== "0.00" ? (
-                  <>
-                    <OriginalPrice>{Math.round(product.price)}원</OriginalPrice>
-                    <br />
-                    <DiscountRate>
-                      {Math.round(Number(product.discount_rate))}%
-                    </DiscountRate>
-                    <DiscountedPrice>
-                      {Math.round(product.discounted_price)}원
-                    </DiscountedPrice>
-                  </>
-                ) : (
-                  <DiscountedPrice>
-                    {Math.round(product.price)}원
-                  </DiscountedPrice>
-                )}
-              </ProductPrice>
-            </ProductDetails>
-          </ProductCard>
-        ))}
-      </ProductGrid>
-      {isFetching && <div>Loading more products...</div>}
-      {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
-    </MarketContainer>
+    <>
+      <Header pageType="categoryDetail" title={categoryName} />
+      <Container>
+        {products.length > 0 ? (
+          <ProductGrid>
+            {products.map((product) => (
+              <ProductCard
+                key={product.product_id}
+                onClick={() => navigate(`/market/${product.product_id}`)} // 클릭 시 상품 상세 페이지로 이동
+              >
+                <ProductImageContainer>
+                  <ProductImage
+                    src={product.thumbnail_url}
+                    alt={product.name}
+                  />
+                  {product.remain_count === 0 && (
+                    <SoldoutBox width="100%" height="100%">
+                      SOLD OUT
+                    </SoldoutBox>
+                  )}
+                </ProductImageContainer>
+                <ProductDetails>
+                  <ProductCompany>{product.company}</ProductCompany>
+                  <ProductName>{product.name}</ProductName>
+                  <ProductPrice>
+                    {product.discount_rate !== "0.00" ? (
+                      <>
+                        <OriginalPrice>
+                          {Math.round(product.price)}원
+                        </OriginalPrice>
+                        <br />
+                        <DiscountRate>
+                          {Math.round(Number(product.discount_rate))}%
+                        </DiscountRate>
+                        <DiscountedPrice>
+                          {Math.round(product.discounted_price)}원
+                        </DiscountedPrice>
+                      </>
+                    ) : (
+                      <DiscountedPrice>
+                        {Math.round(product.price)}원
+                      </DiscountedPrice>
+                    )}
+                  </ProductPrice>
+                </ProductDetails>
+              </ProductCard>
+            ))}
+          </ProductGrid>
+        ) : (
+          <NoProductsMessage>
+            해당 카테고리에 등록된 상품이 없습니다.
+          </NoProductsMessage>
+        )}
+        {isFetching && <div>Loading more products...</div>}
+        {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
+      </Container>
+    </>
   );
 }
-// Styled components
-const MarketContainer = styled.div`
+
+const Container = styled.div`
   flex: 1;
   margin-top: 103px;
   margin-bottom: 93px;
@@ -135,11 +175,13 @@ const MarketContainer = styled.div`
     display: none;
   }
 `;
+
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 `;
+
 const ProductCard = styled.div`
   cursor: pointer;
   padding: 10px;
@@ -149,48 +191,58 @@ const ProductCard = styled.div`
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 `;
+
 const ProductImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
 `;
+
 const ProductImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 10px;
 `;
+
 const ProductDetails = styled.div`
   text-align: left;
   margin-top: 10px;
 `;
+
 const ProductCompany = styled.div`
   color: #999;
   font-size: 12px;
   margin-top: 5px;
   font-weight: bold;
 `;
+
 const ProductName = styled.div`
   margin: 10px 0;
   font-size: 12px;
 `;
+
 const ProductPrice = styled.div`
   font-size: 14px;
   color: #333;
 `;
+
 const OriginalPrice = styled.span`
   text-decoration: line-through;
   color: #999;
   margin-right: 10px;
 `;
+
 const DiscountRate = styled.span`
   color: #fa7586;
   margin-right: 10px;
   font-weight: bold;
 `;
+
 const DiscountedPrice = styled.span`
   color: #333;
   font-weight: bold;
 `;
+
 const SoldoutBox = styled.div<{ width?: string; height?: string }>`
   display: flex;
   justify-content: center;
@@ -205,4 +257,11 @@ const SoldoutBox = styled.div<{ width?: string; height?: string }>`
   top: 0;
   left: 0;
   z-index: 2;
+`;
+
+const NoProductsMessage = styled.div`
+  color: #999;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
 `;

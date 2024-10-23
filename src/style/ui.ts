@@ -73,6 +73,21 @@ export const Text = {
         color: ${({ color }) => (color ? theme.color[color] : theme.color.White)};
         cursor: ${props => props.pointer && "pointer"};
     `,
+    OriginalPrice: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size200)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Gray)};
+        cursor: ${props => props.pointer && "pointer"};
+        text-decoration: line-through;
+    `,
+    Discount: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size400)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Warning)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
 };
 
 // 재사용 될 블록
@@ -134,6 +149,22 @@ export const Block = {
         cursor: ${props => props.pointer && "pointer"};
         gap: ${props => props.gap};
     `,
+
+    SoldoutBox: styled.div<StyleBlock>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.7); // 반투명 검정색 배경
+        color: white; // 흰색 텍스트
+        font-size: 18px;
+        font-weight: bold;
+        width: ${props => props.width || "100%"}; // 가로 크기를 props로 받아 적용
+        height: ${props => props.height || "100%"}; // 세로 크기를 props로 받아 적용
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    `,
 };
 
 type StyleButton = {
@@ -146,6 +177,7 @@ type StyleButton = {
     color?: keyof DefaultTheme["color"] | string;
     bgColor?: keyof DefaultTheme["color"] | string;
     cursor?: string;
+    border?: string;
 };
 
 export const Button = {
@@ -170,6 +202,31 @@ export const Button = {
         color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
+    `,
+    CartButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 273px;
+        height: 53px;
+        border: 1px solid #f4b647;
+        border-radius: 19px;
+        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+        border: ${props => props.border};
+    `,
+    BuyButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 273px;
+        height: 53px;
+        border-radius: 19px;
+        color: #fff; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f4b647; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+        border: ${props => props.border};
     `,
 };
 
