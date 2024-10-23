@@ -2,6 +2,7 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 import { Block } from "./style/ui";
 import Navigator from "./components/Navigator";
 import Header from "./components/Header";
+import { PageType } from "./interfaces/types"; // types.ts에서 PageType을 불러오기
 
 function App() {
   const location = useLocation();
@@ -9,17 +10,18 @@ function App() {
   console.log("Current Path:", location.pathname);
   console.log("Product ID:", productId);
 
-  let pageType:
-    | "market"
-    | "search"
-    | "home"
-    | "cart"
-    | "profile"
-    | "marketDetail"
-    | "categoryDetail" = "home";
+  let pageType: PageType = "home"; // PageType 타입 사용
 
   if (location.pathname === "/home") {
     pageType = "home";
+  } else if (location.pathname.startsWith("/home")) {
+    pageType = "bestseller"; // 베스트셀러 페이지
+  } else if (location.pathname.startsWith("/home")) {
+    pageType = "discount"; // 할인 페이지
+  } else if (location.pathname.startsWith("/home")) {
+    pageType = "mdRecommend"; // MD 추천 페이지
+  } else if (location.pathname.startsWith("/home")) {
+    pageType = "onlyPocket"; // 오직 포켓 페이지
   } else if (location.pathname === "/market" && !productId) {
     pageType = "market";
   } else if (location.pathname.startsWith("/market") && productId) {

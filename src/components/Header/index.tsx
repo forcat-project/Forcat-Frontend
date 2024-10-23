@@ -8,15 +8,7 @@ import {
   Search as SearchIcon, // Search 아이콘
 } from "../../assets/svg";
 import { Block, Text, Input } from "../../style/ui";
-
-type PageType =
-  | "market"
-  | "search"
-  | "home"
-  | "cart"
-  | "profile"
-  | "marketDetail"
-  | "categoryDetail";
+import { PageType } from "../../interfaces/types";
 
 interface HeaderProps {
   pageType: PageType;
@@ -115,6 +107,21 @@ export default function Header({ pageType, title }: HeaderProps) {
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
+
+          {pageType === "bestseller" &&
+            "discount" &&
+            "mdRecommend" &&
+            "onlyPocket" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300> 상품 상세 </Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
         </Block.FlexBox>
       </Block.AbsoluteBox>
     </>
