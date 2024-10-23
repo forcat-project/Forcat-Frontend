@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import Header from "../../components/Header"; // Header 컴포넌트 import
 import { IProducts } from "../../interfaces/product";
 
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();
   const location = useLocation();
+  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수 추가
 
   // location.state에서 categoryName을 가져오고, 만약 없으면 빈 문자열로 설정
   const initialCategoryName =
@@ -108,7 +109,10 @@ export default function CategoryDetail() {
         {products.length > 0 ? (
           <ProductGrid>
             {products.map((product) => (
-              <ProductCard key={product.product_id}>
+              <ProductCard
+                key={product.product_id}
+                onClick={() => navigate(`/market/${product.product_id}`)} // 클릭 시 상품 상세 페이지로 이동
+              >
                 <ProductImageContainer>
                   <ProductImage
                     src={product.thumbnail_url}
@@ -158,8 +162,6 @@ export default function CategoryDetail() {
     </>
   );
 }
-
-// Styled components 유지
 
 const Container = styled.div`
   flex: 1;
