@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
+import { useNavigate } from "react-router-dom";
 
 interface Category {
   category_id: number;
@@ -13,7 +13,7 @@ export default function Search() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
-  const navigate = useNavigate(); // useNavigate 훅 선언
+  const navigate = useNavigate();
 
   // API 호출 함수
   const fetchCategories = () => {
@@ -56,7 +56,15 @@ export default function Search() {
             ?.subcategories?.map((subcategory) => (
               <SubcategoryItem
                 key={subcategory.category_id}
-                onClick={() => navigate(`/search/${subcategory.category_id}`)} // subcategory.category_id로 navigate 경로 수정
+                onClick={() => {
+                  console.log(
+                    `Navigating to category ID: ${subcategory.category_id}, Name: ${subcategory.name}`
+                  );
+                  // 서브 카테고리 ID와 이름을 CategoryDetail로 전달
+                  navigate(`/search/${subcategory.category_id}`, {
+                    state: { categoryName: subcategory.name },
+                  });
+                }}
               >
                 {subcategory.name}
               </SubcategoryItem>
@@ -66,10 +74,12 @@ export default function Search() {
   );
 }
 
+// 스타일드 컴포넌트는 그대로 유지
+
 // 스타일드 컴포넌트
 const Container = styled.div`
   display: flex;
-  margin-top: 100px; /* 헤더 영역을 고려한 여백 설정 */
+  margin-top: 100px;
   box-sizing: border-box;
 `;
 
@@ -78,7 +88,7 @@ const CategoryList = styled.ul`
   padding: 0;
   width: 200px;
   background-color: #f8f8f8;
-  height: 765px; /* 리스트가 길어질 경우 스크롤 가능하게 설정 */
+  height: 765px;
   overflow-y: auto;
   color: #7e7e7e;
 `;
@@ -96,7 +106,7 @@ const SubcategoryList = styled.ul`
   list-style-type: none;
   padding: 0 20px;
   flex: 1;
-  overflow-y: auto; /* 서브 카테고리 리스트가 길어질 경우 스크롤 가능하게 설정 */
+  overflow-y: auto;
 `;
 
 const SubcategoryItem = styled.li`
