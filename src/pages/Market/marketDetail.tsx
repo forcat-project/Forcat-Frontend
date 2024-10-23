@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { Block, Img, Text } from "../../style/ui";
+import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
 
@@ -11,6 +11,19 @@ export default function MarketDetail() {
 
     const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
+
+    const navigate = useNavigate();
+
+    const isSoldOut = productDetail?.remain_count === 0;
+    const handleCartButtonClick = () => {
+        if (!isSoldOut) navigate("/cart");
+    };
+
+    const handleBuyButtonClick = () => {
+        if (!isSoldOut) {
+            // 바로 상품 담고 구매하기 페이지로 연결
+        }
+    };
 
     useEffect(() => {
         axios
@@ -33,7 +46,7 @@ export default function MarketDetail() {
         <>
             <Header pageType="marketDetail" />
 
-            <Block.FlexBox margin="89px 0" justifyContent="center" style={{ overflow: "auto", scrollbarWidth: "none" }}>
+            <Block.FlexBox margin="89px 0" direction="column" style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 {productDetail ? (
                     <Block.FlexBox direction="column" alignItems="center" padding="30px 21px" gap="20px">
                         <ProductImageContainer>
@@ -95,6 +108,17 @@ export default function MarketDetail() {
                 ) : (
                     "로딩중"
                 )}
+
+                <Block.AbsoluteBox bottom="0" left="0" zIndex="3">
+                    <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
+                        <Button.CartButton onClick={handleCartButtonClick} isSoldOut={isSoldOut}>
+                            장바구니
+                        </Button.CartButton>
+                        <Button.BuyButton onClick={handleBuyButtonClick} isSoldOut={isSoldOut}>
+                            구매하기
+                        </Button.BuyButton>
+                    </Block.FlexBox>
+                </Block.AbsoluteBox>
             </Block.FlexBox>
         </>
     );

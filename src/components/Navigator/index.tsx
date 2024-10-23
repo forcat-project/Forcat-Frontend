@@ -11,21 +11,13 @@ import {
     Search,
     SearchDisabled,
 } from "../../assets/svg";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Text } from "../../style/ui";
 
 export default function Navigator() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const isMarket = /^\/market\/\d+$/.test(location.pathname);
-
-    const handleCartButtonClick = () => {
-        navigate("/cart");
-    };
-
-    const handleBuyButtonClick = () => {
-        // 구매하기 페이지로 연결 필요
-    };
+    const isMarketPage = /^\/market\/\d+$/.test(location.pathname);
 
     const navItems = [
         {
@@ -64,7 +56,7 @@ export default function Navigator() {
             style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
         >
             <Block.FlexBox>
-                {!isMarket &&
+                {!isMarketPage &&
                     navItems.map((item, index) => {
                         const isActive = location.pathname.startsWith(item.path);
 
@@ -87,20 +79,6 @@ export default function Navigator() {
                             </Block.FlexBox>
                         );
                     })}
-
-                {isMarket && (
-                    <Block.FlexBox
-                        width="100%"
-                        height="93px"
-                        justifyContent="center"
-                        alignItems="center"
-                        gap="12px"
-                        pointer
-                    >
-                        <Button.CartButton onClick={handleCartButtonClick}>장바구니</Button.CartButton>
-                        <Button.BuyButton onClick={handleBuyButtonClick}>구매하기</Button.BuyButton>
-                    </Block.FlexBox>
-                )}
             </Block.FlexBox>
         </Block.AbsoluteBox>
     );

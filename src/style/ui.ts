@@ -203,28 +203,28 @@ export const Button = {
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
     `,
-    CartButton: styled.div<StyleButton & { isDisabled: boolean }>`
+    CartButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
         height: 53px;
         border-radius: 19px;
-        color: ${({ isDisabled }) => (isDisabled ? "#939292" : "#f4b647")};
-        background-color: ${({ isDisabled }) => (isDisabled ? "#F8F8F8" : "#f6ecd7")};
-        cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
+        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
+        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f6ecd7")};
+        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
         border: ${props => props.border};
     `,
-    BuyButton: styled.div<StyleButton & { isDisabled: boolean }>`
+    BuyButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
         height: 53px;
         border-radius: 19px;
-        color: ${({ isDisabled }) => (isDisabled ? "#939292" : "#fff")};
-        background-color: ${({ isDisabled }) => (isDisabled ? "#F8F8F8" : "#f4b647")};
-        cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
+        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#fff")};
+        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f4b647")};
+        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
         border: ${props => props.border};
     `,
 };
