@@ -1,23 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import {
-    Cart,
-    HeaderBackArrow,
-    HeaderLogo,
-    Home,
-    Profile,
-    Search as SearchIcon, // Search 아이콘
+  Cart,
+  HeaderBackArrow,
+  HeaderLogo,
+  Home,
+  Profile,
+  Search as SearchIcon, // Search 아이콘
 } from "../../assets/svg";
 import { Block, Text, Input } from "../../style/ui";
 import { PageType } from "../../interfaces/types";
 import { useState } from "react"; // useState 추가
 
 interface HeaderProps {
-    pageType: PageType;
-    title?: string; // title을 옵셔널하게 정의
+  pageType: PageType;
+  title?: string; // title을 옵셔널하게 정의
 }
 
 export default function Header({ pageType, title }: HeaderProps) {
-
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
 
@@ -50,39 +49,38 @@ export default function Header({ pageType, title }: HeaderProps) {
     }
   };
 
+  return (
+    <>
+      <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
+        <Block.FlexBox padding="31px 25px" justifyContent="space-between">
+          {pageType === "home" && (
+            <>
+              <HeaderLogo width={52} />
+              <Profile width={31} />
+            </>
+          )}
 
-    const handleProfileClick = () => {
-        navigate("/login");
-    };
+          {pageType === "cart" && (
+            <>
+              <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
+              <Text.TitleMenu300> 장바구니 </Text.TitleMenu300>
+              <Home width={21} />
+            </>
+          )}
 
-    const isLoginPage = location.pathname.startsWith("/login");
-    const isSignupPage = location.pathname.startsWith("/signup");
-    return (
-        <>
-            {!isLoginPage && !isSignupPage && (
-                <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
-                    <Block.FlexBox padding="31px 25px" justifyContent="space-between">
-                        {pageType === "home" && (
-                            <>
-                                <HeaderLogo width={52} />
-                                <Profile width={31} />
-                            </>
-                        )}
+          {pageType === "profile" && (
+            <>
+              <Text.TitleMenu300> 프로필 </Text.TitleMenu300>
+              <Profile width={31} />
+            </>
+          )}
 
-                        {pageType === "cart" && (
-                            <>
-                                <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
-                                <Text.TitleMenu300> 장바구니 </Text.TitleMenu300>
-                                <Home width={21} />
-                            </>
-                        )}
-
-                        {pageType === "profile" && (
-                            <>
-                                <Text.TitleMenu300> 프로필 </Text.TitleMenu300>
-                                <Profile width={31} onClick={handleProfileClick} cursor="pointer" />
-                            </>
-                        )}
+          {pageType === "market" && (
+            <>
+              <Text.TitleMenu300> 마켓 </Text.TitleMenu300>
+              <SearchIcon width={31} />
+            </>
+          )}
 
           {pageType === "search" && (
             <>
@@ -145,7 +143,6 @@ export default function Header({ pageType, title }: HeaderProps) {
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
-  
           {pageType === "categoryDetail" && (
             <>
               <HeaderBackArrow

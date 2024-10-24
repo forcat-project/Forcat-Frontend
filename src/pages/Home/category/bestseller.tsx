@@ -123,9 +123,6 @@ export default function Bestseller() {
         ))}
       </ProductGrid>
       {isFetching && <LoadingMessage>Loading more products...</LoadingMessage>}
-      {!hasMore && (
-        <EndOfListMessage>모든 상품이 로드되었습니다.</EndOfListMessage>
-      )}
     </MarketContainer>
   );
 }

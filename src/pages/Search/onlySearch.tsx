@@ -143,7 +143,6 @@ export default function OnlySearch() {
           ))}
         </ProductGrid>
       )}
-      {isFetching && <p>추가 상품을 불러오는 중입니다...</p>}
     </MarketContainer>
   );
 }
@@ -160,12 +159,6 @@ const MarketContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const SearchTitle = styled.h2`
-  margin-bottom: 20px;
-  font-size: 18px;
-  color: #333;
 `;
 
 const ProductGrid = styled.div`

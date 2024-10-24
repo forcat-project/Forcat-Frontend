@@ -124,7 +124,6 @@ export default function OnlyPocket() {
         ))}
       </ProductGrid>
       {isFetching && <div>Loading more products...</div>}
-      {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
     </MarketContainer>
   );
 }
