@@ -7,9 +7,8 @@ import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
 
 export default function MarketDetail() {
-  const { productId } = useParams();
+    const { productId } = useParams();
 
- 
     const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
 
@@ -38,16 +37,14 @@ export default function MarketDetail() {
                 console.error("통신 실패:", error.message);
             });
     }, [productId]);
- 
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
-  return (
-    <>
-      <Header pageType="marketDetail" />
-
+    return (
+        <>
+            <Header pageType="marketDetail" />
 
             <Block.FlexBox margin="89px 0" direction="column" style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 {productDetail ? (
@@ -122,15 +119,9 @@ export default function MarketDetail() {
                         </Button.BuyButton>
                     </Block.FlexBox>
                 </Block.AbsoluteBox>
-
             </Block.FlexBox>
-          </Block.FlexBox>
-        ) : (
-          "로딩중"
-        )}
-      </Block.FlexBox>
-    </>
-  );
+        </>
+    );
 }
 
 const ProductImageContainer = styled.div`
