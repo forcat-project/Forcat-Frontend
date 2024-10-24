@@ -1,4 +1,3 @@
-// categoryBlock.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
@@ -7,15 +6,17 @@ import { Block, Text } from "../../style/ui";
 import { IProducts } from "../../interfaces/product";
 
 interface CategoryBlockProps {
-  categoryId: number;
+  categoryId: number | null;
   categoryName: string;
   morePagePath: string;
+  ordering?: string; // ordering 옵션을 추가
 }
 
 export default function CategoryBlock({
   categoryId,
   categoryName,
   morePagePath,
+  ordering,
 }: CategoryBlockProps) {
   const [products, setProducts] = useState<IProducts[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
@@ -28,9 +29,9 @@ export default function CategoryBlock({
       limit: 3, // 상위 3개만 가져오기
     };
 
-    // 카테고리 이름이 "가장 많이 팔리는 베스트셀러 상품"일 때 ordering 파라미터 추가
-    if (categoryName === "🔥 가장 많이 팔리는 베스트셀러 상품") {
-      params.ordering = "-purchase_count"; // -purchase_count로 정렬
+    // 베스트셀러 상품일 때 ordering 옵션 추가
+    if (ordering) {
+      params.ordering = ordering;
     }
 
     axios
@@ -41,7 +42,7 @@ export default function CategoryBlock({
       .catch((error: AxiosError) => {
         setError(error); // 오류가 발생하면 상태에 오류를 설정
       });
-  }, [categoryId, categoryName]);
+  }, [categoryId, ordering]);
 
   // 오류가 발생하면 오류 메시지를 표시
   if (error) {
@@ -60,12 +61,36 @@ export default function CategoryBlock({
             key={product.product_id}
             onClick={() => navigate(`/market/${product.product_id}`)} // 상품 클릭 시 상세 페이지로 이동
           >
-            <ProductImage src={product.thumbnail_url} alt={product.name} />
-            <Text.Menu>{product.name}</Text.Menu>
-            <Text.Menu>{product.price}원</Text.Menu>
-            {product.discount_rate !== "0.00" && (
-              <Text.Discount>{product.discount_rate}% 할인</Text.Discount>
-            )}
+            <ProductImageContainer>
+              <ProductImage src={product.thumbnail_url} alt={product.name} />
+              {product.remain_count === 0 && (
+                <SoldoutBox width="100%" height="100%">
+                  SOLD OUT
+                </SoldoutBox>
+              )}
+            </ProductImageContainer>
+            <ProductDetails>
+              <ProductCompany>{product.company}</ProductCompany>
+              <ProductName>{product.name}</ProductName>
+              <ProductPrice>
+                {product.discount_rate !== "0.00" ? (
+                  <>
+                    <OriginalPrice>{Math.round(product.price)}원</OriginalPrice>
+                    <br />
+                    <DiscountRate>
+                      {Math.round(Number(product.discount_rate))}%
+                    </DiscountRate>
+                    <DiscountedPrice>
+                      {Math.round(product.discounted_price)}원
+                    </DiscountedPrice>
+                  </>
+                ) : (
+                  <DiscountedPrice>
+                    {Math.round(product.price)}원
+                  </DiscountedPrice>
+                )}
+              </ProductPrice>
+            </ProductDetails>
           </ProductCard>
         ))}
       </ProductGrid>
@@ -76,7 +101,7 @@ export default function CategoryBlock({
 // 스타일 컴포넌트 정의
 const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 1행에 3개씩 배치 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-top: 20px;
 `;
@@ -91,10 +116,71 @@ const ProductCard = styled.div`
   }
 `;
 
+const ProductImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+`;
+
 const ProductImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 8px;
+`;
+
+const SoldoutBox = styled.div<{ width?: string; height?: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "100%"};
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+`;
+
+const ProductDetails = styled.div`
+  text-align: left;
+  margin-top: 10px;
+`;
+
+const ProductCompany = styled.div`
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: bold;
+`;
+
+const ProductName = styled.div`
+  margin: 10px 0;
+  font-size: 12px;
+`;
+
+const ProductPrice = styled.div`
+  font-size: 14px;
+  color: #333;
+`;
+
+const OriginalPrice = styled.span`
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 10px;
+`;
+
+const DiscountRate = styled.span`
+  color: #fa7586;
+  margin-right: 10px;
+  font-weight: bold;
+`;
+
+const DiscountedPrice = styled.span`
+  color: #333;
+  font-weight: bold;
 `;
 
 const MoreButton = styled.button`
@@ -103,5 +189,4 @@ const MoreButton = styled.button`
   color: #939292;
   cursor: pointer;
   font-size: 14px;
-  /* text-decoration: underline; */
 `;
