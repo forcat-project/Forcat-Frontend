@@ -7,10 +7,15 @@ type Props = {
 };
 
 export default function InputUserName({ userName }: Props) {
+    const [name, setName] = useState(userName);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
+
+    const handleInputNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
 
     return (
         <>
@@ -21,7 +26,13 @@ export default function InputUserName({ userName }: Props) {
                 </Block.FlexBox>
                 <Block.FlexBox direction="column" gap="10px">
                     <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
-                    <Input.InfoBox value={userName} placeholder="이름" onFocus={handleFocus} onBlur={handleBlur} />
+                    <Input.InfoBox
+                        value={name}
+                        placeholder="이름"
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onChange={handleInputNameChange}
+                    />
                     <Block.FlexBox alignItems="center" gap="10px">
                         {isFocused ? <Warning width={16} /> : <WarningDisabled width={16} />}
 
