@@ -9,4 +9,5 @@ export type PageType =
   | "bestseller"
   | "discount"
   | "mdRecommend"
-  | "onlyPocket";
+  | "onlyPocket"
+  | "onlySearch";

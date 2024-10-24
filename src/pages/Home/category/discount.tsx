@@ -3,17 +3,10 @@ import axios, { AxiosError } from "axios";
 import styled from "styled-components";
 import { Block, Text } from "../../../style/ui";
 import { useNavigate } from "react-router-dom";
-
-interface Product {
-  product_id: number;
-  thumbnail_url: string;
-  name: string;
-  price: number;
-  discount_rate: string;
-}
+import { IProducts } from "../../../interfaces/product";
 
 export default function Discount() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<IProducts[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
   const navigate = useNavigate();
 

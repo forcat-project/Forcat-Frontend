@@ -8,12 +8,11 @@ import { IProducts } from "../../interfaces/product";
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();
   const location = useLocation();
-  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수 추가
+  const navigate = useNavigate();
 
-  // location.state에서 categoryName을 가져오고, 만약 없으면 빈 문자열로 설정
+  // location.state에서 categoryName을 가져오고, 없으면 빈 문자열
   const initialCategoryName =
     (location.state as { categoryName: string })?.categoryName || "";
-
   const [categoryName, setCategoryName] = useState<string>(initialCategoryName);
   const [products, setProducts] = useState<IProducts[]>([]);
   const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
@@ -21,17 +20,14 @@ export default function CategoryDetail() {
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
 
-  // 스크롤 이벤트 처리 함수
   const handleScroll = useCallback(() => {
     if (isFetching || !hasMore) return;
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     if (scrollTop + clientHeight >= scrollHeight - 5) {
-      // 페이지 하단에 도달하면 추가 데이터를 요청
       setIsFetching(true);
     }
   }, [isFetching, hasMore]);
 
-  // 스크롤 이벤트 리스너 추가 및 제거
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -52,8 +48,7 @@ export default function CategoryDetail() {
   // 제품 목록 불러오는 API 호출
   const fetchProducts = (cursor: string | null = null) => {
     if (isFetching || !hasMore) return;
-
-    setIsFetching(true); // 데이터 요청 상태 설정
+    setIsFetching(true);
     axios
       .get("http://125.189.109.17/api/products", {
         params: {
@@ -72,8 +67,8 @@ export default function CategoryDetail() {
           : null;
         const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
         setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
-        setHasMore(Boolean(next)); // 더 이상 데이터가 없으면 false로 설정
-        setIsFetching(false); // 데이터 요청 완료
+        setHasMore(Boolean(next));
+        setIsFetching(false);
       })
       .catch((error: AxiosError) => {
         setError(error);
@@ -81,37 +76,34 @@ export default function CategoryDetail() {
       });
   };
 
+  // 첫 호출 시 카테고리 이름과 제품 목록 불러오기
   useEffect(() => {
     if (category_id) {
-      if (!categoryName) {
-        fetchCategoryName(); // 카테고리 이름 불러오기
-      }
-      fetchProducts(); // 첫 제품 목록 호출
+      fetchCategoryName();
+      fetchProducts();
     }
-  }, [category_id, categoryName]);
+  }, [category_id]);
 
-  // cursor 값이 변경될 때마다 추가 데이터 요청
   useEffect(() => {
     if (cursor && !isFetching) {
       fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
     }
   }, [cursor]);
 
-  // 데이터가 로드 중이거나 없을 때
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
   return (
     <>
-      <Header pageType="categoryDetail" title={categoryName} />
+      <Header pageType="categoryDetail" title={categoryName || "Loading..."} />
       <Container>
         {products.length > 0 ? (
           <ProductGrid>
             {products.map((product) => (
               <ProductCard
                 key={product.product_id}
-                onClick={() => navigate(`/market/${product.product_id}`)} // 클릭 시 상품 상세 페이지로 이동
+                onClick={() => navigate(`/market/${product.product_id}`)}
               >
                 <ProductImageContainer>
                   <ProductImage
@@ -131,19 +123,25 @@ export default function CategoryDetail() {
                     {product.discount_rate !== "0.00" ? (
                       <>
                         <OriginalPrice>
-                          {Math.round(product.price)}원
+                          {Math.round(product.price).toLocaleString()}원{" "}
                         </OriginalPrice>
                         <br />
                         <DiscountRate>
-                          {Math.round(Number(product.discount_rate))}%
+                          {Math.round(
+                            Number(product.discount_rate)
+                          ).toLocaleString()}
+                          %
                         </DiscountRate>
                         <DiscountedPrice>
-                          {Math.round(product.discounted_price)}원
+                          {Math.round(
+                            product.discounted_price
+                          ).toLocaleString()}
+                          원
                         </DiscountedPrice>
                       </>
                     ) : (
                       <DiscountedPrice>
-                        {Math.round(product.price)}원
+                        {Math.round(product.price).toLocaleString()}원
                       </DiscountedPrice>
                     )}
                   </ProductPrice>
@@ -161,9 +159,9 @@ export default function CategoryDetail() {
       </Container>
     </>
   );
-
 }
 
+// Styled components
 const Container = styled.div`
   flex: 1;
   margin-top: 103px;
@@ -187,9 +185,11 @@ const ProductCard = styled.div`
   cursor: pointer;
   padding: 10px;
   border-radius: 10px;
-  transition: box-shadow 0.3s;
+  overflow: hidden; /* 이미지 확대 시 카드 밖으로 넘치지 않도록 설정 */
+  transition: box-shadow 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
+    transform: scale(1.05); /* hover 시 카드 확대 */
   }
 `;
 
@@ -197,12 +197,17 @@ const ProductImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  overflow: hidden; /* 이미지가 확대될 때 잘림 방지 */
 `;
 
 const ProductImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 10px;
+  transition: transform 0.3s; /* 부드러운 전환 효과 추가 */
+  ${ProductCard}:hover & {
+    transform: scale(1.1); /* hover 시 이미지 확대 */
+  }
 `;
 
 const ProductDetails = styled.div`
