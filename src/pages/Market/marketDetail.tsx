@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
+import axiosInstance from "../../api/axiosInstance";
 
 export default function MarketDetail() {
     const { productId } = useParams();
@@ -26,8 +27,8 @@ export default function MarketDetail() {
     };
 
     useEffect(() => {
-        axios
-            .get(`http://125.189.109.17/api/products/${productId}`)
+        axiosInstance
+            .get(`/products/${productId}`)
             .then(response => {
                 setProductDetail(response.data);
                 console.log("받은 데이터:", response.data);

@@ -11,6 +11,9 @@ import Bestseller from "./pages/Home/category/bestseller";
 import MdRecommend from "./pages/Home/category/mdRecommend";
 import Discount from "./pages/Home/category/discount";
 import OnlyPocket from "./pages/Home/category/onlyPocket";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
 import OnlySearch from "./pages/Search/onlySearch";
 
 export const router = createBrowserRouter([
@@ -18,6 +21,14 @@ export const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+         {
+                path: "login",
+                element: <Login />,
+            },
+            {
+                path: "signup",
+                element: <Signup />,
+            },
       {
         path: "home",
         element: <Home />,

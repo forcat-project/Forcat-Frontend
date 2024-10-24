@@ -6,6 +6,7 @@ import { PageType } from "./interfaces/types";
 import { useState, useEffect } from "react";
 
 function App() {
+
   const location = useLocation();
   const { productId, category_id } = useParams(); // category_id 파라미터도 추가
   const [pageTitle, setPageTitle] = useState<string>("");
@@ -95,6 +96,7 @@ function App() {
       </Block.FlexBox>
     </>
   );
+
 }
 
 export default App;
