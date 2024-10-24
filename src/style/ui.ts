@@ -203,29 +203,28 @@ export const Button = {
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
     `,
-    CartButton: styled.div<StyleButton>`
+    CartButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
         height: 53px;
-        border: 1px solid #f4b647;
         border-radius: 19px;
-        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
-        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
-        cursor: pointer;
+        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
+        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f6ecd7")};
+        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
         border: ${props => props.border};
     `,
-    BuyButton: styled.div<StyleButton>`
+    BuyButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
         height: 53px;
         border-radius: 19px;
-        color: #fff; // disabled이면 "#000000" 로 변경되도록 수정하기
-        background-color: #f4b647; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
-        cursor: pointer;
+        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#fff")};
+        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f4b647")};
+        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
         border: ${props => props.border};
     `,
 };

@@ -161,6 +161,7 @@ export default function CategoryDetail() {
       </Container>
     </>
   );
+
 }
 
 const Container = styled.div`
