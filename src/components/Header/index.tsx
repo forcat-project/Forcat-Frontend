@@ -29,9 +29,10 @@ export default function Header({ pageType, title }: HeaderProps) {
     };
 
     const isLoginPage = location.pathname.startsWith("/login");
+    const isSignupPage = location.pathname.startsWith("/signup");
     return (
         <>
-            {!isLoginPage && (
+            {!isLoginPage && !isSignupPage && (
                 <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
                     <Block.FlexBox padding="31px 25px" justifyContent="space-between">
                         {pageType === "home" && (

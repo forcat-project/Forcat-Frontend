@@ -19,6 +19,7 @@ export default function Navigator() {
 
     const isMarketPage = /^\/market\/\d+$/.test(location.pathname);
     const isLoginPage = location.pathname.startsWith("/login");
+    const isSignupPage = location.pathname.startsWith("/signup");
 
     const navItems = [
         {
@@ -50,7 +51,7 @@ export default function Navigator() {
 
     return (
         <>
-            {!isLoginPage && !isMarketPage && (
+            {!isLoginPage && !isSignupPage && !isMarketPage && (
                 <Block.AbsoluteBox
                     width="599px"
                     height="93px"

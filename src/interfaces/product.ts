@@ -27,3 +27,15 @@ export interface IProducts {
     company: string;
     remain_count: number;
 }
+
+export interface IUser {
+    username: string;
+    nickname: string;
+    profile_picture?: string;
+    phone_number?: string;
+    address?: string;
+    address_detail?: string;
+    kakao_id?: string;
+    google_id?: string;
+    naver_id?: string;
+}
