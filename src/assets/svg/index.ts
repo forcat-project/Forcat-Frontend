@@ -6,6 +6,7 @@ export { default as HeaderBackArrow } from "./HeaderBackArrow";
 export { default as HeaderLogo } from "./HeaderLogo";
 export { default as Home } from "./Home";
 export { default as HomeDisabled } from "./HomeDisabled";
+export { default as LoginLogo } from "./LoginLogo";
 export { default as Market } from "./Market";
 export { default as MarketDisabled } from "./MarketDisabled";
 export { default as Profile } from "./Profile";
