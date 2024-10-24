@@ -5,7 +5,7 @@ import { Block, Text } from "../../../style/ui";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 
-export default function BestSeller() {
+export default function Bestseller() {
   const [products, setProducts] = useState<IProducts[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function BestSeller() {
     axios
       .get("http://125.189.109.17/api/products", {
         params: {
-          categories: 2, // 베스트셀러 카테고리 ID
+          categories: null, // 베스트셀러 카테고리 ID
           ordering: "-purchase_count", // 구매 횟수 기준으로 정렬
         },
       })
@@ -31,7 +31,11 @@ export default function BestSeller() {
   }
 
   return (
-    <Block.FlexBox direction="column" width="100%">
+    <Block.FlexBox
+      direction="column"
+      width="100%"
+      margin="89px 0 93px 0" // Header와 Navigator를 침범하지 않도록 설정
+    >
       <Text.TitleMenu200>가장 많이 팔리는 베스트셀러 상품</Text.TitleMenu200>
       <ProductGrid>
         {products.map((product) => (
@@ -54,7 +58,7 @@ export default function BestSeller() {
 
 const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 1행에 3개씩 배치 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-top: 20px;
 `;
