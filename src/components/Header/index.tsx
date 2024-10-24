@@ -24,9 +24,14 @@ export default function Header({ pageType, title }: HeaderProps) {
     navigate(-1); // 뒤로가기 처리
   };
 
+  const handleProfileClick = () => {
+    navigate("/login");
+  };
+
   const handlegotoonlysearch = () => {
     navigate("/search/onlysearch"); // 검색 바 클릭 시 검색전용 페이지로 이동
   };
+
   // 검색어 입력 시 상태 업데이트
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -49,167 +54,177 @@ export default function Header({ pageType, title }: HeaderProps) {
     }
   };
 
+  const isLoginPage = location.pathname.startsWith("/login");
+  const isSignupPage = location.pathname.startsWith("/signup");
+
   return (
     <>
-      <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
-        <Block.FlexBox padding="31px 25px" justifyContent="space-between">
-          {pageType === "home" && (
-            <>
-              <HeaderLogo width={52} />
-              <Profile width={31} />
-            </>
-          )}
+      {!isLoginPage && !isSignupPage && (
+        <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
+          <Block.FlexBox padding="31px 25px" justifyContent="space-between">
+            {pageType === "home" && (
+              <>
+                <HeaderLogo width={52} />
+                <Profile width={31} />
+              </>
+            )}
 
-          {pageType === "cart" && (
-            <>
-              <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
-              <Text.TitleMenu300> 장바구니 </Text.TitleMenu300>
-              <Home width={21} />
-            </>
-          )}
+            {pageType === "cart" && (
+              <>
+                <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
+                <Text.TitleMenu300> 장바구니 </Text.TitleMenu300>
+                <Home width={21} />
+              </>
+            )}
 
-          {pageType === "profile" && (
-            <>
-              <Text.TitleMenu300> 프로필 </Text.TitleMenu300>
-              <Profile width={31} />
-            </>
-          )}
-
-          {pageType === "market" && (
-            <>
-              <Text.TitleMenu300> 마켓 </Text.TitleMenu300>
-              <SearchIcon width={31} />
-            </>
-          )}
-
-          {pageType === "search" && (
-            <>
-              <Block.FlexBox
-                width="100%"
-                padding="8px 16px"
-                border="1px solid #e0e0e0"
-                borderRadius="24px"
-                alignItems="center"
-              >
-                <Input.Search
-                  width="100%"
-                  placeholder="검색어를 입력해주세요"
-                  onClick={handlegotoonlysearch} // 클릭 시 페이지 이동
-                  readOnly // 입력 불가능하게 설정 (검색 전용 페이지로 이동하므로)
+            {pageType === "profile" && (
+              <>
+                <Text.TitleMenu300> 프로필 </Text.TitleMenu300>
+                <Profile
+                  width={31}
+                  onClick={handleProfileClick}
+                  cursor="pointer"
                 />
-                <SearchIcon width={24} style={{ marginLeft: "10px" }} />
-              </Block.FlexBox>
-            </>
-          )}
+              </>
+            )}
 
-          {pageType === "onlySearch" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={() => navigate(-1)}
-                cursor="pointer"
-              />
-              <Block.FlexBox
-                width="100%"
-                padding="8px 16px"
-                border="1px solid #e0e0e0"
-                borderRadius="24px"
-                alignItems="center"
-              >
-                <Input.Search
+            {pageType === "market" && (
+              <>
+                <Text.TitleMenu300> 마켓 </Text.TitleMenu300>
+                <SearchIcon width={31} />
+              </>
+            )}
+
+            {pageType === "search" && (
+              <>
+                <Block.FlexBox
                   width="100%"
-                  placeholder="검색어를 입력해주세요"
-                  value={searchTerm} // 입력된 값
-                  onChange={handleInputChange} // 입력값 업데이트
-                  onKeyPress={handleKeyPress} // Enter 키 이벤트 처리
-                />
-                <SearchIcon
+                  padding="8px 16px"
+                  border="1px solid #e0e0e0"
+                  borderRadius="24px"
+                  alignItems="center"
+                >
+                  <Input.Search
+                    width="100%"
+                    placeholder="검색어를 입력해주세요"
+                    onClick={handlegotoonlysearch} // 클릭 시 페이지 이동
+                    readOnly // 입력 불가능하게 설정 (검색 전용 페이지로 이동하므로)
+                  />
+                  <SearchIcon width={24} style={{ marginLeft: "10px" }} />
+                </Block.FlexBox>
+              </>
+            )}
+
+            {pageType === "onlySearch" && (
+              <>
+                <HeaderBackArrow
                   width={24}
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={handleSearchBarClick}
+                  onClick={() => navigate(-1)}
+                  cursor="pointer"
                 />
-              </Block.FlexBox>
-            </>
-          )}
+                <Block.FlexBox
+                  width="100%"
+                  padding="8px 16px"
+                  border="1px solid #e0e0e0"
+                  borderRadius="24px"
+                  alignItems="center"
+                >
+                  <Input.Search
+                    width="100%"
+                    placeholder="검색어를 입력해주세요"
+                    value={searchTerm} // 입력된 값
+                    onChange={handleInputChange} // 입력값 업데이트
+                    onKeyPress={handleKeyPress} // Enter 키 이벤트 처리
+                  />
+                  <SearchIcon
+                    width={24}
+                    style={{ marginLeft: "10px", cursor: "pointer" }}
+                    onClick={handleSearchBarClick}
+                  />
+                </Block.FlexBox>
+              </>
+            )}
 
-          {pageType === "marketDetail" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300> 상품 상세 </Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
-          {pageType === "categoryDetail" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300
-                style={{
-                  color: "black",
-                  fontSize: "20px",
-                }}
-              >
-                {title || ""}
-              </Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
+            {pageType === "marketDetail" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300> 상품 상세 </Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
 
-          {pageType === "bestseller" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300>베스트셀러</Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
+            {pageType === "categoryDetail" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                  }}
+                >
+                  {title || ""}
+                </Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
 
-          {pageType === "discount" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300>최대 할인 상품</Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
-          {pageType === "mdRecommend" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300>MD 추천 상품</Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
+            {pageType === "bestseller" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300>베스트셀러</Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
 
-          {pageType === "onlyPocket" && (
-            <>
-              <HeaderBackArrow
-                width={24}
-                onClick={handleBackButtonClick}
-                cursor="pointer"
-              />
-              <Text.TitleMenu300> 오직 포켓에서만 </Text.TitleMenu300>
-              <Cart width={21} style={{ visibility: "hidden" }} />
-            </>
-          )}
-        </Block.FlexBox>
-      </Block.AbsoluteBox>
+            {pageType === "discount" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300>최대 할인 상품</Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
+            {pageType === "mdRecommend" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300>MD 추천 상품</Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
+
+            {pageType === "onlyPocket" && (
+              <>
+                <HeaderBackArrow
+                  width={24}
+                  onClick={handleBackButtonClick}
+                  cursor="pointer"
+                />
+                <Text.TitleMenu300> 오직 포켓에서만 </Text.TitleMenu300>
+                <Cart width={21} style={{ visibility: "hidden" }} />
+              </>
+            )}
+          </Block.FlexBox>
+        </Block.AbsoluteBox>
+      )}
     </>
   );
 }
