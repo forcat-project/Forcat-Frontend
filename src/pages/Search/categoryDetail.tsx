@@ -123,19 +123,25 @@ export default function CategoryDetail() {
                     {product.discount_rate !== "0.00" ? (
                       <>
                         <OriginalPrice>
-                          {Math.round(product.price)}원
+                          {Math.round(product.price).toLocaleString()}원{" "}
                         </OriginalPrice>
                         <br />
                         <DiscountRate>
-                          {Math.round(Number(product.discount_rate))}%
+                          {Math.round(
+                            Number(product.discount_rate)
+                          ).toLocaleString()}
+                          %
                         </DiscountRate>
                         <DiscountedPrice>
-                          {Math.round(product.discounted_price)}원
+                          {Math.round(
+                            product.discounted_price
+                          ).toLocaleString()}
+                          원
                         </DiscountedPrice>
                       </>
                     ) : (
                       <DiscountedPrice>
-                        {Math.round(product.price)}원
+                        {Math.round(product.price).toLocaleString()}원
                       </DiscountedPrice>
                     )}
                   </ProductPrice>
