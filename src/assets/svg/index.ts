@@ -1,4 +1,7 @@
 export { default as BannerEx } from "./BannerEx";
+export { default as BtnGoogle } from "./BtnGoogle";
+export { default as BtnKakao } from "./BtnKakao";
+export { default as BtnNaver } from "./BtnNaver";
 export { default as Cart } from "./Cart";
 export { default as CartDisabled } from "./CartDisabled";
 export { default as FooterLogo } from "./FooterLogo";
