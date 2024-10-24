@@ -63,7 +63,7 @@ export const Text = {
         display: inline-block;
         font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
         font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size300)};
-        color: ${({ color }) => (color ? theme.color[color] : theme.color.Yellow)}; // disabled 이면 "#939292" 이도록
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Yellow)};
         cursor: ${props => props.pointer && "pointer"};
     `,
     HugeWarning: styled.span<StyleText>`
@@ -86,6 +86,20 @@ export const Text = {
         font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
         font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size400)};
         color: ${({ color }) => (color ? theme.color[color] : theme.color.Warning)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    FocusedMenu: styled.span<StyleText & { isFocused: boolean }>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size400)};
+        color: ${({ isFocused }) => (isFocused ? theme.color.Yellow : theme.color.Gray)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    FocusedWarning: styled.span<StyleText & { isFocused: boolean }>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size300)};
+        color: ${({ isFocused }) => (isFocused ? theme.color.Yellow : theme.color.Gray)};
         cursor: ${props => props.pointer && "pointer"};
     `,
 };
