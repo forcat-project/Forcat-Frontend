@@ -76,9 +76,10 @@ export default function Home() {
         {/* 각 카테고리 상품 리스트 */}
         <Block.FlexBox direction="column" gap="40px">
           <CategoryBlock
-            categoryId={1}
+            categoryId={null}
             categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
             morePagePath="/home/discount"
+            ordering="-discount_rate" // ordering 추가
           />
           <CategoryBlock
             categoryId={null} // categoryId를 null로 설정
