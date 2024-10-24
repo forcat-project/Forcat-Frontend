@@ -22,19 +22,19 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "home/:mdrecommend",
+        path: "home/mdrecommend",
         element: <MdRecommend />,
       },
       {
-        path: "home/:bestseller",
+        path: "home/bestseller",
         element: <Bestseller />,
       },
       {
-        path: "home/:discount",
+        path: "home/discount",
         element: <Discount />,
       },
       {
-        path: "home/:onlypocket",
+        path: "home/onlypocket",
         element: <OnlyPocket />,
       },
       {
