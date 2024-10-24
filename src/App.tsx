@@ -14,13 +14,13 @@ function App() {
 
   if (location.pathname === "/home") {
     pageType = "home";
-  } else if (location.pathname.startsWith("/home")) {
+  } else if (location.pathname === "/home/bestseller") {
     pageType = "bestseller"; // 베스트셀러 페이지
-  } else if (location.pathname.startsWith("/home")) {
+  } else if (location.pathname === "/home/discount") {
     pageType = "discount"; // 할인 페이지
-  } else if (location.pathname.startsWith("/home")) {
+  } else if (location.pathname === "/home/mdrecommend") {
     pageType = "mdRecommend"; // MD 추천 페이지
-  } else if (location.pathname.startsWith("/home")) {
+  } else if (location.pathname === "/home/onlypocket") {
     pageType = "onlyPocket"; // 오직 포켓 페이지
   } else if (location.pathname === "/market" && !productId) {
     pageType = "market";

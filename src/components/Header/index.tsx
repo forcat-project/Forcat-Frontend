@@ -18,8 +18,6 @@ interface HeaderProps {
 export default function Header({ pageType, title }: HeaderProps) {
   const navigate = useNavigate();
 
-  // console.log("Header title:", title);
-
   const handleBackButtonClick = () => {
     navigate(-1);
   };
@@ -92,36 +90,71 @@ export default function Header({ pageType, title }: HeaderProps) {
                 width={24}
                 onClick={handleBackButtonClick}
                 cursor="pointer"
-                style={{ zIndex: 9999 }} // z-index 임시 설정
               />
               <Text.TitleMenu300
                 style={{
                   color: "black",
                   fontSize: "20px",
-                  visibility: "visible",
-                  zIndex: 9999,
                 }}
               >
                 {title || ""}
-              </Text.TitleMenu300>{" "}
+              </Text.TitleMenu300>
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
 
-          {pageType === "bestseller" &&
-            "discount" &&
-            "mdRecommend" &&
-            "onlyPocket" && (
-              <>
-                <HeaderBackArrow
-                  width={24}
-                  onClick={handleBackButtonClick}
-                  cursor="pointer"
-                />
-                <Text.TitleMenu300> 추천 상품 </Text.TitleMenu300>
-                <Cart width={21} style={{ visibility: "hidden" }} />
-              </>
-            )}
+          {pageType === "bestseller" && (
+            <>
+              <HeaderBackArrow
+                width={24}
+                onClick={handleBackButtonClick}
+                cursor="pointer"
+              />
+              <Text.TitleMenu300>
+                🔥 가장 많이 팔리는 베스트셀러 상품
+              </Text.TitleMenu300>
+              <Cart width={21} style={{ visibility: "hidden" }} />
+            </>
+          )}
+
+          {pageType === "discount" && (
+            <>
+              <HeaderBackArrow
+                width={24}
+                onClick={handleBackButtonClick}
+                cursor="pointer"
+              />
+              <Text.TitleMenu300>
+                ⏰ 지금 놓치면 안 될 최대 할인 상품
+              </Text.TitleMenu300>
+              <Cart width={21} style={{ visibility: "hidden" }} />
+            </>
+          )}
+          {pageType === "mdRecommend" && (
+            <>
+              <HeaderBackArrow
+                width={24}
+                onClick={handleBackButtonClick}
+                cursor="pointer"
+              />
+              <Text.TitleMenu300>
+                ✨ MD가 자신 있게 추천하는 특별한 상품
+              </Text.TitleMenu300>
+              <Cart width={21} style={{ visibility: "hidden" }} />
+            </>
+          )}
+
+          {pageType === "onlyPocket" && (
+            <>
+              <HeaderBackArrow
+                width={24}
+                onClick={handleBackButtonClick}
+                cursor="pointer"
+              />
+              <Text.TitleMenu300> 💛 오직 포켓에서만! </Text.TitleMenu300>
+              <Cart width={21} style={{ visibility: "hidden" }} />
+            </>
+          )}
         </Block.FlexBox>
       </Block.AbsoluteBox>
     </>
