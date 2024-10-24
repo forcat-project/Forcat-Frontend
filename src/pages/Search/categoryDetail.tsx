@@ -161,9 +161,9 @@ export default function CategoryDetail() {
       </Container>
     </>
   );
-
 }
 
+// Styled components
 const Container = styled.div`
   flex: 1;
   margin-top: 103px;
@@ -187,9 +187,11 @@ const ProductCard = styled.div`
   cursor: pointer;
   padding: 10px;
   border-radius: 10px;
-  transition: box-shadow 0.3s;
+  overflow: hidden; /* 이미지 확대 시 카드 밖으로 넘치지 않도록 설정 */
+  transition: box-shadow 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
+    transform: scale(1.05); /* hover 시 카드 확대 */
   }
 `;
 
@@ -197,12 +199,17 @@ const ProductImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  overflow: hidden; /* 이미지가 확대될 때 잘림 방지 */
 `;
 
 const ProductImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 10px;
+  transition: transform 0.3s; /* 부드러운 전환 효과 추가 */
+  ${ProductCard}:hover & {
+    transform: scale(1.1); /* hover 시 이미지 확대 */
+  }
 `;
 
 const ProductDetails = styled.div`

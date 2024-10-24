@@ -11,6 +11,7 @@ export default function Market() {
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
   const navigate = useNavigate();
+
   // 스크롤 이벤트 처리 함수
   const handleScroll = useCallback(() => {
     if (isFetching || !hasMore) return;
@@ -20,10 +21,12 @@ export default function Market() {
       setIsFetching(true);
     }
   }, [isFetching, hasMore]);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
   // API 요청 함수
   const fetchProducts = (cursor: string | null = null) => {
     if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
@@ -60,22 +63,26 @@ export default function Market() {
         console.error("통신 실패:", error.message);
       });
   };
+
   // 컴포넌트가 마운트되었을 때 처음 API 호출
   useEffect(() => {
     if (!isFetching && products.length === 0) {
       fetchProducts(); // 처음 로딩 시 API 호출
     }
   }, []); // 빈 배열로 설정하여 컴포넌트가 처음 마운트될 때만 실행
+
   // cursor 값이 변경될 때마다 추가 데이터 요청
   useEffect(() => {
     if (cursor && !isFetching) {
       fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
     }
   }, [cursor]);
+
   // 데이터가 로드 중이거나 없을 때
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
   return (
     <MarketContainer>
       <ProductGrid>
@@ -122,6 +129,7 @@ export default function Market() {
     </MarketContainer>
   );
 }
+
 // Styled components
 const MarketContainer = styled.div`
   flex: 1;
@@ -135,62 +143,81 @@ const MarketContainer = styled.div`
     display: none;
   }
 `;
+
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 `;
+
 const ProductCard = styled.div`
   cursor: pointer;
   padding: 10px;
   border-radius: 10px;
-  transition: box-shadow 0.3s;
+  overflow: hidden; /* 이미지 확대 시 카드 밖으로 넘치지 않도록 설정 */
+  transition: box-shadow 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
+    transform: scale(1.05); /* hover 시 카드 확대 */
   }
 `;
+
 const ProductImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  overflow: hidden; /* 이미지가 확대될 때 잘림 방지 */
 `;
+
 const ProductImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 10px;
+  transition: transform 0.3s; /* 부드러운 전환 효과 추가 */
+  ${ProductCard}:hover & {
+    transform: scale(1.1); /* hover 시 이미지 확대 */
+  }
 `;
+
 const ProductDetails = styled.div`
   text-align: left;
   margin-top: 10px;
 `;
+
 const ProductCompany = styled.div`
   color: #999;
   font-size: 12px;
   margin-top: 5px;
   font-weight: bold;
 `;
+
 const ProductName = styled.div`
   margin: 10px 0;
   font-size: 12px;
 `;
+
 const ProductPrice = styled.div`
   font-size: 14px;
   color: #333;
 `;
+
 const OriginalPrice = styled.span`
   text-decoration: line-through;
   color: #999;
   margin-right: 10px;
 `;
+
 const DiscountRate = styled.span`
   color: #fa7586;
   margin-right: 10px;
   font-weight: bold;
 `;
+
 const DiscountedPrice = styled.span`
   color: #333;
   font-weight: bold;
 `;
+
 const SoldoutBox = styled.div<{ width?: string; height?: string }>`
   display: flex;
   justify-content: center;

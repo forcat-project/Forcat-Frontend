@@ -76,23 +76,24 @@ export default function Home() {
         {/* 각 카테고리 상품 리스트 */}
         <Block.FlexBox direction="column" gap="40px">
           <CategoryBlock
-            categoryId={68}
-            categoryName="MD가 자신 있게 추천하는 특별한 상품"
-            morePagePath="/home/mdrecommend"
-          />
-          <CategoryBlock
             categoryId={1}
-            categoryName="지금 놓치면 안 될 최대 할인 상품"
+            categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
             morePagePath="/home/discount"
           />
           <CategoryBlock
             categoryId={2}
-            categoryName="가장 많이 팔리는 베스트셀러 상품" // 베스트셀러 상품
+            categoryName="🔥 가장 많이 팔리는 베스트셀러 상품" // 베스트셀러 상품
             morePagePath="/home/bestseller"
           />
           <CategoryBlock
+            categoryId={68}
+            categoryName="✨ MD가 자신 있게 추천하는 특별한 상품"
+            morePagePath="/home/mdrecommend"
+          />
+
+          <CategoryBlock
             categoryId={67}
-            categoryName="오직 포켓에서만!"
+            categoryName="💛 오직 포켓에서만!"
             morePagePath="/home/onlypocket"
           />
         </Block.FlexBox>

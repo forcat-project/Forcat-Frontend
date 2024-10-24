@@ -29,7 +29,7 @@ export default function CategoryBlock({
     };
 
     // 카테고리 이름이 "가장 많이 팔리는 베스트셀러 상품"일 때 ordering 파라미터 추가
-    if (categoryName === "가장 많이 팔리는 베스트셀러 상품") {
+    if (categoryName === "🔥 가장 많이 팔리는 베스트셀러 상품") {
       params.ordering = "-purchase_count"; // -purchase_count로 정렬
     }
 
@@ -49,7 +49,7 @@ export default function CategoryBlock({
   }
 
   return (
-    <Block.FlexBox direction="column" width="100%">
+    <Block.FlexBox direction="column" width="100%" padding="0 15px">
       <Block.FlexBox justifyContent="space-between" alignItems="center">
         <Text.TitleMenu200>{categoryName}</Text.TitleMenu200>
         <MoreButton onClick={() => navigate(morePagePath)}>더보기</MoreButton>
@@ -100,8 +100,8 @@ const ProductImage = styled.img`
 const MoreButton = styled.button`
   background-color: transparent;
   border: none;
-  color: blue;
+  color: #939292;
   cursor: pointer;
   font-size: 14px;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 `;

@@ -118,7 +118,7 @@ export default function Header({ pageType, title }: HeaderProps) {
                   onClick={handleBackButtonClick}
                   cursor="pointer"
                 />
-                <Text.TitleMenu300> 상품 상세 </Text.TitleMenu300>
+                <Text.TitleMenu300> 추천 상품 </Text.TitleMenu300>
                 <Cart width={21} style={{ visibility: "hidden" }} />
               </>
             )}
