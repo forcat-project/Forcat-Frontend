@@ -7,6 +7,7 @@ export default function Login() {
         console.log(KAKAO_LOGIN_URL);
         window.location.href = `${KAKAO_LOGIN_URL}`;
     };
+
     return (
         <>
             <Block.FlexBox direction="column" alignItems="center" justifyContent="center" gap="34px">
