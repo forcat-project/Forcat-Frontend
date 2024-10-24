@@ -11,6 +11,7 @@ import Bestseller from "./pages/Home/category/bestseller";
 import MdRecommend from "./pages/Home/category/mdRecommend";
 import Discount from "./pages/Home/category/discount";
 import OnlyPocket from "./pages/Home/category/onlyPocket";
+import OnlySearch from "./pages/Search/onlySearch";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "search",
         element: <Search />,
+      },
+      {
+        path: "search/onlysearch", // 새로운 경로 추가
+        element: <OnlySearch />,
       },
       {
         path: "search/:category_id",
