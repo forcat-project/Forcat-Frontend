@@ -1,178 +1,268 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-
-// 상품 정보 인터페이스 정의
-interface Product {
-    product_id: number;
-    name: string;
-    price: number;
-    thumbnail_url: string;
-    discounted_price: number;
-    discount_rate: string;
-}
-
-// 카테고리 디테일 인터페이스 정의
-interface CategoryDetail {
-    category_id: number;
-    name: string;
-}
+import { useParams, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
+import Header from "../../components/Header"; // Header 컴포넌트 import
+import { IProducts } from "../../interfaces/product";
 
 export default function CategoryDetail() {
-    const { category_id } = useParams<{ category_id: string }>(); // URL에서 category_id 추출
-    const [products, setProducts] = useState<Product[]>([]);
-    const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor
-    const [error, setError] = useState<AxiosError | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
+  const { category_id } = useParams<{ category_id: string }>();
+  const location = useLocation();
+  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수 추가
 
-    // API 호출 함수
-    const fetchProducts = (cursor: string | null = null) => {
-        setIsLoading(true);
-        axios
-            .get("http://125.189.109.17/api/products", {
-                params: {
-                    name: null, // 상품 이름은 null로 설정
-                    cursor: cursor, // 초기에는 null
-                    categories: category_id, // 카테고리 ID를 params에 추가
-                },
-            })
-            .then(response => {
-                const { results, next } = response.data;
+  // location.state에서 categoryName을 가져오고, 만약 없으면 빈 문자열로 설정
+  const initialCategoryName =
+    (location.state as { categoryName: string })?.categoryName || "";
 
-                // 기존 상품 목록에 새로운 상품 추가
-                setProducts(prevProducts => [...prevProducts, ...results]);
+  const [categoryName, setCategoryName] = useState<string>(initialCategoryName);
+  const [products, setProducts] = useState<IProducts[]>([]);
+  const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
+  const [error, setError] = useState<AxiosError | null>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
+  const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
 
-                // 다음 cursor 값을 설정 (없으면 null)
-                setCursor(next ? next : null);
-                setHasMore(!!next); // 더 이상 데이터가 없으면 false로 설정
-                setIsLoading(false);
-            })
-            .catch((error: AxiosError) => {
-                setError(error);
-                setIsLoading(false);
-            });
-    };
-
-    useEffect(() => {
-        if (category_id) {
-            fetchProducts(); // category_id가 변경될 때마다 API 호출
-        }
-    }, [category_id]);
-
-    // 상품 목록을 더 불러오는 함수 (무한 스크롤)
-    const loadMoreProducts = () => {
-        if (hasMore && !isLoading) {
-            fetchProducts(cursor); // 저장된 cursor를 사용하여 다음 상품 불러오기
-        }
-    };
-
-    if (isLoading && products.length === 0) {
-        return <div>Loading...</div>;
+  // 스크롤 이벤트 처리 함수
+  const handleScroll = useCallback(() => {
+    if (isFetching || !hasMore) return;
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      // 페이지 하단에 도달하면 추가 데이터를 요청
+      setIsFetching(true);
     }
+  }, [isFetching, hasMore]);
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
+  // 스크롤 이벤트 리스너 추가 및 제거
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // 카테고리 이름을 불러오는 API 호출
+  const fetchCategoryName = () => {
+    axios
+      .get(`http://125.189.109.17/api/categories/${category_id}`)
+      .then((response) => {
+        setCategoryName(response.data.name); // 받아온 이름을 상태로 설정
+      })
+      .catch((error: AxiosError) => {
+        setError(error);
+      });
+  };
+
+  // 제품 목록 불러오는 API 호출
+  const fetchProducts = (cursor: string | null = null) => {
+    if (isFetching || !hasMore) return;
+
+    setIsFetching(true); // 데이터 요청 상태 설정
+    axios
+      .get("http://125.189.109.17/api/products", {
+        params: {
+          categories: category_id,
+          cursor: cursor ? decodeURIComponent(cursor) : null,
+        },
+      })
+      .then((response) => {
+        const { results, next } = response.data;
+        setProducts((prevProducts) => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가
+        const nextCursor = next
+          ? new URL(next).search
+              .slice(1)
+              .split("&")
+              .find((param) => param.startsWith("cursor="))
+          : null;
+        const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
+        setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
+        setHasMore(Boolean(next)); // 더 이상 데이터가 없으면 false로 설정
+        setIsFetching(false); // 데이터 요청 완료
+      })
+      .catch((error: AxiosError) => {
+        setError(error);
+        setIsFetching(false);
+      });
+  };
+
+  useEffect(() => {
+    if (category_id) {
+      if (!categoryName) {
+        fetchCategoryName(); // 카테고리 이름 불러오기
+      }
+      fetchProducts(); // 첫 제품 목록 호출
     }
+  }, [category_id, categoryName]);
 
-    return (
-        <Container>
-            {products.length > 0 ? (
-                <ProductList>
-                    {products.map(product => (
-                        <ProductItem key={product.product_id}>
-                            <ProductImage src={product.thumbnail_url} alt={product.name} />
-                            <ProductName>{product.name}</ProductName>
-                            <ProductPrice>
-                                {product.discount_rate !== "0.00" ? (
-                                    <>
-                                        <OriginalPrice>{Math.round(product.price)}원</OriginalPrice>
-                                        <DiscountRate>{Math.round(Number(product.discount_rate))}%</DiscountRate>
-                                        <DiscountedPrice>{Math.round(product.discounted_price)}원</DiscountedPrice>
-                                    </>
-                                ) : (
-                                    <>
-                                        <DiscountedPrice>{Math.round(product.price)}원</DiscountedPrice>
-                                    </>
-                                )}
-                            </ProductPrice>
-                        </ProductItem>
-                    ))}
-                </ProductList>
-            ) : (
-                <NoProductsMessage>해당 카테고리에 등록된 상품이 없습니다.</NoProductsMessage>
-            )}
-            {hasMore && !isLoading && <LoadMoreButton onClick={loadMoreProducts}>더보기</LoadMoreButton>}
-        </Container>
-    );
+  // cursor 값이 변경될 때마다 추가 데이터 요청
+  useEffect(() => {
+    if (cursor && !isFetching) {
+      fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
+    }
+  }, [cursor]);
+
+  // 데이터가 로드 중이거나 없을 때
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <>
+      <Header pageType="categoryDetail" title={categoryName} />
+      <Container>
+        {products.length > 0 ? (
+          <ProductGrid>
+            {products.map((product) => (
+              <ProductCard
+                key={product.product_id}
+                onClick={() => navigate(`/market/${product.product_id}`)} // 클릭 시 상품 상세 페이지로 이동
+              >
+                <ProductImageContainer>
+                  <ProductImage
+                    src={product.thumbnail_url}
+                    alt={product.name}
+                  />
+                  {product.remain_count === 0 && (
+                    <SoldoutBox width="100%" height="100%">
+                      SOLD OUT
+                    </SoldoutBox>
+                  )}
+                </ProductImageContainer>
+                <ProductDetails>
+                  <ProductCompany>{product.company}</ProductCompany>
+                  <ProductName>{product.name}</ProductName>
+                  <ProductPrice>
+                    {product.discount_rate !== "0.00" ? (
+                      <>
+                        <OriginalPrice>
+                          {Math.round(product.price)}원
+                        </OriginalPrice>
+                        <br />
+                        <DiscountRate>
+                          {Math.round(Number(product.discount_rate))}%
+                        </DiscountRate>
+                        <DiscountedPrice>
+                          {Math.round(product.discounted_price)}원
+                        </DiscountedPrice>
+                      </>
+                    ) : (
+                      <DiscountedPrice>
+                        {Math.round(product.price)}원
+                      </DiscountedPrice>
+                    )}
+                  </ProductPrice>
+                </ProductDetails>
+              </ProductCard>
+            ))}
+          </ProductGrid>
+        ) : (
+          <NoProductsMessage>
+            해당 카테고리에 등록된 상품이 없습니다.
+          </NoProductsMessage>
+        )}
+        {isFetching && <div>Loading more products...</div>}
+        {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
+      </Container>
+    </>
+  );
+
 }
 
-// Styled components
 const Container = styled.div`
-    padding: 20px;
+  flex: 1;
+  margin-top: 103px;
+  margin-bottom: 93px;
+  overflow-y: scroll;
+  padding: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const ProductList = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+const ProductGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 `;
 
-const ProductItem = styled.div`
-    text-align: center;
+const ProductCard = styled.div`
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: box-shadow 0.3s;
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const ProductImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
 `;
 
 const ProductImage = styled.img`
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+`;
+
+const ProductDetails = styled.div`
+  text-align: left;
+  margin-top: 10px;
+`;
+
+const ProductCompany = styled.div`
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: bold;
 `;
 
 const ProductName = styled.div`
-    margin-top: 10px;
-    font-size: 14px;
+  margin: 10px 0;
+  font-size: 12px;
 `;
 
 const ProductPrice = styled.div`
-    font-size: 14px;
-    color: #333;
-    margin-top: 5px;
+  font-size: 14px;
+  color: #333;
 `;
 
 const OriginalPrice = styled.span`
-    text-decoration: line-through;
-    color: #999;
-    margin-right: 5px;
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 10px;
 `;
 
 const DiscountRate = styled.span`
-    color: red;
-    margin-right: 5px;
+  color: #fa7586;
+  margin-right: 10px;
+  font-weight: bold;
 `;
 
 const DiscountedPrice = styled.span`
-    color: #333;
-    font-weight: bold;
+  color: #333;
+  font-weight: bold;
+`;
+
+const SoldoutBox = styled.div<{ width?: string; height?: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "100%"};
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 `;
 
 const NoProductsMessage = styled.div`
-    color: #999;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 20px;
-`;
-
-const LoadMoreButton = styled.button`
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    &:hover {
-        background-color: #555;
-    }
+  color: #999;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
 `;
