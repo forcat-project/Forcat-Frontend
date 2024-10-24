@@ -110,9 +110,7 @@ export default function Header({ pageType, title }: HeaderProps) {
                 onClick={handleBackButtonClick}
                 cursor="pointer"
               />
-              <Text.TitleMenu300>
-                🔥 가장 많이 팔리는 베스트셀러 상품
-              </Text.TitleMenu300>
+              <Text.TitleMenu300>베스트셀러</Text.TitleMenu300>
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
@@ -124,9 +122,7 @@ export default function Header({ pageType, title }: HeaderProps) {
                 onClick={handleBackButtonClick}
                 cursor="pointer"
               />
-              <Text.TitleMenu300>
-                ⏰ 지금 놓치면 안 될 최대 할인 상품
-              </Text.TitleMenu300>
+              <Text.TitleMenu300>최대 할인 상품</Text.TitleMenu300>
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
@@ -137,9 +133,7 @@ export default function Header({ pageType, title }: HeaderProps) {
                 onClick={handleBackButtonClick}
                 cursor="pointer"
               />
-              <Text.TitleMenu300>
-                ✨ MD가 자신 있게 추천하는 특별한 상품
-              </Text.TitleMenu300>
+              <Text.TitleMenu300>MD 추천 상품</Text.TitleMenu300>
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
@@ -151,7 +145,7 @@ export default function Header({ pageType, title }: HeaderProps) {
                 onClick={handleBackButtonClick}
                 cursor="pointer"
               />
-              <Text.TitleMenu300> 💛 오직 포켓에서만! </Text.TitleMenu300>
+              <Text.TitleMenu300> 오직 포켓에서만 </Text.TitleMenu300>
               <Cart width={21} style={{ visibility: "hidden" }} />
             </>
           )}
