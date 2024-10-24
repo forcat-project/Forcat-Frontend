@@ -79,7 +79,7 @@ export default function Header({ pageType, title }: HeaderProps) {
 
             {pageType === "profile" && (
               <>
-                <Text.TitleMenu300> 프로필 </Text.TitleMenu300>
+                <Text.TitleMenu300> 마이페이지 </Text.TitleMenu300>
                 <Profile
                   width={31}
                   onClick={handleProfileClick}
