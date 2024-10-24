@@ -9,12 +9,17 @@ export default function Login() {
     };
     return (
         <>
-            <Block.FlexBox direction="column" alignItems="center" justifyContent="center">
+            <Block.FlexBox direction="column" alignItems="center" justifyContent="center" gap="34px">
                 <Text.TitleMenu100>반려인 필수!</Text.TitleMenu100>
                 <Text.TitleMenu300>고양이 커머스 1등 앱</Text.TitleMenu300>
                 <LoginLogo width={108} height={59} />
-                <Text.TitleMenu100 color="Gray">간편 로그인</Text.TitleMenu100>
-                <Block.FlexBox justifyContent="center" gap="20px">
+
+                <Block.FlexBox width="100%" height="450px" bgColor="black">
+                    이미지
+                </Block.FlexBox>
+
+                <Text.Notice100 color="Gray">SNS 계정으로 빠르게 시작해보세요!</Text.Notice100>
+                <Block.FlexBox justifyContent="center" gap="45px">
                     <BtnKakao onClick={handleKakaoLoginClick} width={46} cursor="pointer" />
                     <BtnGoogle width={46} />
                     <BtnNaver width={46} />
