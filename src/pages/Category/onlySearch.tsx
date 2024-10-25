@@ -121,7 +121,7 @@ export default function OnlySearch() {
                         placeholder="검색어를 입력해주세요"
                         value={searchTerm} // 입력된 값
                         onChange={handleInputChange} // 입력값 업데이트
-                        onKeyPress={handleKeyPress} // Enter 키 이벤트 처리
+                        onKeyDown={handleKeyPress} // Enter 키 이벤트 처리
                     />
                     <SearchIcon
                         width={24}
