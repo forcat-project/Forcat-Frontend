@@ -7,21 +7,20 @@ import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import CategoryDetail from "./pages/Search/categoryDetail";
 import MarketDetail from "./pages/Market/marketDetail";
-import Bestseller from "./pages/Home/category/bestseller";
 import MdRecommend from "./pages/Home/category/mdRecommend";
 import Discount from "./pages/Home/category/discount";
-import OnlyPocket from "./pages/Home/category/onlyPocket";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
 import OnlySearch from "./pages/Search/onlySearch";
+import OnlyForCat from "./pages/Home/category/onlyForCat";
+import BestSeller from "./pages/Home/category/bestseller";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-         {
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            {
                 path: "login",
                 element: <Login />,
             },
@@ -29,54 +28,54 @@ export const router = createBrowserRouter([
                 path: "signup",
                 element: <Signup />,
             },
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "home/mdrecommend",
-        element: <MdRecommend />,
-      },
-      {
-        path: "home/bestseller",
-        element: <Bestseller />,
-      },
-      {
-        path: "home/discount",
-        element: <Discount />,
-      },
-      {
-        path: "home/onlypocket",
-        element: <OnlyPocket />,
-      },
-      {
-        path: "market",
-        element: <Market />,
-      },
-      {
-        path: "search",
-        element: <Search />,
-      },
-      {
-        path: "search/onlysearch", // 새로운 경로 추가
-        element: <OnlySearch />,
-      },
-      {
-        path: "search/:category_id",
-        element: <CategoryDetail />,
-      },
-      {
-        path: "market/:productId",
-        element: <MarketDetail />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-    ],
-  },
+            {
+                path: "home",
+                element: <Home />,
+            },
+            {
+                path: "home/mdrecommend",
+                element: <MdRecommend />,
+            },
+            {
+                path: "home/bestseller",
+                element: <BestSeller />,
+            },
+            {
+                path: "home/discount",
+                element: <Discount />,
+            },
+            {
+                path: "home/onlyforcat",
+                element: <OnlyForCat />,
+            },
+            {
+                path: "market",
+                element: <Market />,
+            },
+            {
+                path: "search",
+                element: <Search />,
+            },
+            {
+                path: "search/onlysearch", // 새로운 경로 추가
+                element: <OnlySearch />,
+            },
+            {
+                path: "search/:category_id",
+                element: <CategoryDetail />,
+            },
+            {
+                path: "market/:productId",
+                element: <MarketDetail />,
+            },
+            {
+                path: "cart",
+                element: <Cart />,
+            },
+            {
+                path: "profile",
+                element: <Profile />,
+            },
+        ],
+    },
 ]);

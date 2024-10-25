@@ -93,7 +93,7 @@ export default function Home() {
                         morePagePath="/home/mdrecommend"
                     />
 
-                    <CategoryBox categoryId={67} categoryName="💛 오직 포켓에서만!" morePagePath="/home/onlypocket" />
+                    <CategoryBox categoryId={67} categoryName="💛 오직 포캣에서만!" morePagePath="/home/onlyforcat" />
                 </Block.FlexBox>
 
                 {/* 푸터 컴포넌트 */}

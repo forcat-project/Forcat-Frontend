@@ -10,16 +10,18 @@ import {
     CartDisabled,
     Profile,
     ProfileDisabled,
-} from "../../assets/svg";
-import { Block, Text } from "../../style/ui";
+} from "../assets/svg";
+import { Block, Text } from "../style/ui";
 
-export default function Navigator() {
+type Props = {
+    isLoginPage: boolean;
+    isSignupPage: boolean;
+    isMarketDetailPage: boolean;
+};
+
+export default function Navigator({ isLoginPage, isSignupPage, isMarketDetailPage }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const isMarketPage = /^\/market\/\d+$/.test(location.pathname);
-    const isLoginPage = location.pathname.startsWith("/login");
-    const isSignupPage = location.pathname.startsWith("/signup");
 
     const navItems = [
         {
@@ -51,7 +53,7 @@ export default function Navigator() {
 
     return (
         <>
-            {!isLoginPage && !isSignupPage && !isMarketPage && (
+            {!isLoginPage && !isSignupPage && !isMarketDetailPage && (
                 <Block.AbsoluteBox
                     width="599px"
                     height="93px"
