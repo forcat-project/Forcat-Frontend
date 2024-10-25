@@ -5,26 +5,30 @@ import styled from "styled-components";
 import { Block, Text } from "../../style/ui";
 import { IProducts } from "../../interfaces/product";
 
-interface CategoryBlockProps {
+type CategoryBlockProps = {
     categoryId: number | null;
     categoryName: string;
     morePagePath: string;
-    ordering?: string; // ordering 옵션을 추가
-}
+    ordering?: string;
+};
+
+type ProductParams = {
+    categories: number | null;
+    limit: number;
+    ordering?: string;
+};
 
 export default function CategoryBox({ categoryId, categoryName, morePagePath, ordering }: CategoryBlockProps) {
     const [products, setProducts] = useState<IProducts[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
     const navigate = useNavigate();
 
-    // 카테고리 상품 상위 3개 불러오기
     useEffect(() => {
-        const params: any = {
+        const params: ProductParams = {
             categories: categoryId,
-            limit: 3, // 상위 3개만 가져오기
+            limit: 3,
         };
 
-        // 베스트셀러 상품일 때 ordering 옵션 추가
         if (ordering) {
             params.ordering = ordering;
         }
@@ -32,14 +36,13 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
         axios
             .get("http://125.189.109.17/api/products", { params })
             .then(response => {
-                setProducts(response.data.results.slice(0, 3)); // 상위 3개만 표시
+                setProducts(response.data.results.slice(0, 3));
             })
             .catch((error: AxiosError) => {
-                setError(error); // 오류가 발생하면 상태에 오류를 설정
+                setError(error);
             });
     }, [categoryId, ordering]);
 
-    // 오류가 발생하면 오류 메시지를 표시
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -52,10 +55,7 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
             </Block.FlexBox>
             <ProductGrid>
                 {products.map(product => (
-                    <ProductCard
-                        key={product.product_id}
-                        onClick={() => navigate(`/market/${product.product_id}`)} // 상품 클릭 시 상세 페이지로 이동
-                    >
+                    <ProductCard key={product.product_id} onClick={() => navigate(`/market/${product.product_id}`)}>
                         <ProductImageContainer>
                             <ProductImage src={product.thumbnail_url} alt={product.name} />
                             {product.remain_count === 0 && (
@@ -104,8 +104,8 @@ const ProductCard = styled.div`
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     &:hover {
-        transform: scale(1.05); /* hover 시 약간 확대 */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* hover 시 그림자 */
+        transform: scale(1.05); /* hover 시 확대 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 `;
 
