@@ -12,7 +12,7 @@ interface CategoryBlockProps {
     ordering?: string; // ordering 옵션을 추가
 }
 
-export default function CategoryBlock({ categoryId, categoryName, morePagePath, ordering }: CategoryBlockProps) {
+export default function CategoryBox({ categoryId, categoryName, morePagePath, ordering }: CategoryBlockProps) {
     const [products, setProducts] = useState<IProducts[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
     const navigate = useNavigate();

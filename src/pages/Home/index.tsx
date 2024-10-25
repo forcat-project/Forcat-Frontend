@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Block } from "../../style/ui";
-
-import CategoryBlock from "../../components/Home/categoryBlock";
 import { BannerEx } from "../../assets/svg";
 import Footer from "../../components/Home/Footer";
+import CategoryBox from "../../components/Home/CategoryBox";
 
 // window 객체를 확장하여 ChannelIO 속성 추가
 declare global {
@@ -76,25 +75,25 @@ export default function Home() {
 
                 {/* 각 카테고리 상품 리스트 */}
                 <Block.FlexBox direction="column" gap="40px">
-                    <CategoryBlock
+                    <CategoryBox
                         categoryId={null}
                         categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
                         morePagePath="/home/discount"
                         ordering="-discount_rate" // ordering 추가
                     />
-                    <CategoryBlock
+                    <CategoryBox
                         categoryId={null} // categoryId를 null로 설정
                         categoryName="🔥 가장 많이 팔리는 베스트셀러 상품" // 베스트셀러 상품
                         morePagePath="/home/bestseller"
                         ordering="-purchase_count" // ordering 추가
                     />
-                    <CategoryBlock
+                    <CategoryBox
                         categoryId={68}
                         categoryName="✨ MD가 자신 있게 추천하는 특별한 상품"
                         morePagePath="/home/mdrecommend"
                     />
 
-                    <CategoryBlock categoryId={67} categoryName="💛 오직 포켓에서만!" morePagePath="/home/onlypocket" />
+                    <CategoryBox categoryId={67} categoryName="💛 오직 포켓에서만!" morePagePath="/home/onlypocket" />
                 </Block.FlexBox>
 
                 {/* 푸터 컴포넌트 */}
