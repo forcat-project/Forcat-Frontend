@@ -13,11 +13,8 @@ export default function Profile() {
       margin="80px auto 100px" // 헤더와 내비게이션 바 간격을 위한 margin 추가
     >
       <UserInfo />
-      <Block.SoldoutBox width="100%" height="2px" bgColor="LightGray" />
       <Cats />
-      <Block.SoldoutBox width="100%" height="2px" bgColor="LightGray" />
       <Purchase />
-      <Block.SoldoutBox width="100%" height="2px" bgColor="LightGray" />
       <AccountManage /> {/* 계정 관리 섹션 추가 */}
     </Block.FlexBox>
   );
