@@ -17,3 +17,4 @@ export { default as ProfileDisabled } from "./ProfileDisabled";
 export { default as Search } from "./Search";
 export { default as SearchDisabled } from "./SearchDisabled";
 export { default as X } from "./X";
+export { default as UserProfile } from "./UserProfile";
