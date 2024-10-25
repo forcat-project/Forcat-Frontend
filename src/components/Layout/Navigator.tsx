@@ -1,15 +1,15 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-    Cart,
-    CartDisabled,
-    Home,
-    HomeDisabled,
     Market,
     MarketDisabled,
-    Profile,
-    ProfileDisabled,
     Search,
     SearchDisabled,
+    Home,
+    HomeDisabled,
+    Cart,
+    CartDisabled,
+    Profile,
+    ProfileDisabled,
 } from "../../assets/svg";
 import { Block, Text } from "../../style/ui";
 
