@@ -2,6 +2,7 @@ import { Block } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
 import Purchase from "../../components/Profile/purchase";
+import AccountManage from "../../components/Profile/accountManage";
 
 export default function Profile() {
   return (
@@ -16,6 +17,8 @@ export default function Profile() {
       <Cats />
       <Block.SoldoutBox width="100%" height="2px" bgColor="LightGray" />
       <Purchase />
+      <Block.SoldoutBox width="100%" height="2px" bgColor="LightGray" />
+      <AccountManage /> {/* 계정 관리 섹션 추가 */}
     </Block.FlexBox>
   );
 }

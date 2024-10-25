@@ -146,6 +146,8 @@ type StyleBlock = {
   zIndex?: string;
   pointer?: boolean;
   maxWidth?: string;
+  borderBottom?: string;
+  flexGrow?: string;
 };
 
 export const Block = {

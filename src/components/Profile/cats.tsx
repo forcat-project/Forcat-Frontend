@@ -6,9 +6,9 @@ export default function Cats() {
     <Block.FlexBox padding="20px" direction="column">
       <Block.FlexBox justifyContent="space-between" alignItems="center">
         <Text.TitleMenu200>우리집 냐옹이들</Text.TitleMenu200>
-        <Text.TitleMenu100 pointer color="Gray">
+        <Text.Notice200 color="Gray" pointer>
           추가
-        </Text.TitleMenu100>
+        </Text.Notice200>
       </Block.FlexBox>
 
       {/* 두번째 고양이 정보 */}
