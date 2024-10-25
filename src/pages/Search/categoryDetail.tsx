@@ -1,23 +1,19 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useParams, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
-import Header from "../../components/Layout/Header"; // Header 컴포넌트 import
+import { useParams, useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 
 export default function CategoryDetail() {
     const { category_id } = useParams<{ category_id: string }>();
-    const location = useLocation();
+
     const navigate = useNavigate();
 
-    // location.state에서 categoryName을 가져오고, 없으면 빈 문자열
-    const initialCategoryName = (location.state as { categoryName: string })?.categoryName || "";
-    const [categoryName, setCategoryName] = useState<string>(initialCategoryName);
     const [products, setProducts] = useState<IProducts[]>([]);
-    const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
+    const [cursor, setCursor] = useState<string | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
-    const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
-    const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
+    const [isFetching, setIsFetching] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     const handleScroll = useCallback(() => {
         if (isFetching || !hasMore) return;
@@ -32,19 +28,6 @@ export default function CategoryDetail() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
-    // 카테고리 이름을 불러오는 API 호출
-    const fetchCategoryName = () => {
-        axios
-            .get(`http://125.189.109.17/api/categories/${category_id}`)
-            .then(response => {
-                setCategoryName(response.data.name); // 받아온 이름을 상태로 설정
-            })
-            .catch((error: AxiosError) => {
-                setError(error);
-            });
-    };
-
-    // 제품 목록 불러오는 API 호출
     const fetchProducts = (cursor: string | null = null) => {
         if (isFetching || !hasMore) return;
         setIsFetching(true);
@@ -57,7 +40,7 @@ export default function CategoryDetail() {
             })
             .then(response => {
                 const { results, next } = response.data;
-                setProducts(prevProducts => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가
+                setProducts(prevProducts => [...prevProducts, ...results]);
                 const nextCursor = next
                     ? new URL(next).search
                           .slice(1)
@@ -65,7 +48,7 @@ export default function CategoryDetail() {
                           .find(param => param.startsWith("cursor="))
                     : null;
                 const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
-                setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
+                setCursor(originalCursor);
                 setHasMore(Boolean(next));
                 setIsFetching(false);
             })
@@ -75,17 +58,15 @@ export default function CategoryDetail() {
             });
     };
 
-    // 첫 호출 시 카테고리 이름과 제품 목록 불러오기
     useEffect(() => {
         if (category_id) {
-            fetchCategoryName();
             fetchProducts();
         }
     }, [category_id]);
 
     useEffect(() => {
         if (cursor && !isFetching) {
-            fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
+            fetchProducts(cursor);
         }
     }, [cursor]);
 
@@ -94,57 +75,51 @@ export default function CategoryDetail() {
     }
 
     return (
-        <>
-            <Header pageType="categoryDetail" title={categoryName || "Loading..."} />
-            <Container>
-                {products.length > 0 ? (
-                    <ProductGrid>
-                        {products.map(product => (
-                            <ProductCard
-                                key={product.product_id}
-                                onClick={() => navigate(`/market/${product.product_id}`)}
-                            >
-                                <ProductImageContainer>
-                                    <ProductImage src={product.thumbnail_url} alt={product.name} />
-                                    {product.remain_count === 0 && (
-                                        <SoldoutBox width="100%" height="100%">
-                                            SOLD OUT
-                                        </SoldoutBox>
-                                    )}
-                                </ProductImageContainer>
-                                <ProductDetails>
-                                    <ProductCompany>{product.company}</ProductCompany>
-                                    <ProductName>{product.name}</ProductName>
-                                    <ProductPrice>
-                                        {product.discount_rate !== "0.00" ? (
-                                            <>
-                                                <OriginalPrice>
-                                                    {Math.round(product.price).toLocaleString()}원{" "}
-                                                </OriginalPrice>
-                                                <br />
-                                                <DiscountRate>
-                                                    {Math.round(Number(product.discount_rate)).toLocaleString()}%
-                                                </DiscountRate>
-                                                <DiscountedPrice>
-                                                    {Math.round(product.discounted_price).toLocaleString()}원
-                                                </DiscountedPrice>
-                                            </>
-                                        ) : (
+        <Container>
+            {products.length > 0 ? (
+                <ProductGrid>
+                    {products.map(product => (
+                        <ProductCard key={product.product_id} onClick={() => navigate(`/market/${product.product_id}`)}>
+                            <ProductImageContainer>
+                                <ProductImage src={product.thumbnail_url} alt={product.name} />
+                                {product.remain_count === 0 && (
+                                    <SoldoutBox width="100%" height="100%">
+                                        SOLD OUT
+                                    </SoldoutBox>
+                                )}
+                            </ProductImageContainer>
+                            <ProductDetails>
+                                <ProductCompany>{product.company}</ProductCompany>
+                                <ProductName>{product.name}</ProductName>
+                                <ProductPrice>
+                                    {product.discount_rate !== "0.00" ? (
+                                        <>
+                                            <OriginalPrice>
+                                                {Math.round(product.price).toLocaleString()}원{" "}
+                                            </OriginalPrice>
+                                            <br />
+                                            <DiscountRate>
+                                                {Math.round(Number(product.discount_rate)).toLocaleString()}%
+                                            </DiscountRate>
                                             <DiscountedPrice>
-                                                {Math.round(product.price).toLocaleString()}원
+                                                {Math.round(product.discounted_price).toLocaleString()}원
                                             </DiscountedPrice>
-                                        )}
-                                    </ProductPrice>
-                                </ProductDetails>
-                            </ProductCard>
-                        ))}
-                    </ProductGrid>
-                ) : (
-                    <NoProductsMessage>해당 카테고리에 등록된 상품이 없습니다.</NoProductsMessage>
-                )}
-                {isFetching && <div>Loading more products...</div>}
-            </Container>
-        </>
+                                        </>
+                                    ) : (
+                                        <DiscountedPrice>
+                                            {Math.round(product.price).toLocaleString()}원
+                                        </DiscountedPrice>
+                                    )}
+                                </ProductPrice>
+                            </ProductDetails>
+                        </ProductCard>
+                    ))}
+                </ProductGrid>
+            ) : (
+                <NoProductsMessage>해당 카테고리에 등록된 상품이 없습니다.</NoProductsMessage>
+            )}
+            {isFetching && <div>Loading more products...</div>}
+        </Container>
     );
 }
 

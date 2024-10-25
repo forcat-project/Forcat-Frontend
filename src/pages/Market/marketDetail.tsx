@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../../components/Layout/Header";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
@@ -46,8 +45,6 @@ export default function MarketDetail() {
 
     return (
         <>
-            <Header pageType="marketDetail" />
-
             <Block.FlexBox margin="89px 0" direction="column" style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 {productDetail ? (
                     <Block.FlexBox direction="column" alignItems="center" padding="30px 21px" gap="20px">
