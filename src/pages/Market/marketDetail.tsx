@@ -5,7 +5,7 @@ import { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
-import axiosInstance from "../../api/axiosInstance";
+import axios from "axios";
 
 export default function MarketDetail() {
   const { productId } = useParams();
@@ -27,7 +27,7 @@ export default function MarketDetail() {
   };
 
   useEffect(() => {
-    axiosInstance
+    axios
       .get(`/products/${productId}`)
       .then((response) => {
         setProductDetail(response.data);
