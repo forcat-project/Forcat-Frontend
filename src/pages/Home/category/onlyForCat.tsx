@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 
-export default function BestSeller() {
+export default function OnlyForCat() {
     const [products, setProducts] = useState<IProducts[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
-    const [cursor, setCursor] = useState<string | null>(null); // cursor 상태 관리
-    const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 상태
-    const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터 여부 확인
+    const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
+    const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
+    const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
     const navigate = useNavigate();
 
     // 스크롤 이벤트 처리 함수
@@ -27,17 +27,16 @@ export default function BestSeller() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
-    // 제품 목록 불러오는 API 호출
+    // API 요청 함수
     const fetchProducts = (cursor: string | null = null) => {
-        if (isFetching || !hasMore) return;
+        if (isFetching || !hasMore) return; // 중복 요청 방지 및 더 이상 데이터가 없을 때 중단
 
         setIsFetching(true); // 데이터 요청 상태 설정
         axios
             .get("http://125.189.109.17/api/products", {
                 params: {
-                    categories: null, // categories는 null
-                    ordering: "-purchase_count", // 구매 횟수 기준으로 정렬
-                    cursor: cursor ? decodeURIComponent(cursor) : null, // cursor 값으로 페이지 처리
+                    categories: 67, // MD 추천 카테고리 ID
+                    cursor: cursor ? decodeURIComponent(cursor) : null, // cursor가 null이면 첫 페이지 호출
                 },
             })
             .then(response => {
@@ -60,9 +59,11 @@ export default function BestSeller() {
             });
     };
 
-    // 첫 로딩 시 제품 목록 호출
+    // 첫 API 요청
     useEffect(() => {
-        fetchProducts(); // 첫 데이터 호출
+        if (!isFetching && products.length === 0) {
+            fetchProducts(); // 첫 로딩 시 API 호출
+        }
     }, []);
 
     // cursor 값이 변경될 때마다 추가 데이터 요청
@@ -115,7 +116,7 @@ export default function BestSeller() {
                     </ProductCard>
                 ))}
             </ProductGrid>
-            {isFetching && <LoadingMessage>Loading more products...</LoadingMessage>}
+            {isFetching && <div>Loading more products...</div>}
         </MarketContainer>
     );
 }
@@ -156,7 +157,7 @@ const ProductImageContainer = styled.div`
     position: relative;
     width: 100%;
     height: auto;
-    overflow: hidden; /* 이미지 확대 시 잘림 방지 */
+    overflow: hidden; /* 이미지가 확대될 때 잘림 방지 */
 `;
 
 const ProductImage = styled.img`
@@ -222,18 +223,4 @@ const SoldoutBox = styled.div<{ width?: string; height?: string }>`
     top: 0;
     left: 0;
     z-index: 2;
-`;
-
-const LoadingMessage = styled.div`
-    text-align: center;
-    color: #999;
-    font-size: 16px;
-    margin-top: 20px;
-`;
-
-const EndOfListMessage = styled.div`
-    text-align: center;
-    color: #999;
-    font-size: 16px;
-    margin-top: 20px;
 `;

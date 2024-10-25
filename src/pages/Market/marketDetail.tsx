@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../../components/Header";
 import { useEffect, useState } from "react";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
-import axios from "axios";
+
+import { BASE_URL } from "../../api/constants";
 
 export default function MarketDetail() {
   const { productId } = useParams();
@@ -28,7 +28,7 @@ export default function MarketDetail() {
 
   useEffect(() => {
     axios
-      .get(`/products/${productId}`)
+      .get(`${BASE_URL}/products/${productId}`)
       .then((response) => {
         setProductDetail(response.data);
         console.log("받은 데이터:", response.data);
@@ -45,8 +45,6 @@ export default function MarketDetail() {
 
   return (
     <>
-      <Header pageType="marketDetail" />
-
       <Block.FlexBox
         margin="89px 0"
         direction="column"
