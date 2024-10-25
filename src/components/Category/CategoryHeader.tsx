@@ -12,7 +12,7 @@ type Props = {
 export default function CategoryHeader({ searchTerm, handleInputChange, handleKeyPress, handleSearchBarClick }: Props) {
     return (
         <>
-            <Block.FlexBox
+            <Block.AbsoluteBox
                 width="100%"
                 padding="8px 16px"
                 border="1px solid #e0e0e0"
@@ -28,7 +28,7 @@ export default function CategoryHeader({ searchTerm, handleInputChange, handleKe
                     readOnly
                 />
                 <Search width={24} style={{ marginLeft: "10px", cursor: "pointer" }} onClick={handleSearchBarClick} />
-            </Block.FlexBox>
+            </Block.AbsoluteBox>
         </>
     );
 }
