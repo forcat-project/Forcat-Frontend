@@ -1,10 +1,14 @@
 import { HeaderLogo, Profile } from "../../assets/svg";
 
-export default function HomeHeader() {
+type Props = {
+    handleProfileClick: () => void;
+};
+
+export default function HomeHeader({ handleProfileClick }: Props) {
     return (
         <>
             <HeaderLogo width={52} />
-            <Profile width={31} />
+            <Profile width={31} cursor="pointer" onClick={handleProfileClick} />
         </>
     );
 }
