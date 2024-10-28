@@ -1,8 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  MarketContainer,
+  ProductGrid,
+  ProductCard,
+  ProductImageContainer,
+  ProductImage,
+  ProductDetails,
+  ProductCompany,
+  ProductName,
+  ProductPrice,
+  OriginalPrice,
+  DiscountRate,
+  DiscountedPrice,
+  SoldoutBox,
+} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -131,107 +146,3 @@ export default function Market() {
     </MarketContainer>
   );
 }
-
-// Styled components
-const MarketContainer = styled.div`
-  flex: 1;
-  margin-top: 103px;
-  margin-bottom: 93px;
-  overflow-y: scroll;
-  padding: 20px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const ProductGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-`;
-
-const ProductCard = styled.div`
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 10px;
-  overflow: hidden; /* 이미지 확대 시 카드 밖으로 넘치지 않도록 설정 */
-  transition: box-shadow 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
-  &:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
-    transform: scale(1.05); /* hover 시 카드 확대 */
-  }
-`;
-
-const ProductImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  overflow: hidden; /* 이미지가 확대될 때 잘림 방지 */
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  transition: transform 0.3s; /* 부드러운 전환 효과 추가 */
-  ${ProductCard}:hover & {
-    transform: scale(1.1); /* hover 시 이미지 확대 */
-  }
-`;
-
-const ProductDetails = styled.div`
-  text-align: left;
-  margin-top: 10px;
-`;
-
-const ProductCompany = styled.div`
-  color: #999;
-  font-size: 12px;
-  margin-top: 5px;
-  font-weight: bold;
-`;
-
-const ProductName = styled.div`
-  margin: 10px 0;
-  font-size: 12px;
-`;
-
-const ProductPrice = styled.div`
-  font-size: 14px;
-  color: #333;
-`;
-
-const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  color: #999;
-  margin-right: 10px;
-`;
-
-const DiscountRate = styled.span`
-  color: #fa7586;
-  margin-right: 10px;
-  font-weight: bold;
-`;
-
-const DiscountedPrice = styled.span`
-  color: #333;
-  font-weight: bold;
-`;
-
-const SoldoutBox = styled.div<{ width?: string; height?: string }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height || "100%"};
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-`;

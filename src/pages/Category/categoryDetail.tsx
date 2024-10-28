@@ -5,6 +5,22 @@ import styled from "styled-components";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import WithBackAndIconHeader from "../../components/Header/WithBackAndIconHeader";
+import {
+  MarketContainer,
+  ProductGrid,
+  ProductCard,
+  ProductImageContainer,
+  ProductImage,
+  ProductDetails,
+  ProductCompany,
+  ProductName,
+  ProductPrice,
+  OriginalPrice,
+  DiscountRate,
+  DiscountedPrice,
+  SoldoutBox,
+  LoadingMessage,
+} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
 
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();
@@ -90,7 +106,7 @@ export default function CategoryDetail() {
           handleBackButtonClick={handleBackButtonClick}
         />
       </HeaderContainer>
-      <ContentContainer>
+      <MarketContainer>
         <ProductGrid>
           {products.length > 0 ? (
             products.map((product) => (
@@ -119,17 +135,15 @@ export default function CategoryDetail() {
                           {Math.round(product.price).toLocaleString()}원
                         </OriginalPrice>
                         <br />
-                        <PriceWrapper>
-                          <DiscountRate>
-                            {Math.round(Number(product.discount_rate))}%
-                          </DiscountRate>
-                          <DiscountedPrice>
-                            {Math.round(
-                              product.discounted_price
-                            ).toLocaleString()}
-                            원
-                          </DiscountedPrice>
-                        </PriceWrapper>
+                        <DiscountRate>
+                          {Math.round(Number(product.discount_rate))}%
+                        </DiscountRate>
+                        <DiscountedPrice>
+                          {Math.round(
+                            product.discounted_price
+                          ).toLocaleString()}
+                          원
+                        </DiscountedPrice>
                       </>
                     ) : (
                       <DiscountedPrice>
@@ -141,23 +155,20 @@ export default function CategoryDetail() {
               </ProductCard>
             ))
           ) : (
-            <NoProductsMessage>
+            <LoadingMessage>
               해당 카테고리에 등록된 상품이 없습니다.
-            </NoProductsMessage>
+            </LoadingMessage>
           )}
         </ProductGrid>
         {isFetching && (
           <LoadingMessage>Loading more products...</LoadingMessage>
         )}
-        {!hasMore && (
-          <LoadingMessage>모든 상품이 로드되었습니다.</LoadingMessage>
-        )}
-      </ContentContainer>
+      </MarketContainer>
     </PageContainer>
   );
 }
 
-// Styled components
+// 기존의 다른 Styled Components는 그대로 유지
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -179,126 +190,4 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const ContentContainer = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding-top: 80px;
-  padding-bottom: 80px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const ProductGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
-`;
-
-const ProductCard = styled.div`
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #ffffff; /* 배경색을 흰색으로 수정 */
-  transition: box-shadow 0.3s, transform 0.3s;
-  &:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
-  }
-`;
-
-const ProductImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  transition: transform 0.3s;
-  ${ProductCard}:hover & {
-    transform: scale(1.1);
-  }
-`;
-
-const ProductDetails = styled.div`
-  text-align: left;
-  margin-top: 10px;
-`;
-
-const ProductCompany = styled.div`
-  color: #999;
-  font-size: 12px;
-  font-weight: bold;
-`;
-
-const ProductName = styled.div`
-  margin: 10px 0;
-  font-size: 12px;
-`;
-
-const ProductPrice = styled.div`
-  font-size: 14px;
-  color: #333;
-`;
-
-const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  color: #999;
-  margin-right: 5px;
-`;
-
-const PriceWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const DiscountRate = styled.span`
-  color: #fa7586;
-  font-weight: bold;
-  margin-right: 5px;
-`;
-
-const DiscountedPrice = styled.span`
-  color: #333;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const SoldoutBox = styled.div<{ width?: string; height?: string }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height || "100%"};
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-`;
-
-const NoProductsMessage = styled.div`
-  color: #999;
-  text-align: center;
-  font-size: 16px;
-  margin-top: 20px;
-`;
-
-const LoadingMessage = styled.div`
-  text-align: center;
-  font-size: 14px;
-  padding: 10px;
 `;
