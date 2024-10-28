@@ -9,7 +9,7 @@ ReactModal.setAppElement("#root");
 
 type Props = { address?: string };
 
-export default function InputAddress({ address }: Props) {
+export default function InputAddress() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -43,7 +43,11 @@ export default function InputAddress({ address }: Props) {
         <>
             <Block.FlexBox direction="column" gap="20px">
                 <Block.FlexBox gap="20px">
-                    <Input.AddressBox width="100%" value={address} />
+                    <Input.AddressBox
+                        width="100%"
+                        placeholder="예) 서울특별시 강서구 마곡중앙8로 71"
+                        value={userInfo.address}
+                    />
                     <Button.Select onClick={onToggleModal}>주소 찾기</Button.Select>
                     <ReactModal
                         isOpen={isOpen}
@@ -70,7 +74,7 @@ export default function InputAddress({ address }: Props) {
                 <Input.AddressBox
                     width="100%"
                     height="50px"
-                    placeholder="상세 주소를 입력하세요"
+                    placeholder="상세 주소를 입력해주세요"
                     value={userInfo.address_detail || ""}
                     onChange={handleAddressDetailChange}
                 />

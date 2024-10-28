@@ -6,6 +6,7 @@ import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
 import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 import InputAddress from "../../components/Signup/InputAddress";
+import InputNickname from "../../components/Signup/InputNickname";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -34,10 +35,6 @@ export default function Signup() {
         }
     };
 
-    const handleUserNameChange = (newName: string) => {
-        setUserInfo(prev => ({ ...prev, nickname: newName }));
-    };
-
     return (
         <>
             <Block.FlexBox direction="column" justifyContent="space-between" padding="97px 20px 23px 20px" gap="60px">
@@ -49,7 +46,7 @@ export default function Signup() {
                                     <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
                                     <Text.TitleMenu300>이름을 알려주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
-                                <InputUserName onChange={handleUserNameChange} />
+                                <InputUserName />
                             </>
                         )}
                         {step === 2 && (
@@ -59,7 +56,7 @@ export default function Signup() {
                                     <Text.TitleMenu300>휴대폰 번호를 알려주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
                                 <InputPhoneNumber setUserInfo={setUserInfo} />
-                                <InputUserName onChange={handleUserNameChange} />
+                                <InputUserName />
                             </>
                         )}
                         {step === 3 && (
@@ -68,7 +65,18 @@ export default function Signup() {
                                     <Text.TitleMenu300>맞춤 서비스 제공을 위해</Text.TitleMenu300>
                                     <Text.TitleMenu300>추가 정보를 입력해 주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
-                                <InputAddress address={userInfo.address} />
+                                <InputAddress />
+                            </>
+                        )}
+                        {step === 4 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>이제 포캣에서 활동할</Text.TitleMenu300>
+                                    <Text.TitleMenu300>프로필을 등록해봐요</Text.TitleMenu300>
+
+                                    <Text.Warning color="Gray">프로필 사진은 나중에도 등록 가능해요!</Text.Warning>
+                                </Block.FlexBox>
+                                <InputNickname />
                             </>
                         )}
                     </Block.FlexBox>
