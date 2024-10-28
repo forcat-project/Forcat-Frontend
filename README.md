@@ -35,7 +35,7 @@ Forcat-Frontend는 반려동물을 위한 쇼핑몰 서비스의 프론트엔드
 │   ├── pages
 │   ├── recoil
 │   └── style
-└── App
+└─ App.tsx
 ```
 
 각 폴더의 역할에 맞게 분류하였습니다. 
