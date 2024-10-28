@@ -108,3 +108,10 @@ export const LoadingMessage = styled.div`
   font-size: 14px;
   padding: 10px;
 `;
+
+export const EndOfListMessage = styled.div`
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  margin-top: 20px;
+`;
