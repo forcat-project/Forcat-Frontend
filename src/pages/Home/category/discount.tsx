@@ -19,7 +19,7 @@ import {
   SoldoutBox,
   LoadingMessage,
   EndOfListMessage,
-} from "../../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function Discount() {
   const [products, setProducts] = useState<IProducts[]>([]);
