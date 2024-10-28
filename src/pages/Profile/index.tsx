@@ -1,9 +1,9 @@
 import { Block } from "../../style/ui";
-import UserInfo from "../../components/Profile/accountManage";
+import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
-import Purchase from "../../components/Profile/purchase";
+import Purchase from "../../components/Profile/Purchase";
 
-import AccountManage from "../../components/Profile/accountManage";
+import AccountManage from "../../components/Profile/AccountManage";
 
 export default function Profile() {
   return (

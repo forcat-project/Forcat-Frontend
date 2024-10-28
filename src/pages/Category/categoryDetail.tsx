@@ -20,7 +20,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
   LoadingMessage,
-} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();

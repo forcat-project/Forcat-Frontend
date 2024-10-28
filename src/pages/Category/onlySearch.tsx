@@ -21,7 +21,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
   LoadingMessage,
-} from "../../components/Product/productContainer";
+} from "../../components/Product/ProductContainer";
 
 export default function OnlySearch() {
   const navigate = useNavigate();

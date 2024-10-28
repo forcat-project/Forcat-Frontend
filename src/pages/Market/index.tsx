@@ -17,7 +17,7 @@ import {
   DiscountRate,
   DiscountedPrice,
   SoldoutBox,
-} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
