@@ -6,20 +6,22 @@ import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
 import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 import InputAddress from "../../components/Signup/InputAddress";
-import InputNickname from "../../components/Signup/InputNickname";
+import InputUserNickName from "../../components/Signup/InputUserNickName";
+import InputCatName from "../../components/Signup/InputCatName";
+import InputCatBreed from "../../components/Signup/InputCatBreed";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const userName = searchParams.get("nickname") || "";
+    const userName = searchParams.get("username") || "";
     const userProfileInfo = searchParams.get("profile_image") || "";
     const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
 
     useEffect(() => {
         setUserInfo(prev => ({
             ...prev,
-            nickname: userName,
+            username: userName,
             profile_picture: userProfileImage,
         }));
     }, [userName, userProfileImage, setUserInfo]);
@@ -30,9 +32,13 @@ export default function Signup() {
     const handleButtonNext = () => {
         console.log(userInfo);
         setStep(step + 1);
-        if (step === 4) {
-            navigate("/home");
-        }
+        // if (step === 5) {
+        //     navigate("/home");
+        // }
+    };
+
+    const handleRegistrationComplete = () => {
+        navigate("/home");
     };
 
     return (
@@ -73,10 +79,36 @@ export default function Signup() {
                                 <Block.FlexBox direction="column" gap="10px">
                                     <Text.TitleMenu300>이제 포캣에서 활동할</Text.TitleMenu300>
                                     <Text.TitleMenu300>프로필을 등록해봐요</Text.TitleMenu300>
-
                                     <Text.Warning color="Gray">프로필 사진은 나중에도 등록 가능해요!</Text.Warning>
                                 </Block.FlexBox>
-                                <InputNickname />
+                                <InputUserNickName />
+                            </>
+                        )}
+
+                        {step === 5 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>우리 고양이 이름을</Text.TitleMenu300>
+                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <InputCatName />
+                                <Block.FlexBox justifyContent="center">
+                                    <Button.RadiusButton onClick={handleRegistrationComplete}>
+                                        <Text.TitleMenu100 color="Yellow">
+                                            고양이 정보는 나중에 등록할게요
+                                        </Text.TitleMenu100>
+                                    </Button.RadiusButton>
+                                </Block.FlexBox>
+                            </>
+                        )}
+
+                        {step === 6 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>우리 고양이 품종을</Text.TitleMenu300>
+                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <InputCatBreed />
                             </>
                         )}
                     </Block.FlexBox>

@@ -39,3 +39,15 @@ export interface IUser {
     google_id?: string;
     naver_id?: string;
 }
+
+export interface ICat {
+    name: string;
+    cat_breed: number;
+    cat_breed_name?: string;
+    birth_date: string;
+    gender: number;
+    is_neutered: number;
+    weight: string;
+    profile_image?: string;
+    days_since_birth?: string;
+}

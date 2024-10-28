@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { IProduct, IUser } from "../interfaces/product";
+import { ICat, IProduct, IUser } from "../interfaces/product";
 
 export const exampleState = atom({
     key: "exampleState",
@@ -35,5 +35,20 @@ export const userState = atom<IUser>({
         kakao_id: "",
         google_id: "",
         naver_id: "",
+    },
+});
+
+export const catState = atom<ICat>({
+    key: "catState",
+    default: {
+        name: "",
+        cat_breed: 0, // 고양이 품종 숫자
+        cat_breed_name: "", // 고양이 품종 이름
+        birth_date: "",
+        gender: 0,
+        is_neutered: 0, // 중성화 여부
+        weight: "",
+        profile_image: "",
+        days_since_birth: "",
     },
 });

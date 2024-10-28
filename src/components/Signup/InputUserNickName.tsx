@@ -3,7 +3,7 @@ import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
 import { userState } from "../../recoil";
 
-export default function InputNickname() {
+export default function InputUserNickName() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
     const { isFocused, handleFocus, handleBlur } = useFocus();
 

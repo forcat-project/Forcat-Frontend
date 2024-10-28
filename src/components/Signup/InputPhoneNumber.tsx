@@ -26,7 +26,7 @@ export default function InputPhoneNumber({ setUserInfo }: Props) {
             <Text.FocusedMenu isFocused={isFocused}>휴대폰 번호</Text.FocusedMenu>
             <Input.InfoBox
                 value={phone}
-                placeholder="전화번호를 입력하세요"
+                placeholder="전화번호를 입력해주세요"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onChange={handlePhoneChange}

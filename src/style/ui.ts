@@ -221,6 +221,17 @@ export const Button = {
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
     `,
+    RadiusButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 320px;
+        height: 53px;
+        border-radius: 30px;
+        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+    `,
     CartButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;
         justify-content: center;
@@ -323,7 +334,7 @@ export const Input = {
         padding-left: 15px;
         background-color: #ffffff;
         border: 1px solid #c9cbd4;
-        border-radius: 10px 10px;
+        border-radius: 19px;
         ::placeholder {
             color: #939292;
             font-size: 17px;
