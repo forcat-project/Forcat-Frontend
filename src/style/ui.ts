@@ -200,7 +200,7 @@ type StyleButton = {
 
 export const Button = {
     Confirm: styled.div<StyleButton>`
-        display: block;
+        display: flex;
         justify-content: center;
         align-items: center;
         width: 560px;
