@@ -211,7 +211,7 @@ export const Button = {
         cursor: pointer; // disabled이면 "not-allowed" 로 변경되도록 수정하기
     `,
     Select: styled.div<StyleButton>`
-        display: block;
+        display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
@@ -298,6 +298,7 @@ type StyleInput = {
     width?: string;
     height?: string;
     pointer?: boolean;
+    border?: string;
 };
 
 export const Input = {
@@ -323,6 +324,24 @@ export const Input = {
         background-color: #ffffff;
         border: 1px solid #c9cbd4;
         border-radius: 10px 10px;
+        ::placeholder {
+            color: #939292;
+            font-size: 17px;
+        }
+        &:focus {
+            border: 1px solid #000;
+        }
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    AddressBox: styled.input<StyleInput>`
+        display: block;
+        width: ${props => (props.width ? props.width : "100%")};
+        height: ${props => (props.width ? props.height : "auto")};
+        border: 1px solid #c9cbd4;
+        outline: #e3e2e0;
+        padding-left: 15px;
+        background-color: #ffffff;
+        border-radius: 19px;
         ::placeholder {
             color: #939292;
             font-size: 17px;

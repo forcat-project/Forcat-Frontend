@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
 import { Block, Input, Text } from "../../style/ui";
@@ -6,12 +5,10 @@ import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
 
 type Props = {
-    userName: string;
     onChange: (newName: string) => void;
 };
 
-export default function InputUserName({ userName, onChange }: Props) {
-    const [name, setName] = useState(userName);
+export default function InputUserName({ onChange }: Props) {
     const [userInfo, setUserInfo] = useRecoilState(userState);
 
     const { isFocused, handleFocus, handleBlur } = useFocus();
@@ -29,7 +26,7 @@ export default function InputUserName({ userName, onChange }: Props) {
                 <Block.FlexBox direction="column" gap="10px">
                     <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                     <Input.InfoBox
-                        value={name}
+                        value={userInfo.nickname}
                         placeholder="이름"
                         onFocus={handleFocus}
                         onBlur={handleBlur}
