@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
 import { useEffect } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
+import { Block, Button, Text } from "../../style/ui";
 
 export default function Signup() {
     const location = useLocation();
@@ -28,7 +29,13 @@ export default function Signup() {
 
     return (
         <>
-            <InputUserName userName={userName} />
+            <Block.FlexBox direction="column" alignItems="center" justifyContent="space-between" padding="0 0 23px 0">
+                <InputUserName userName={userName} />
+
+                <Button.Confirm>
+                    <Text.TitleMenu300 color="White">확인</Text.TitleMenu300>
+                </Button.Confirm>
+            </Block.FlexBox>
         </>
     );
 }
