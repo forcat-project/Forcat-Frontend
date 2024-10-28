@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
 import { Block, Input, Text } from "../../style/ui";
 import { Warning, WarningDisabled } from "../../assets/svg";
+import useFocus from "../../hooks/useFocus";
 
 type Props = {
     userName: string;
@@ -11,15 +12,9 @@ type Props = {
 
 export default function InputUserName({ userName, onChange }: Props) {
     const [name, setName] = useState(userName);
-    const [isFocused, setIsFocused] = useState(false);
     const [userInfo, setUserInfo] = useRecoilState(userState);
 
-    useEffect(() => {
-        setName(userName);
-    }, [userName]);
-
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
+    const { isFocused, handleFocus, handleBlur } = useFocus();
 
     const handleInputNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newName = e.target.value;

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
 import { useEffect, useState } from "react";
@@ -23,9 +23,14 @@ export default function Signup() {
     }, [userName, userProfileImage, setUserInfo]);
 
     const [step, setStep] = useState(1);
+    const navigate = useNavigate();
 
     const handleButtonNext = () => {
+        console.log(userInfo);
         setStep(step + 1);
+        if (step === 4) {
+            navigate("/home");
+        }
     };
 
     const handleUserNameChange = (newName: string) => {
@@ -55,11 +60,20 @@ export default function Signup() {
                         {step === 2 && (
                             <>
                                 <Block.FlexBox direction="column" gap="10px">
-                                    <Text.TitleMenu300>보호자님의 </Text.TitleMenu300>
+                                    <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
                                     <Text.TitleMenu300>전화번호를 알려주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
                                 <InputPhoneNumber setUserInfo={setUserInfo} />
                                 <InputUserName userName={userInfo.nickname} onChange={handleUserNameChange} />
+                            </>
+                        )}
+                        {step === 3 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>맞춤 서비스 제공을 위해</Text.TitleMenu300>
+                                    <Text.TitleMenu300>추가 정보를 입력해 주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <Block.FlexBox>주소</Block.FlexBox>
                             </>
                         )}
                     </Block.FlexBox>

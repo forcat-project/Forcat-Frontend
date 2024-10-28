@@ -1,7 +1,7 @@
-// InputPhoneNumber.tsx
 import { useState } from "react";
 import { Block, Input, Text } from "../../style/ui";
 import { IUser } from "../../interfaces/product";
+import useFocus from "../../hooks/useFocus";
 
 type Props = {
     setUserInfo: React.Dispatch<React.SetStateAction<IUser>>;
@@ -9,16 +9,15 @@ type Props = {
 
 export default function InputPhoneNumber({ setUserInfo }: Props) {
     const [phone, setPhone] = useState("");
-    const [isFocused, setIsFocused] = useState(false);
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
+
+    const { isFocused, handleFocus, handleBlur } = useFocus();
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newPhone = e.target.value;
-        setPhone(newPhone);
+        const inputPhoneNumber = e.target.value;
+        setPhone(inputPhoneNumber);
         setUserInfo(prev => ({
             ...prev,
-            phone: newPhone,
+            phone_number: inputPhoneNumber,
         }));
     };
 
