@@ -12,7 +12,7 @@ export default function InputBirthDate() {
   //   const [catInfo, setCatInfo] = useRecoilState(catState);
 
   const { isFocused, handleFocus, handleBlur } = useFocus();
-
+  
   const handleCatBirthYearChange = () => {
     console.log(catBirthYear);
   };
@@ -23,38 +23,36 @@ export default function InputBirthDate() {
     console.log(catBirthDay);
   };
 
-  return (
-    <>
-      {" "}
-      <>
-        <Block.FlexBox direction="column" gap="20px">
-          <Text.FocusedMenu isFocused={isFocused}>생년월일</Text.FocusedMenu>
+    return (
+        <>
+            <Block.FlexBox direction="column" gap="20px">
+                <Text.FocusedMenu isFocused={isFocused}>생년월일</Text.FocusedMenu>
 
-          <Block.FlexBox justifyContent="space-between">
-            <Input.BirthBox
-              value={catBirthYear}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              onChange={handleCatBirthYearChange}
-              placeholder="년도"
-            />
-            <Input.BirthBox
-              value={catBirthMonth}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              onChange={handleCatBirthMonthChange}
-              placeholder="월"
-            />
-            <Input.BirthBox
-              value={catBirthDay}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              onChange={handleCatBirthDayChange}
-              placeholder="일"
-            />
-          </Block.FlexBox>
-        </Block.FlexBox>
-      </>
-    </>
-  );
+                <Block.FlexBox justifyContent="space-between">
+                    <Input.BirthBox
+                        value={catBirthYear}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onChange={handleCatBirthYearChange}
+                        placeholder="년도"
+                    />
+                    <Input.BirthBox
+                        value={catBirthMonth}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onChange={handleCatBirthMonthChange}
+                        placeholder="월"
+                    />
+                    <Input.BirthBox
+                        value={catBirthDay}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onChange={handleCatBirthDayChange}
+                        placeholder="일"
+                    />
+                </Block.FlexBox>
+            </Block.FlexBox>
+        </>
+    );
+
 }
