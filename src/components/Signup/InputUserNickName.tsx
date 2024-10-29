@@ -4,8 +4,9 @@ import { Block, Input, Text } from "../../style/ui";
 import { userState } from "../../recoil";
 
 export default function InputUserNickName() {
-    const [userInfo, setUserInfo] = useRecoilState(userState);
-    const { isFocused, handleFocus, handleBlur } = useFocus();
+  const [, setUserInfo] = useRecoilState(userState);
+  const { isFocused, handleFocus, handleBlur } = useFocus();
+
 
     const handleUserNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInfo(prev => ({ ...prev, nickname: e.target.value }));
@@ -23,4 +24,6 @@ export default function InputUserNickName() {
             </Block.FlexBox>
         </>
     );
+ 
+
 }

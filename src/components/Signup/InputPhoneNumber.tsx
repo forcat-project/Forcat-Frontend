@@ -6,8 +6,8 @@ import { userState } from "../../recoil";
 
 export default function InputPhoneNumber() {
     const [phone, setPhone] = useState("");
-    const [userInfo, setUserInfo] = useRecoilState(userState);
 
+    const [userInfo, setUserInfo] = useRecoilState(userState);
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,20 +5,18 @@ import { catState } from "../../recoil";
 import { useNavigate } from "react-router-dom";
 
 export default function InputCatName() {
-    const [catInfo, setCatInfo] = useRecoilState(catState);
-    const { isFocused, handleFocus, handleBlur } = useFocus();
+  const [catInfo, setCatInfo] = useRecoilState(catState);
+  const { isFocused, handleFocus, handleBlur } = useFocus();
 
-    const handleUserCatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCatInfo(prev => ({ ...prev, name: e.target.value }));
-    };
+  const handleUserCatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCatInfo((prev) => ({ ...prev, name: e.target.value }));
+  };
 
-    return (
+ 
+  return (
         <>
-            <Block.FlexBox direction="column" gap="20px">
-                <Block.FlexBox alignItems="center" justifyContent="space-bwt">
-                    <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
-                </Block.FlexBox>
-
+         <Block.FlexBox direction="column" gap="20px">
+                <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                 <Input.InfoBox
                     value={catInfo.name}
                     onFocus={handleFocus}
