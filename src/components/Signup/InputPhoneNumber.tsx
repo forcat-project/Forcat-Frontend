@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Block, Input, Text } from "../../style/ui";
-import { IUser } from "../../interfaces/product";
 import useFocus from "../../hooks/useFocus";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil";
 
-type Props = {
-    setUserInfo: React.Dispatch<React.SetStateAction<IUser>>;
-};
-
-export default function InputPhoneNumber({ setUserInfo }: Props) {
+export default function InputPhoneNumber() {
     const [phone, setPhone] = useState("");
+    const [userInfo, setUserInfo] = useRecoilState(userState);
 
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
