@@ -47,54 +47,97 @@ export default function Signup() {
 
     return (
         <>
-            <Block.FlexBox direction="column" justifyContent="space-between" padding="97px 20px 23px 20px" gap="60px">
+            <Block.FlexBox
+                width="100%"
+                direction="column"
+                justifyContent="space-between"
+                padding="97px 20px 23px 20px"
+                margin="60px 0 0 0"
+                gap="60px"
+                style={{ overflowY: "scroll", scrollbarWidth: "none" }}
+            >
                 <section>
                     <Block.FlexBox direction="column" gap="64px">
                         {step === 1 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
                                     <Text.TitleMenu300>이름을 알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputUserName />
                             </>
                         )}
                         {step === 2 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
                                     <Text.TitleMenu300>휴대폰 번호를 알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputPhoneNumber setUserInfo={setUserInfo} />
                                 <InputUserName />
                             </>
                         )}
                         {step === 3 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>맞춤 서비스 제공을 위해</Text.TitleMenu300>
                                     <Text.TitleMenu300>추가 정보를 입력해 주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputAddress />
                             </>
                         )}
                         {step === 4 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>이제 포캣에서 활동할</Text.TitleMenu300>
                                     <Text.TitleMenu300>프로필을 등록해봐요</Text.TitleMenu300>
                                     <Text.Warning color="Gray">프로필 사진은 나중에도 등록 가능해요!</Text.Warning>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputUserNickName />
                             </>
                         )}
 
                         {step === 5 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 이름을</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputCatName />
                                 <Block.FlexBox justifyContent="center">
                                     <Button.RadiusButton onClick={handleRegistrationComplete}>
@@ -109,20 +152,34 @@ export default function Signup() {
                         {step === 6 && (
                             <>
                                 {/* react-modal 연결하기 */}
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 품종을</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputCatBreed />
                                 <InputCatName />
                             </>
                         )}
                         {step === 7 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 생년월일을</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputBirthDate />
                                 <InputCatBreed />
                                 <InputCatName />
@@ -131,10 +188,17 @@ export default function Signup() {
 
                         {step === 8 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 성별을</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputCatGender />
                                 <InputBirthDate />
                                 <InputCatBreed />
@@ -144,10 +208,17 @@ export default function Signup() {
 
                         {step === 9 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 중성화 수술 여부를</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputCatIsNeutered />
                                 <InputCatGender />
                                 <InputBirthDate />
@@ -158,10 +229,17 @@ export default function Signup() {
 
                         {step === 10 && (
                             <>
-                                <Block.FlexBox direction="column" gap="10px">
+                                <Block.AbsoluteBox
+                                    top="64px"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "10px",
+                                    }}
+                                >
                                     <Text.TitleMenu300>우리 고양이 몸무게를</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.FlexBox>
+                                </Block.AbsoluteBox>
                                 <InputCatWeight />
                                 <InputCatIsNeutered />
                                 <InputCatGender />
@@ -172,11 +250,23 @@ export default function Signup() {
                         )}
                     </Block.FlexBox>
                 </section>
-
+            </Block.FlexBox>
+            <Block.AbsoluteBox
+                width="599px"
+                height="93px"
+                bottom="0"
+                bgColor="white"
+                style={{
+                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
                 <Button.Confirm onClick={handleButtonNext}>
                     <Text.TitleMenu300 color="White">확인</Text.TitleMenu300>
                 </Button.Confirm>
-            </Block.FlexBox>
+            </Block.AbsoluteBox>
         </>
     );
 }
