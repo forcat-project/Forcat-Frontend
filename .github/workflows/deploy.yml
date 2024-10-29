@@ -18,12 +18,12 @@ jobs:
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.FORCAT }} // 변경
+          API_TOKEN_GITHUB: ${{ secrets.FORCAT }}
         with:
           source-directory: "output"
-          destination-github-username: OHRRRRR // 변경
-          destination-repository-name: Forcat-Frontend // 변경
-          user-email: ${{ secrets.EMAIL }} // 변경
+          destination-github-username: OHRRRRR
+          destination-repository-name: Forcat-Frontend
+          user-email: ${{ secrets.EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
       - name: Test get variable exported by push-to-another-repository
