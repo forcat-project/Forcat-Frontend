@@ -28,7 +28,7 @@ export default function MdRecommend() {
 
   useEffect(() => {
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           categories: 68, // MD 추천 카테고리 ID
         },

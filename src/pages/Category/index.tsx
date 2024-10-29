@@ -24,7 +24,7 @@ export default function Search() {
   // API 호출 함수
   const fetchCategories = () => {
     axios
-      .get("http://125.189.109.17/api/categories")
+      .get("https://forcat.store/api/categories")
       .then((response) => {
         setCategories(response.data);
       })

@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Modal from "react-modal"; // react-modal 라이브러리 추가
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
+import UserEdit from "../../pages/Profile/userEdit"; // userEdit 모달 컴포넌트 가져오기
+
+// react-modal 설정 (최상위 DOM에 모달이 추가되도록 설정)
+Modal.setAppElement("#root");
 
 interface User {
   nickname: string;
   profile_picture: string; // 프로필 이미지 URL 필드 변경
+  phone_number: string;
+  addres: string;
+  address_detail: string;
 }
 
 export default function UserInfo() {
   const [user, setUser] = useState<User | null>(null);
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false); // 모달 상태
 
   useEffect(() => {
     // 사용자 정보 API 호출
     axios
-      .get("http://125.189.109.17/api/users/1")
+      .get("https://forcat.store/api/users/1")
       .then((response) => {
         setUser(response.data); // 응답 데이터로 상태 업데이트
       })
@@ -22,6 +31,11 @@ export default function UserInfo() {
         console.error("사용자 정보를 가져오는데 실패했습니다:", error);
       });
   }, []);
+
+  // 모달을 열고 닫는 함수
+  const toggleEditModal = () => {
+    setEditModalOpen(!isEditModalOpen);
+  };
 
   return (
     <Block.FlexBox direction="column" padding="20px" bgColor="white">
@@ -51,7 +65,7 @@ export default function UserInfo() {
         </Block.FlexBox>
 
         {/* 편집 버튼 */}
-        <Button.EditButton onClick={() => alert("편집 버튼 클릭됨")}>
+        <Button.EditButton onClick={toggleEditModal}>
           <Text.Mini>편집</Text.Mini>
         </Button.EditButton>
       </Block.FlexBox>
@@ -73,6 +87,31 @@ export default function UserInfo() {
           0 P
         </Text.TitleMenu300>
       </Block.FlexBox>
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onRequestClose={toggleEditModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          content: {
+            border: "none",
+            background: "transparent",
+            padding: 0,
+            inset: "auto",
+            maxWidth: "400px",
+            width: "90%",
+            borderRadius: "8px",
+            overflow: "visible",
+          },
+        }}
+      >
+        <UserEdit user={user} onClose={toggleEditModal} />
+      </Modal>
     </Block.FlexBox>
   );
 }

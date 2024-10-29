@@ -56,7 +56,7 @@ export default function CategoryDetail() {
     if (isFetching || !hasMore) return;
     setIsFetching(true);
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           categories: category_id,
           cursor: cursor ? decodeURIComponent(cursor) : null,

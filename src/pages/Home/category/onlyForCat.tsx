@@ -50,7 +50,7 @@ export default function OnlyForCat() {
 
     setIsFetching(true); // 데이터 요청 상태 설정
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           categories: 67, // MD 추천 카테고리 ID
           cursor: cursor ? decodeURIComponent(cursor) : null, // cursor가 null이면 첫 페이지 호출

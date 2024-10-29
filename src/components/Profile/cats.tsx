@@ -20,7 +20,7 @@ export default function Cats() {
   useEffect(() => {
     // 고양이 정보 API 호출
     axios
-      .get("http://125.189.109.17/api/users/1/cats")
+      .get("https://forcat.store/api/users/1/cats")
       .then((response) => {
         const catData = Array.isArray(response.data)
           ? response.data
