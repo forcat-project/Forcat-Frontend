@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import { HeaderBackArrow } from "../../assets/svg";
-import { Block, Input } from "../../style/ui";
+import { Input } from "../../style/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import {
   MarketContainer,

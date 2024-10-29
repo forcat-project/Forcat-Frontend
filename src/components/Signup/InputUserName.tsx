@@ -5,15 +5,15 @@ import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
 
 export default function InputUserName() {
-    const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
 
-    const { isFocused, handleFocus, handleBlur } = useFocus();
+  const { isFocused, handleFocus, handleBlur } = useFocus();
 
-    const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInfo(prev => ({ ...prev, username: e.target.value }));
-    };
+  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserInfo((prev) => ({ ...prev, username: e.target.value }));
+  };
 
-    return (
+  return (
         <>
             <Block.FlexBox direction="column" gap="10px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
