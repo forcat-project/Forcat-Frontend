@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Block, Input, Text } from "../../style/ui";
 import useFocus from "../../hooks/useFocus";
 import { useRecoilState } from "recoil";
-import { userState } from "../../recoil";
+import { inputState, userState } from "../../recoil";
 
 export default function InputPhoneNumber() {
     const [phone, setPhone] = useState("");
 
     const [, setUserInfo] = useRecoilState(userState);
+    const [, setInputValue] = useRecoilState(inputState);
+
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +18,10 @@ export default function InputPhoneNumber() {
         setUserInfo(prev => ({
             ...prev,
             phone_number: inputPhoneNumber,
+        }));
+        setInputValue(prev => ({
+            ...prev,
+            phoneNumber: inputPhoneNumber,
         }));
     };
 

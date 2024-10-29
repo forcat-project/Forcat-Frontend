@@ -199,7 +199,7 @@ type StyleButton = {
 };
 
 export const Button = {
-    Confirm: styled.div<StyleButton>`
+    Confirm: styled.div<StyleButton & { isDisabled: boolean }>`
         display: flex;
         justify-content: center;
         align-items: center;
@@ -207,8 +207,8 @@ export const Button = {
         height: 53px;
         border-radius: 16px;
         color: #ffffff;
-        background-color: #f4b647; // disabled이면"#e8e8e8" 로 변경되도록 수정하기
-        cursor: pointer; // disabled이면 "not-allowed" 로 변경되도록 수정하기
+        background-color: ${({ isDisabled }) => (isDisabled ? "#e8e8e8 " : "#f4b647")};
+        cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
     `,
     Select: styled.div<StyleButton>`
         display: flex;

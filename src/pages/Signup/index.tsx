@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../../recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { inputState, userState } from "../../recoil";
 import { useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
@@ -16,36 +16,47 @@ import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 
 export default function Signup() {
     const [, setUserInfo] = useRecoilState(userState);
+    const inputData = useRecoilValue(inputState);
     const location = useLocation();
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
 
     const steps = [
-        { title: "보호자님의", subtitle: "이름을 알려주세요", components: [<InputUserName key="name" />] },
+        {
+            title: "보호자님의",
+            subtitle: "이름을 알려주세요",
+            components: [<InputUserName key="name" />],
+            requiredFields: ["name"],
+        },
         {
             title: "보호자님의",
             subtitle: "휴대폰 번호를 알려주세요",
             components: [<InputPhoneNumber key="phone" />, <InputUserName key="name" />],
+            requiredFields: ["phoneNumber", "name"],
         },
         {
             title: "맞춤 서비스 제공을 위해",
             subtitle: "추가 정보를 입력해 주세요",
             components: [<InputAddress key="address" />],
+            requiredFields: ["address"],
         },
         {
             title: "이제 포캣에서 활동할",
             subtitle: "프로필을 등록해봐요",
             components: [<InputUserNickName key="nickname" />],
+            requiredFields: ["nickname"],
         },
         {
             title: "우리 고양이 이름을",
             subtitle: "알려주세요",
             components: [<InputCatName key="catName" />],
+            requiredFields: ["catName"],
         },
         {
             title: "우리 고양이 품종을",
             subtitle: "알려주세요",
             components: [<InputCatBreed key="catBreed" />, <InputCatName key="catName" />],
+            requiredFields: ["catBreed", "catName"],
         },
         {
             title: "우리 고양이 생년월일을",
@@ -55,6 +66,7 @@ export default function Signup() {
                 <InputCatBreed key="catBreed" />,
                 <InputCatName key="catName" />,
             ],
+            requiredFields: ["birthDate", "catBreed", "catName"],
         },
         {
             title: "우리 고양이 성별을",
@@ -65,6 +77,7 @@ export default function Signup() {
                 <InputCatBreed key="catBreed" />,
                 <InputCatName key="catName" />,
             ],
+            requiredFields: ["catGender", "birthDate", "catBreed", "catName"],
         },
         {
             title: "우리 고양이 중성화 수술 여부를",
@@ -76,6 +89,7 @@ export default function Signup() {
                 <InputCatBreed key="catBreed" />,
                 <InputCatName key="catName" />,
             ],
+            requiredFields: ["isNeutered", "catGender", "birthDate", "catBreed", "catName"],
         },
         {
             title: "우리 고양이 몸무게를",
@@ -88,6 +102,7 @@ export default function Signup() {
                 <InputCatBreed key="catBreed" />,
                 <InputCatName key="catName" />,
             ],
+            requiredFields: ["catWeight", "isNeutered", "catGender", "birthDate", "catBreed", "catName"],
         },
     ];
 
@@ -100,11 +115,21 @@ export default function Signup() {
     }, [location.search, setUserInfo]);
 
     const handleButtonNext = () => {
-        if (step < steps.length) {
-            setStep(step + 1);
-        } else {
-            navigate("/home");
+        if (isStepValid()) {
+            if (step < steps.length) {
+                setStep(step + 1);
+            } else {
+                navigate("/home");
+            }
         }
+    };
+
+    const isStepValid = () => {
+        const requiredFields = steps[step - 1].requiredFields;
+
+        return requiredFields.every(field => {
+            return inputData[field] && inputData[field].trim() !== "";
+        });
     };
 
     const { title, subtitle, components } = steps[step - 1];
@@ -142,7 +167,7 @@ export default function Signup() {
                     alignItems: "center",
                 }}
             >
-                <Button.Confirm onClick={handleButtonNext}>
+                <Button.Confirm onClick={handleButtonNext} isDisabled={!isStepValid()}>
                     <Text.TitleMenu300 color="White">확인</Text.TitleMenu300>
                 </Button.Confirm>
             </Block.AbsoluteBox>
