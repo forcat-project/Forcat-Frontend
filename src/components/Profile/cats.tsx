@@ -2,40 +2,40 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
+import CatEdit from "../../pages/Profile/catEdit"; // CatEdit 모달 컴포넌트 임포트
 
 interface Cat {
   name: string;
-  cat_breed_name: string; // 고양이 품종
+  cat_breed_name: string;
   days_since_birth: number;
-  gender: number; // 0: 여아, 1: 남아
-  is_neutered: number; // 0: 미완료, 1: 완료
-  weight: string; // 몸무게를 문자열로 받기
+  gender: number;
+  is_neutered: number;
+  weight: string;
   profile_image: string;
 }
 
 export default function Cats() {
-  const [cats, setCats] = useState<Cat[]>([]); // 여러 고양이 정보를 저장하기 위한 배열로 변경
-  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태 추가
+  const [cats, setCats] = useState<Cat[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
   useEffect(() => {
-    // 고양이 정보 API 호출
     axios
       .get("https://forcat.store/api/users/1/cats")
       .then((response) => {
         const catData = Array.isArray(response.data)
           ? response.data
-          : [response.data]; // 배열 형태로 저장
-        setCats(catData); // 응답 데이터로 상태 업데이트
-        console.log(catData); // 응답 데이터가 잘 나오는지 확인
-        setLoading(false); // 로딩 완료
+          : [response.data];
+        setCats(catData);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("고양이 정보를 가져오는데 실패했습니다:", error);
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       });
   }, []);
 
-  // days_since_birth 값을 개월 수로 변환하는 함수
   const getMonthsFromDays = (days: number) => {
     if (days === undefined || days < 0) {
       return "정보 없음";
@@ -43,7 +43,24 @@ export default function Cats() {
     return `${Math.max(1, Math.floor(days / 30))}개월`;
   };
 
-  // 로딩 중일 때 표시할 내용
+  const openEditModal = (cat: Cat) => {
+    setSelectedCat(cat);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedCat(null);
+    setIsEditModalOpen(false);
+  };
+
+  const handleSave = (updatedCat: Cat) => {
+    // 업데이트된 고양이 정보를 반영하여 상태를 갱신
+    setCats((prevCats) =>
+      prevCats.map((cat) => (cat.name === updatedCat.name ? updatedCat : cat))
+    );
+    closeEditModal();
+  };
+
   if (loading) {
     return <Text.Notice200>로딩 중...</Text.Notice200>;
   }
@@ -57,7 +74,6 @@ export default function Cats() {
         </Text.Notice200>
       </Block.FlexBox>
 
-      {/* 고양이 정보 반복 렌더링 */}
       {cats.map((cat, index) => (
         <Block.FlexBox
           key={index}
@@ -66,7 +82,6 @@ export default function Cats() {
           padding="20px 20px"
           alignItems="center"
         >
-          {/* 고양이 정보 텍스트 */}
           <Block.FlexBox direction="column">
             <Text.TitleMenu300 style={{ marginBottom: "10px" }}>
               {cat.name || "이름 없음"}
@@ -123,20 +138,28 @@ export default function Cats() {
                 alt="Cat Profile"
                 width="100"
                 height="100"
-                style={{ borderRadius: "50%" }} // 이미지 둥글게 만들기
+                style={{ borderRadius: "50%" }}
               />
             ) : (
               <UserProfile />
             )}
             <Button.EditButton
               style={{ marginTop: "15px" }}
-              onClick={() => alert("편집 버튼 클릭됨")}
+              onClick={() => openEditModal(cat)}
             >
               <Text.Mini>편집</Text.Mini>
             </Button.EditButton>
           </Block.FlexBox>
         </Block.FlexBox>
       ))}
+
+      {isEditModalOpen && (
+        <CatEdit
+          cat={selectedCat}
+          onClose={closeEditModal}
+          onSave={handleSave}
+        />
+      )}
     </Block.FlexBox>
   );
 }
