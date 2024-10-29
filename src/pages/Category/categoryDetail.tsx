@@ -20,7 +20,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
   LoadingMessage,
-} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();
@@ -56,7 +56,7 @@ export default function CategoryDetail() {
     if (isFetching || !hasMore) return;
     setIsFetching(true);
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           categories: category_id,
           cursor: cursor ? decodeURIComponent(cursor) : null,

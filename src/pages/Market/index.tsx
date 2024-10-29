@@ -17,7 +17,7 @@ import {
   DiscountRate,
   DiscountedPrice,
   SoldoutBox,
-} from "../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -47,7 +47,7 @@ export default function Market() {
     if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
     setIsFetching(true); // 데이터 요청 상태 설정
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           name: null,
           categories: null,

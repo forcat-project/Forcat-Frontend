@@ -19,7 +19,7 @@ import {
   SoldoutBox,
   LoadingMessage,
   EndOfListMessage,
-} from "../../../components/Product/productContainer"; // 공통 Styled Components 가져오기
+} from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function BestSeller() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -50,7 +50,7 @@ export default function BestSeller() {
 
     setIsFetching(true); // 데이터 요청 상태 설정
     axios
-      .get("http://125.189.109.17/api/products", {
+      .get("https://forcat.store/api/products", {
         params: {
           categories: null, // categories는 null
           ordering: "-purchase_count", // 구매 횟수 기준으로 정렬

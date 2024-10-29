@@ -21,7 +21,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
   LoadingMessage,
-} from "../../components/Product/productContainer";
+} from "../../components/Product/ProductContainer";
 
 export default function OnlySearch() {
   const navigate = useNavigate();
@@ -143,50 +143,55 @@ export default function OnlySearch() {
           <p style={{ color: "red" }}>{error}</p>
         ) : (
           <ProductGrid>
-            {products.map((product) => (
-              <ProductCard
-                key={product.product_id}
-                onClick={() => navigate(`/market/${product.product_id}`)}
-              >
-                <ProductImageContainer>
-                  <ProductImage
-                    src={product.thumbnail_url}
-                    alt={product.name}
-                  />
-                  {product.remain_count === 0 && (
-                    <SoldoutBox width="100%" height="100%">
-                      SOLD OUT
-                    </SoldoutBox>
-                  )}
-                </ProductImageContainer>
-                <ProductDetails>
-                  <ProductCompany>{product.company}</ProductCompany>
-                  <ProductName>{product.name}</ProductName>
-                  <ProductPrice>
-                    {product.discount_rate !== "0.00" ? (
-                      <>
-                        <OriginalPrice>
-                          {Math.round(product.price).toLocaleString()}원
-                        </OriginalPrice>
-                        <DiscountRate>
-                          {Math.round(Number(product.discount_rate))}%
-                        </DiscountRate>
-                        <DiscountedPrice>
-                          {Math.round(
-                            product.discounted_price
-                          ).toLocaleString()}
-                          원
-                        </DiscountedPrice>
-                      </>
-                    ) : (
-                      <DiscountedPrice>
-                        {Math.round(product.price).toLocaleString()}원
-                      </DiscountedPrice>
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard
+                  key={product.product_id}
+                  onClick={() => navigate(`/market/${product.product_id}`)}
+                >
+                  <ProductImageContainer>
+                    <ProductImage
+                      src={product.thumbnail_url}
+                      alt={product.name}
+                    />
+                    {product.remain_count === 0 && (
+                      <SoldoutBox width="100%" height="100%">
+                        SOLD OUT
+                      </SoldoutBox>
                     )}
-                  </ProductPrice>
-                </ProductDetails>
-              </ProductCard>
-            ))}
+                  </ProductImageContainer>
+                  <ProductDetails>
+                    <ProductCompany>{product.company}</ProductCompany>
+                    <ProductName>{product.name}</ProductName>
+                    <ProductPrice>
+                      {product.discount_rate !== "0.00" ? (
+                        <>
+                          <OriginalPrice>
+                            {Math.round(product.price).toLocaleString()}원
+                          </OriginalPrice>
+                          <br />
+                          <DiscountRate>
+                            {Math.round(Number(product.discount_rate))}%
+                          </DiscountRate>
+                          <DiscountedPrice>
+                            {Math.round(
+                              product.discounted_price
+                            ).toLocaleString()}
+                            원
+                          </DiscountedPrice>
+                        </>
+                      ) : (
+                        <DiscountedPrice>
+                          {Math.round(product.price).toLocaleString()}원
+                        </DiscountedPrice>
+                      )}
+                    </ProductPrice>
+                  </ProductDetails>
+                </ProductCard>
+              ))
+            ) : (
+              <LoadingMessage></LoadingMessage>
+            )}
           </ProductGrid>
         )}
         {isFetching && (
