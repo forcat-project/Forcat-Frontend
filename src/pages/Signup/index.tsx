@@ -12,6 +12,7 @@ import InputCatBreed from "../../components/Signup/InputCatBreed";
 import InputBirthDate from "../../components/Signup/InputBirthDate";
 import InputCatGender from "../../components/Signup/InputCatGender";
 import InputCatIsNeutered from "../../components/Signup/InputCatIsNeutered";
+import InputCatWeight from "../../components/Signup/InputCatWeight";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -147,6 +148,21 @@ export default function Signup() {
                                     <Text.TitleMenu300>우리 고양이 중성화 수술 여부를</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
+                                <InputCatIsNeutered />
+                                <InputCatGender />
+                                <InputBirthDate />
+                                <InputCatBreed />
+                                <InputCatName />
+                            </>
+                        )}
+
+                        {step === 10 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>우리 고양이 몸무게를</Text.TitleMenu300>
+                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <InputCatWeight />
                                 <InputCatIsNeutered />
                                 <InputCatGender />
                                 <InputBirthDate />
