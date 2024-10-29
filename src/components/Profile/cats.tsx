@@ -5,7 +5,7 @@ import { Block, Text, Button } from "../../style/ui";
 
 interface Cat {
   name: string;
-  cat_breed: string; // 고양이 품종
+  cat_breed_name: string; // 고양이 품종
   days_since_birth: number;
   gender: number; // 0: 여아, 1: 남아
   is_neutered: number; // 0: 미완료, 1: 완료
@@ -76,7 +76,7 @@ export default function Cats() {
                 견종
               </Text.Notice200>
               <Text.Notice200>
-                {String(cat.cat_breed) || "정보 없음"}
+                {String(cat.cat_breed_name) || "정보 없음"}
               </Text.Notice200>
             </Block.FlexBox>
             <Block.FlexBox margin="5px 0">
