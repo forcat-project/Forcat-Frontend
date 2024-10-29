@@ -217,77 +217,8 @@ type StyleButton = {
 };
 
 export const Button = {
-<<<<<<< HEAD
-    Confirm: styled.div<StyleButton>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 560px;
-        height: 53px;
-        border-radius: 16px;
-        color: #ffffff;
-        background-color: #f4b647; // disabled이면"#e8e8e8" 로 변경되도록 수정하기
-        cursor: pointer; // disabled이면 "not-allowed" 로 변경되도록 수정하기
-    `,
-    Select: styled.div<StyleButton>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 273px;
-        height: 53px;
-        border-radius: 19px;
-        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
-        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
-        cursor: pointer;
-    `,
-    RadiusButton: styled.div<StyleButton>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 320px;
-        height: 53px;
-        border-radius: 30px;
-        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
-        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
-        cursor: pointer;
-    `,
-    CartButton: styled.div<StyleButton & { isSoldOut: boolean }>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 273px;
-        height: 53px;
-        border-radius: 19px;
-        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
-        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f6ecd7")};
-        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
-        border: ${props => props.border};
-    `,
-    BuyButton: styled.div<StyleButton & { isSoldOut: boolean }>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 273px;
-        height: 53px;
-        border-radius: 19px;
-        color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#fff")};
-        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f4b647")};
-        cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
-        border: ${props => props.border};
-    `,
-    EditButton: styled.div<StyleButton>`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px; // 너비를 적당하게 설정
-        height: 25px; // 높이 설정
-        border-radius: 12.5px; // 둥근 모서리
-        color: #939292; // 텍스트 색상
-        background-color: #f0f1f5; // 배경색
-        cursor: pointer;
-=======
   Confirm: styled.div<StyleButton>`
-    display: block;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 560px;
@@ -298,12 +229,23 @@ export const Button = {
     cursor: pointer; // disabled이면 "not-allowed" 로 변경되도록 수정하기
   `,
   Select: styled.div<StyleButton>`
-    display: block;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 273px;
     height: 53px;
     border-radius: 19px;
+    color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
+    background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+    cursor: pointer;
+  `,
+  RadiusButton: styled.div<StyleButton>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    height: 53px;
+    border-radius: 30px;
     color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
     background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
     cursor: pointer;
@@ -342,7 +284,6 @@ export const Button = {
     color: #939292; // 텍스트 색상
     background-color: #f0f1f5; // 배경색
     cursor: pointer;
->>>>>>> 646c120 (feat: cats api 연결)
 
     &:hover {
       background-color: #e0e0e0; // hover 시 배경색 변경
@@ -383,85 +324,10 @@ export const Img = {
 
 // 재사용 될 이미지
 type StyleInput = {
-<<<<<<< HEAD
-    width?: string;
-    height?: string;
-    pointer?: boolean;
-    border?: string;
-};
-
-export const Input = {
-    Search: styled.input<StyleInput>`
-        display: block;
-        width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
-        border: 0;
-        outline: none;
-        padding-left: 10px;
-        ::placeholder {
-            color: #939292;
-            font-size: 17px;
-        }
-        cursor: ${props => props.pointer && "pointer"};
-    `, // 검색 아이콘은 따로 달아주어야 함
-    InfoBox: styled.input<StyleInput>`
-        display: block;
-        width: 560px;
-        height: 53px;
-        outline: #e3e2e0;
-        padding-left: 15px;
-        background-color: #ffffff;
-        border: 1px solid #c9cbd4;
-        border-radius: 19px;
-        ::placeholder {
-            color: #939292;
-            font-size: 17px;
-        }
-        &:focus {
-            border: 1px solid #000;
-        }
-        cursor: ${props => props.pointer && "pointer"};
-    `,
-    BirthBox: styled.input<StyleInput>`
-        display: block;
-        width: 179px;
-        height: 53px;
-        outline: #e3e2e0;
-        padding-left: 15px;
-        background-color: #ffffff;
-        border: 1px solid #c9cbd4;
-        border-radius: 19px;
-        ::placeholder {
-            color: #939292;
-            font-size: 17px;
-        }
-        &:focus {
-            border: 1px solid #000;
-        }
-        cursor: ${props => props.pointer && "pointer"};
-    `,
-    AddressBox: styled.input<StyleInput>`
-        display: block;
-        width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
-        border: 1px solid #c9cbd4;
-        outline: #e3e2e0;
-        padding-left: 15px;
-        background-color: #ffffff;
-        border-radius: 19px;
-        ::placeholder {
-            color: #939292;
-            font-size: 17px;
-        }
-        &:focus {
-            border: 1px solid #000;
-        }
-        cursor: ${props => props.pointer && "pointer"};
-    `,
-=======
   width?: string;
   height?: string;
   pointer?: boolean;
+  border?: string;
 };
 
 export const Input = {
@@ -486,7 +352,7 @@ export const Input = {
     padding-left: 15px;
     background-color: #ffffff;
     border: 1px solid #c9cbd4;
-    border-radius: 10px 10px;
+    border-radius: 19px;
     ::placeholder {
       color: #939292;
       font-size: 17px;
@@ -496,7 +362,42 @@ export const Input = {
     }
     cursor: ${(props) => props.pointer && "pointer"};
   `,
->>>>>>> 646c120 (feat: cats api 연결)
+  BirthBox: styled.input<StyleInput>`
+    display: block;
+    width: 179px;
+    height: 53px;
+    outline: #e3e2e0;
+    padding-left: 15px;
+    background-color: #ffffff;
+    border: 1px solid #c9cbd4;
+    border-radius: 19px;
+    ::placeholder {
+      color: #939292;
+      font-size: 17px;
+    }
+    &:focus {
+      border: 1px solid #000;
+    }
+    cursor: ${(props) => props.pointer && "pointer"};
+  `,
+  AddressBox: styled.input<StyleInput>`
+    display: block;
+    width: ${(props) => (props.width ? props.width : "100%")};
+    height: ${(props) => (props.width ? props.height : "auto")};
+    border: 1px solid #c9cbd4;
+    outline: #e3e2e0;
+    padding-left: 15px;
+    background-color: #ffffff;
+    border-radius: 19px;
+    ::placeholder {
+      color: #939292;
+      font-size: 17px;
+    }
+    &:focus {
+      border: 1px solid #000;
+    }
+    cursor: ${(props) => props.pointer && "pointer"};
+  `,
 };
 
 type StyleMargin = {
