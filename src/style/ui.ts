@@ -238,11 +238,12 @@ export const Button = {
         justify-content: center;
         align-items: center;
         width: 320px;
-        height: 53px;
+        height: 33px;
         border-radius: 30px;
-        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
-        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        border: 1px solid #f4b647;
+        color: #f4b647;
         cursor: pointer;
+        background-color: transparent;
     `,
     CartButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;

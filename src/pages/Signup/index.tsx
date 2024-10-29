@@ -36,9 +36,9 @@ export default function Signup() {
     const handleButtonNext = () => {
         console.log(userInfo);
         setStep(step + 1);
-        // if (step === 5) {
-        //     navigate("/home");
-        // }
+        if (step === 10) {
+            navigate("/home");
+        }
     };
 
     const handleRegistrationComplete = () => {
@@ -128,24 +128,21 @@ export default function Signup() {
                         {step === 5 && (
                             <>
                                 <Block.AbsoluteBox
+                                    width="560px"
                                     top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
+                                    // border="1px solid red"
+                                    style={{ display: "flex", alignItems: "flex-end" }}
                                 >
-                                    <Text.TitleMenu300>우리 고양이 이름을</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                    <Block.FlexBox direction="column" gap="10px">
+                                        <Text.TitleMenu300>우리 고양이 이름을</Text.TitleMenu300>
+                                        <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                    </Block.FlexBox>
+
+                                    <Button.RadiusButton onClick={handleRegistrationComplete}>
+                                        <Text.Notice100 color="Yellow">고양이 정보는 나중에 등록할게요</Text.Notice100>
+                                    </Button.RadiusButton>
                                 </Block.AbsoluteBox>
                                 <InputCatName />
-                                <Block.FlexBox justifyContent="center">
-                                    <Button.RadiusButton onClick={handleRegistrationComplete}>
-                                        <Text.TitleMenu100 color="Yellow">
-                                            고양이 정보는 나중에 등록할게요
-                                        </Text.TitleMenu100>
-                                    </Button.RadiusButton>
-                                </Block.FlexBox>
                             </>
                         )}
 
