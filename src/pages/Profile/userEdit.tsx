@@ -24,45 +24,77 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
   );
   const [address, setAddress] = useState(user.address || "");
   const [addressDetail, setAddressDetail] = useState(user.address_detail || "");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  // Check user data when component mounts or when user prop changes
   useEffect(() => {
     console.log("Phone Number:", user.phone_number);
     console.log("Address:", user.address);
     console.log("Address Detail:", user.address_detail);
   }, [user]);
 
+  // 파일 선택 시 FormData로 파일 설정 및 화면에 즉시 반영
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+
+      // FileReader를 사용해 선택한 이미지를 화면에 바로 표시
       const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setProfilePicture(reader.result.toString());
-        }
+      reader.onloadend = () => {
+        setProfilePicture(reader.result as string);
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSave = async () => {
-    const updatedData = {
-      username: user.username,
-      nickname,
-      profile_picture: profilePicture,
-      phone_number: user.phone_number, // 변경 불가 필드
-      address,
-      address_detail: addressDetail,
-    };
-
     try {
+      let uploadedImageUrl = profilePicture;
+
+      // 이미지 파일이 선택된 경우 서버에 업로드
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const uploadResponse = await axios.post(
+          `https://forcat.store/api/upload`, // 서버의 이미지 업로드 경로
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        // 서버 응답에서 file_url 필드를 uploadedImageUrl로 설정
+        if (uploadResponse.data && uploadResponse.data.file_url) {
+          uploadedImageUrl = uploadResponse.data.file_url;
+        } else {
+          throw new Error(
+            "이미지 업로드에 실패했습니다. 서버가 URL을 반환하지 않습니다."
+          );
+        }
+      }
+
+      const updatedData = {
+        username: user.username,
+        nickname,
+        profile_picture: uploadedImageUrl, // 수정된 profile_picture URL
+        phone_number: user.phone_number,
+        address,
+        address_detail: addressDetail,
+      };
+
       await axios.put(`https://forcat.store/api/users/${user.id}`, updatedData);
       alert("사용자 정보가 업데이트되었습니다.");
+      console.log("업데이트된 데이터:", updatedData);
       onReload();
-
-      onClose(); // 수정 후 모달 닫기
-      onReload();
-    } catch (error) {
+      onClose();
+    } catch (error: any) {
       console.error("정보 수정에 실패했습니다:", error);
+      if (error.response) {
+        console.log("서버 응답 (에러 발생 시):", error.response.data);
+      }
       alert("정보 수정에 실패했습니다.");
     }
   };
