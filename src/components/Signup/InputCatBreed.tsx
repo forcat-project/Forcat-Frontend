@@ -1,10 +1,10 @@
-import { useRecoilState } from "recoil";
+// import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
-import { catState } from "../../recoil";
+// import { catState } from "../../recoil";
 
 export default function InputCatBreed() {
-  const [catInfo, setCatInfo] = useRecoilState(catState);
+  // const [catInfo, setCatInfo] = useRecoilState(catState);
   const { isFocused, handleFocus, handleBlur } = useFocus();
 
   return (
