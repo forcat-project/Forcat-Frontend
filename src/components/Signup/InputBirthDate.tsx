@@ -1,15 +1,15 @@
-// import { useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
-// import { catState } from "../../recoil";
+import { catState } from "../../recoil";
 import { useState } from "react";
 
 export default function InputBirthDate() {
-  const [catBirthYear] = useState<number>();
-  const [catBirthMonth] = useState<number>();
-  const [catBirthDay] = useState<number>();
+  const [catBirthYear, setCatBirthYear] = useState<number>();
+  const [catBirthMonth, setCatBirthMonth] = useState<number>();
+  const [catBirthDay, setCatBirthDay] = useState<number>();
 
-  // const [catInfo, setCatInfo] = useRecoilState(catState);
+  const [catInfo, setCatInfo] = useRecoilState(catState);
   const { isFocused, handleFocus, handleBlur } = useFocus();
 
   const handleCatBirthYearChange = () => {
