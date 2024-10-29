@@ -9,6 +9,8 @@ import InputAddress from "../../components/Signup/InputAddress";
 import InputUserNickName from "../../components/Signup/InputUserNickName";
 import InputCatName from "../../components/Signup/InputCatName";
 import InputCatBreed from "../../components/Signup/InputCatBreed";
+import InputBirthDate from "../../components/Signup/InputBirthDate";
+import InputCatGender from "../../components/Signup/InputCatGender";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -104,11 +106,37 @@ export default function Signup() {
 
                         {step === 6 && (
                             <>
+                                {/* react-modal 연결하기 */}
                                 <Block.FlexBox direction="column" gap="10px">
                                     <Text.TitleMenu300>우리 고양이 품종을</Text.TitleMenu300>
                                     <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
                                 </Block.FlexBox>
                                 <InputCatBreed />
+                                <InputCatName />
+                            </>
+                        )}
+                        {step === 7 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>우리 고양이 생년월일을</Text.TitleMenu300>
+                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <InputBirthDate />
+                                <InputCatBreed />
+                                <InputCatName />
+                            </>
+                        )}
+
+                        {step === 8 && (
+                            <>
+                                <Block.FlexBox direction="column" gap="10px">
+                                    <Text.TitleMenu300>우리 고양이 성별을</Text.TitleMenu300>
+                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
+                                </Block.FlexBox>
+                                <InputCatGender />
+                                <InputBirthDate />
+                                <InputCatBreed />
+                                <InputCatName />
                             </>
                         )}
                     </Block.FlexBox>

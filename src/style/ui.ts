@@ -344,6 +344,24 @@ export const Input = {
         }
         cursor: ${props => props.pointer && "pointer"};
     `,
+    BirthBox: styled.input<StyleInput>`
+        display: block;
+        width: 179px;
+        height: 53px;
+        outline: #e3e2e0;
+        padding-left: 15px;
+        background-color: #ffffff;
+        border: 1px solid #c9cbd4;
+        border-radius: 19px;
+        ::placeholder {
+            color: #939292;
+            font-size: 17px;
+        }
+        &:focus {
+            border: 1px solid #000;
+        }
+        cursor: ${props => props.pointer && "pointer"};
+    `,
     AddressBox: styled.input<StyleInput>`
         display: block;
         width: ${props => (props.width ? props.width : "100%")};

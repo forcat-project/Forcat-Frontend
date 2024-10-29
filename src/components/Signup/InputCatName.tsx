@@ -16,6 +16,7 @@ export default function InputCatName() {
             <Block.FlexBox direction="column" gap="20px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                 <Input.InfoBox
+                    value={catInfo.name}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     onChange={handleUserCatNameChange}
