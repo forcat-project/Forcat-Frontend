@@ -200,7 +200,7 @@ type StyleButton = {
 
 export const Button = {
     Confirm: styled.div<StyleButton>`
-        display: block;
+        display: flex;
         justify-content: center;
         align-items: center;
         width: 560px;
@@ -211,12 +211,23 @@ export const Button = {
         cursor: pointer; // disabled이면 "not-allowed" 로 변경되도록 수정하기
     `,
     Select: styled.div<StyleButton>`
-        display: block;
+        display: flex;
         justify-content: center;
         align-items: center;
         width: 273px;
         height: 53px;
         border-radius: 19px;
+        color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
+        background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
+        cursor: pointer;
+    `,
+    RadiusButton: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 320px;
+        height: 53px;
+        border-radius: 30px;
         color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
@@ -298,6 +309,7 @@ type StyleInput = {
     width?: string;
     height?: string;
     pointer?: boolean;
+    border?: string;
 };
 
 export const Input = {
@@ -322,7 +334,43 @@ export const Input = {
         padding-left: 15px;
         background-color: #ffffff;
         border: 1px solid #c9cbd4;
-        border-radius: 10px 10px;
+        border-radius: 19px;
+        ::placeholder {
+            color: #939292;
+            font-size: 17px;
+        }
+        &:focus {
+            border: 1px solid #000;
+        }
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    BirthBox: styled.input<StyleInput>`
+        display: block;
+        width: 179px;
+        height: 53px;
+        outline: #e3e2e0;
+        padding-left: 15px;
+        background-color: #ffffff;
+        border: 1px solid #c9cbd4;
+        border-radius: 19px;
+        ::placeholder {
+            color: #939292;
+            font-size: 17px;
+        }
+        &:focus {
+            border: 1px solid #000;
+        }
+        cursor: ${props => props.pointer && "pointer"};
+    `,
+    AddressBox: styled.input<StyleInput>`
+        display: block;
+        width: ${props => (props.width ? props.width : "100%")};
+        height: ${props => (props.width ? props.height : "auto")};
+        border: 1px solid #c9cbd4;
+        outline: #e3e2e0;
+        padding-left: 15px;
+        background-color: #ffffff;
+        border-radius: 19px;
         ::placeholder {
             color: #939292;
             font-size: 17px;
