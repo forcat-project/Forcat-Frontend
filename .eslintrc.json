@@ -11,9 +11,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
-    ]
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off" // TypeScript에 대한 규칙 비활성화
   }
 }
