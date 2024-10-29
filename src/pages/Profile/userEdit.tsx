@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { uploadImage } from "../../api/upload"; // 이미지 업로드 함수 가져오기
 import { Block, Text } from "../../style/ui";
 import {
   StyledModal,
@@ -10,6 +10,7 @@ import {
   ProfileImageWrapper,
   StyledTextButton,
 } from "../../style/modal"; // modal.ts 파일에서 스타일 컴포넌트 가져오기
+import axios from "axios";
 
 interface UserEditProps {
   user: any;
@@ -53,27 +54,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
 
       // 이미지 파일이 선택된 경우 서버에 업로드
       if (selectedFile) {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        const uploadResponse = await axios.post(
-          `https://forcat.store/api/upload`, // 서버의 이미지 업로드 경로
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        // 서버 응답에서 file_url 필드를 uploadedImageUrl로 설정
-        if (uploadResponse.data && uploadResponse.data.file_url) {
-          uploadedImageUrl = uploadResponse.data.file_url;
-        } else {
-          throw new Error(
-            "이미지 업로드에 실패했습니다. 서버가 URL을 반환하지 않습니다."
-          );
-        }
+        uploadedImageUrl = await uploadImage(selectedFile); // uploadImage 함수 호출
       }
 
       const updatedData = {
