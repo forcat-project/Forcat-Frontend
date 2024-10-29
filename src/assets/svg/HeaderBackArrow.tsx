@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { SVGProps } from "react";
 const SvgHeaderBackArrow = (props: SVGProps<SVGSVGElement>) => (
   <svg
