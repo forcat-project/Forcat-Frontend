@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
-import styled from "styled-components";
 import { IProducts } from "../../interfaces/product";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   MarketContainer,
   ProductGrid,

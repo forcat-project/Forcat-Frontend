@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Block } from "../../style/ui";
 import { BannerEx } from "../../assets/svg";
 import Footer from "../../components/Home/Footer";
