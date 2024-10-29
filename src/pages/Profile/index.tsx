@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Block } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
-import Purchase from "../../components/Profile/Purchase";
-import AccountManage from "../../components/Profile/AccountManage";
+import Purchase from "../../components/Profile/purchase";
+import AccountManage from "../../components/Profile/accountManage";
 import { PageWrapper } from "../../style/ui";
 
 export default function Profile() {
