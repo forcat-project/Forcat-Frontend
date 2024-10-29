@@ -1,12 +1,12 @@
 // import { useRecoilState } from "recoil";
-import useFocus from "../../hooks/useFocus";
+import { useRecoilState } from "recoil";
 import { Block, Button, Text } from "../../style/ui";
 // import { catState } from "../../recoil";
 import { useState } from "react";
+import { catState } from "../../recoil";
 
 export default function InputCatGender() {
- 
-  // const [catInfo, setCatInfo] = useRecoilState(catState);
+    const [, setCatInfo] = useRecoilState(catState);
     const [isFemaleCat, setIsFemaleCat] = useState(true);
     const [isFocused, setIsFocused] = useState(false);
 

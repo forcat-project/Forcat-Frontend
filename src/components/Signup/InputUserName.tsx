@@ -1,19 +1,19 @@
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
-import { Block, Input, Margin, Text } from "../../style/ui";
+import { Block, Input, Text } from "../../style/ui";
 import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
 
 export default function InputUserName() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+    const [userInfo, setUserInfo] = useRecoilState(userState);
 
-  const { isFocused, handleFocus, handleBlur } = useFocus();
+    const { isFocused, handleFocus, handleBlur } = useFocus();
 
-  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInfo((prev) => ({ ...prev, username: e.target.value }));
-  };
+    const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserInfo(prev => ({ ...prev, username: e.target.value }));
+    };
 
-  return (
+    return (
         <>
             <Block.FlexBox direction="column" gap="10px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
