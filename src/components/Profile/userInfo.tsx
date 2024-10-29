@@ -8,11 +8,14 @@ import UserEdit from "../../pages/Profile/userEdit";
 Modal.setAppElement("#root");
 
 interface User {
+  id: number;
+  username: string; // Add the username property
   nickname: string;
   profile_picture: string;
   phone_number: string;
   address: string;
   address_detail: string;
+  points: number;
 }
 
 interface UserInfoProps {
@@ -91,7 +94,9 @@ export default function UserInfo({ onReload }: UserInfoProps) {
           },
         }}
       >
-        <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />
+        {user && (
+          <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />
+        )}
       </Modal>
     </Block.FlexBox>
   );
