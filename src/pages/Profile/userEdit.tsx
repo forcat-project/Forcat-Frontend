@@ -14,9 +14,10 @@ import {
 interface UserEditProps {
   user: any;
   onClose: () => void;
+  onReload: () => void;
 }
 
-export default function UserEdit({ user, onClose }: UserEditProps) {
+export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
   const [nickname, setNickname] = useState(user.nickname || "");
   const [profilePicture, setProfilePicture] = useState(
     user.profile_picture || ""
@@ -56,7 +57,10 @@ export default function UserEdit({ user, onClose }: UserEditProps) {
     try {
       await axios.put(`https://forcat.store/api/users/${user.id}`, updatedData);
       alert("사용자 정보가 업데이트되었습니다.");
+      onReload();
+
       onClose(); // 수정 후 모달 닫기
+      onReload();
     } catch (error) {
       console.error("정보 수정에 실패했습니다:", error);
       alert("정보 수정에 실패했습니다.");
