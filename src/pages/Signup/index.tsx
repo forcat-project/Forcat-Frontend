@@ -38,7 +38,7 @@ export default function Signup() {
             title: "맞춤 서비스 제공을 위해",
             subtitle: "추가 정보를 입력해 주세요",
             components: [<InputAddress key="address" />],
-            requiredFields: ["address"],
+            requiredFields: ["address", "address_detail"],
         },
         {
             title: "이제 포캣에서 활동할",
