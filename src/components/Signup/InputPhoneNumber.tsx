@@ -21,6 +21,14 @@ export default function InputPhoneNumber() {
 
         if (inputPhoneNumber === "") {
             setIsValid(true);
+            setUserInfo(prev => ({
+                ...prev,
+                phone_number: "",
+            }));
+            setInputValue(prev => ({
+                ...prev,
+                phoneNumber: "",
+            }));
         } else if (validatePhoneNumber(inputPhoneNumber)) {
             setIsValid(true);
             setUserInfo(prev => ({
