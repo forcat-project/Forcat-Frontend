@@ -3,37 +3,62 @@ import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import { Block, Button, Input, Text } from "../../style/ui";
 import { useRecoilState } from "recoil";
-import { userState } from "../../recoil";
+import { inputState, userState } from "../../recoil";
 import useFocus from "../../hooks/useFocus";
 
 ReactModal.setAppElement("#root");
 
-type Props = { address?: string };
-
 export default function InputAddress() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
+    const [, setInputData] = useRecoilState(inputState);
     const [isOpen, setIsOpen] = useState(false);
+    const [detail, setDetail] = useState("");
 
     const onToggleModal = () => {
         setIsOpen(prev => !prev);
     };
 
-    const handleComplete = (data: Props) => {
-        setUserInfo(prev => ({
-            ...prev,
-            address: data.address,
-        }));
-
-        onToggleModal();
+    const handleAddressChange = (data: { address: string }) => {
+        if (data && data.address) {
+            setUserInfo(prev => ({
+                ...prev,
+                address: data.address,
+            }));
+            setInputData(prev => ({
+                ...prev,
+                address: data.address,
+            }));
+            onToggleModal();
+        } else {
+            alert("주소를 다시 검색해주세요.");
+        }
     };
 
     const handleAddressDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const detail = event.target.value;
+        const addressDetail = event.target.value;
+        setDetail(addressDetail);
 
-        setUserInfo(prev => ({
-            ...prev,
-            address_detail: detail,
-        }));
+        if (addressDetail === "") {
+            setUserInfo(prev => ({
+                ...prev,
+                address_detail: "",
+            }));
+            setInputData(prev => ({
+                ...prev,
+                address_detail: "",
+            }));
+        } else {
+            setUserInfo(prev => ({
+                ...prev,
+                address_detail: addressDetail,
+            }));
+            setInputData(prev => ({
+                ...prev,
+                address_detail: addressDetail,
+            }));
+        }
+        console.log("Current detail:", addressDetail);
+        console.log("User Info:", userInfo);
     };
 
     useEffect(() => {
@@ -41,6 +66,7 @@ export default function InputAddress() {
     }, [userInfo]);
 
     const { isFocused, handleFocus, handleBlur } = useFocus();
+
     return (
         <>
             <Block.FlexBox direction="column" gap="16px">
@@ -74,7 +100,7 @@ export default function InputAddress() {
                             },
                         }}
                     >
-                        <DaumPostcode onComplete={handleComplete} />
+                        <DaumPostcode onComplete={handleAddressChange} />
                     </ReactModal>
                 </Block.FlexBox>
                 <Input.AddressBox
@@ -83,7 +109,7 @@ export default function InputAddress() {
                     placeholder="상세 주소를 입력해주세요"
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    value={userInfo.address_detail || ""}
+                    value={detail}
                     onChange={handleAddressDetailChange}
                 />
             </Block.FlexBox>

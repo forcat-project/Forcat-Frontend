@@ -58,6 +58,7 @@ export const inputState = atom<IInputData>({
     default: {
         name: "",
         address: "",
+        address_detail: "",
         nickname: "",
         catName: "",
         catBreed: "",

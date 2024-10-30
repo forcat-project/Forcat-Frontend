@@ -55,6 +55,7 @@ export interface ICat {
 export interface IInputData {
     name: string;
     address: string;
+    address_detail: string;
     nickname: string;
     catName: string;
     catBreed: string;
