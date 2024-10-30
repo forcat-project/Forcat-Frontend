@@ -46,10 +46,11 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                     <Block.FlexBox justifyContent="center">
                         <Text.TitleMenu300>{title}</Text.TitleMenu300>
                         <Block.AbsoluteBox
-                            width="550px"
+                            width="21px"
                             top="20px"
                             onClick={() => setIsOpen(false)}
-                            style={{ display: "flex", justifyContent: "flex-end" }}
+                            style={{ right: "20px" }}
+                            pointer
                         >
                             <GrayClose width={21} height={21} />
                         </Block.AbsoluteBox>
