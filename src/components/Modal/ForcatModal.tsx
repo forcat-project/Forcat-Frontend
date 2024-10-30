@@ -1,5 +1,6 @@
 import ReactModal from "react-modal";
 import { Block, Text } from "../../style/ui";
+import { GrayClose } from "../../assets/svg";
 
 type Props = {
     isOpen: boolean;
@@ -41,14 +42,17 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                 onRequestClose={() => setIsOpen(false)}
                 className="MODAL"
             >
-                <Block.FlexBox>
-                    <Block.FlexBox>
-                        <Text.Discount>{title}</Text.Discount>
-                        <button onClick={() => setIsOpen(false)}>
-                            <Text.Discount>
-                                <img src="/share/x-black.svg" alt="close" width="12px" style={{ cursor: "pointer" }} />
-                            </Text.Discount>
-                        </button>
+                <Block.FlexBox width="599px" margin="40px 0" direction="column" justifyContent="center">
+                    <Block.FlexBox justifyContent="center">
+                        <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                        <Block.AbsoluteBox
+                            width="550px"
+                            top="20px"
+                            onClick={() => setIsOpen(false)}
+                            style={{ display: "flex", justifyContent: "flex-end" }}
+                        >
+                            <GrayClose width={21} height={21} />
+                        </Block.AbsoluteBox>
                     </Block.FlexBox>
                     <Block.FlexBox justifyContent="center">{children}</Block.FlexBox>
                 </Block.FlexBox>

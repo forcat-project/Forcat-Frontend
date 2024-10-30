@@ -19,7 +19,7 @@ export default function InputCatBreed() {
                 setIsOpen={setIsModalOpen}
                 width="599px"
                 height="700px"
-                title="모달타이틀"
+                title="묘종을 검색해주세요"
             >
                 내용
             </ForcatModal>
