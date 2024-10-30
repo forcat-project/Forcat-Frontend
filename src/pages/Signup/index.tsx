@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { inputState, userState } from "../../recoil";
 import { useEffect, useState } from "react";
@@ -20,6 +20,11 @@ export default function Signup() {
     const [, setUserInfo] = useRecoilState(userState);
     const inputData = useRecoilValue(inputState);
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleSkipClick = () => {
+        navigate("/home");
+    };
 
     const [step, setStep] = useState(1);
 
@@ -171,16 +176,6 @@ export default function Signup() {
         setUserInfo(prev => ({ ...prev, username: userName, profile_picture: userProfileImage }));
     }, [location.search, setUserInfo]);
 
-    // const handleButtonNext = () => {
-    //     if (isStepValid()) {
-    //         if (step < steps.length) {
-    //             setStep(step + 1);
-    //         } else {
-    //             navigate("/home");
-    //         }
-    //     }
-    // };
-
     const isStepValid = () => {
         const requiredFields = steps[step - 1].requiredFields;
 
@@ -205,9 +200,29 @@ export default function Signup() {
                 <section>
                     <Block.FlexBox direction="column" gap="64px">
                         <Block.AbsoluteBox top="64px" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                            {step >= 5 && (
+                                <Block.AbsoluteBox
+                                    width="560px"
+                                    pointer
+                                    style={{ display: "flex", justifyContent: "flex-end" }}
+                                    onClick={handleSkipClick}
+                                >
+                                    <Block.FlexBox
+                                        width="200px"
+                                        height="35px"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        borderRadius="50px"
+                                        border="1px solid #F6ECD7"
+                                    >
+                                        <Text.Warning color="Yellow">고양이 정보는 나중에 등록할게요</Text.Warning>
+                                    </Block.FlexBox>
+                                </Block.AbsoluteBox>
+                            )}
                             <Text.TitleMenu300>{title}</Text.TitleMenu300>
                             <Text.TitleMenu300>{subtitle}</Text.TitleMenu300>
                         </Block.AbsoluteBox>
+
                         {components.map(component => component)}
                     </Block.FlexBox>
                 </section>
