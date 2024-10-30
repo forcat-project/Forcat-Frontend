@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { uploadImage } from "../../api/upload"; // 이미지 업로드 함수 가져오기
+import { uploadImage } from "../../api/upload";
 import { Block, Text } from "../../style/ui";
 import {
   StyledModal,
@@ -9,11 +9,22 @@ import {
   StyledInput,
   ProfileImageWrapper,
   StyledTextButton,
-} from "../../style/modal"; // modal.ts 파일에서 스타일 컴포넌트 가져오기
+} from "../../style/modal";
 import axios from "axios";
 
+interface User {
+  id: number;
+  username: string; // Add the username property
+  nickname: string;
+  profile_picture: string;
+  phone_number: string;
+  address: string;
+  address_detail: string;
+  points: number;
+}
+
 interface UserEditProps {
-  user: any;
+  user: User;
   onClose: () => void;
   onReload: () => void;
 }
@@ -33,13 +44,11 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     console.log("Address Detail:", user.address_detail);
   }, [user]);
 
-  // 파일 선택 시 FormData로 파일 설정 및 화면에 즉시 반영
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
 
-      // FileReader를 사용해 선택한 이미지를 화면에 바로 표시
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfilePicture(reader.result as string);
@@ -52,15 +61,14 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     try {
       let uploadedImageUrl = profilePicture;
 
-      // 이미지 파일이 선택된 경우 서버에 업로드
       if (selectedFile) {
-        uploadedImageUrl = await uploadImage(selectedFile); // uploadImage 함수 호출
+        uploadedImageUrl = await uploadImage(selectedFile);
       }
 
       const updatedData = {
         username: user.username,
         nickname,
-        profile_picture: uploadedImageUrl, // 수정된 profile_picture URL
+        profile_picture: uploadedImageUrl,
         phone_number: user.phone_number,
         address,
         address_detail: addressDetail,
@@ -84,6 +92,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     <StyledModal>
       <ModalHeader>
         <CloseButton onClick={onClose}>×</CloseButton>
+        <Text.TitleMenu200>유저 정보 수정</Text.TitleMenu200>
         <SaveButton onClick={handleSave}>완료</SaveButton>
       </ModalHeader>
 

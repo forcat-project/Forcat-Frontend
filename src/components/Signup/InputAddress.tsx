@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
-import { Block, Button, Input } from "../../style/ui";
+import { Block, Button, Input, Text } from "../../style/ui";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil";
+import useFocus from "../../hooks/useFocus";
 
 ReactModal.setAppElement("#root");
 
@@ -39,14 +40,19 @@ export default function InputAddress() {
         console.log("유저정보", userInfo);
     }, [userInfo]);
 
+    const { isFocused, handleFocus, handleBlur } = useFocus();
     return (
         <>
-            <Block.FlexBox direction="column" gap="20px">
+            <Block.FlexBox direction="column" gap="16px">
+                <Text.FocusedMenu isFocused={isFocused}>주소</Text.FocusedMenu>
                 <Block.FlexBox gap="20px">
                     <Input.AddressBox
                         width="100%"
                         placeholder="예) 서울특별시 강서구 마곡중앙8로 71"
                         value={userInfo.address}
+                        onClick={handleFocus}
+                        onBlur={handleBlur}
+                        disabled
                     />
                     <Button.Select onClick={onToggleModal}>주소 찾기</Button.Select>
                     <ReactModal
@@ -75,6 +81,8 @@ export default function InputAddress() {
                     width="100%"
                     height="50px"
                     placeholder="상세 주소를 입력해주세요"
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                     value={userInfo.address_detail || ""}
                     onChange={handleAddressDetailChange}
                 />

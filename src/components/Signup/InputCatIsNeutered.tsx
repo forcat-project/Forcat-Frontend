@@ -1,46 +1,45 @@
-// import { useRecoilState } from "recoil";
 import { useRecoilState } from "recoil";
 import { Block, Button, Text } from "../../style/ui";
-// import { catState } from "../../recoil";
-import { useState } from "react";
 import { catState } from "../../recoil";
+import { useState } from "react";
 
-export default function InputCatGender() {
+export default function InputCatIsNeutered() {
     const [, setCatInfo] = useRecoilState(catState);
-    const [isFemaleCat, setIsFemaleCat] = useState(true);
+    const [isNeutered, setIsNeutered] = useState(true);
+
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleGenderClick = (isFemale: boolean) => {
-        setIsFemaleCat(isFemale);
+    const handleIsNeuteredClick = (isNeutered: boolean) => {
+        setIsNeutered(isNeutered);
         setCatInfo(prev => ({
             ...prev,
-            gender: isFemale ? 0 : 1,
+            is_neutered: isNeutered ? 1 : 0,
         }));
         setIsFocused(true);
     };
 
     return (
         <Block.FlexBox direction="column" gap="20px">
-            <Text.FocusedMenu isFocused={isFocused}>성별</Text.FocusedMenu>
+            <Text.FocusedMenu isFocused={isFocused}>중성화</Text.FocusedMenu>
 
             <Block.FlexBox justifyContent="space-between">
                 <Button.SelectInput
                     tabIndex={0}
-                    onClick={() => handleGenderClick(true)}
+                    onClick={() => handleIsNeuteredClick(true)}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    isActive={isFemaleCat}
+                    isActive={isNeutered}
                 >
-                    여아
+                    했어요
                 </Button.SelectInput>
                 <Button.SelectInput
                     tabIndex={0}
-                    onClick={() => handleGenderClick(false)}
+                    onClick={() => handleIsNeuteredClick(false)}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    isActive={!isFemaleCat}
+                    isActive={!isNeutered}
                 >
-                    남아
+                    안 했어요
                 </Button.SelectInput>
             </Block.FlexBox>
         </Block.FlexBox>

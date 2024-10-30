@@ -4,15 +4,16 @@ import { Block, Input, Text } from "../../style/ui";
 import { userState } from "../../recoil";
 
 export default function InputUserNickName() {
-    const [userInfo, setUserInfo] = useRecoilState(userState);
-    const { isFocused, handleFocus, handleBlur } = useFocus();
+  const [, setUserInfo] = useRecoilState(userState);
+  const { isFocused, handleFocus, handleBlur } = useFocus();
+
 
     const handleUserNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInfo(prev => ({ ...prev, nickname: e.target.value }));
     };
     return (
         <>
-            <Block.FlexBox direction="column" gap="20px">
+            <Block.FlexBox direction="column" gap="20px" margin="20px 0 0 0">
                 <Text.FocusedMenu isFocused={isFocused}>닉네임</Text.FocusedMenu>
                 <Input.InfoBox
                     onFocus={handleFocus}
@@ -23,4 +24,6 @@ export default function InputUserNickName() {
             </Block.FlexBox>
         </>
     );
+ 
+
 }

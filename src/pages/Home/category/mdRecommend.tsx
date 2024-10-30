@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 import {
@@ -17,8 +16,6 @@ import {
   DiscountRate,
   DiscountedPrice,
   SoldoutBox,
-  LoadingMessage,
-  EndOfListMessage,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 
 export default function MdRecommend() {

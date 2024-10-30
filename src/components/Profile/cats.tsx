@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
