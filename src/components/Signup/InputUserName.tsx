@@ -3,10 +3,11 @@ import { userState, inputState } from "../../recoil";
 import { Block, Input, Text } from "../../style/ui";
 import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
+import { useEffect } from "react";
 
 export default function InputUserName() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
-    const [, setInputData] = useRecoilState(inputState);
+    const [inputData, setInputData] = useRecoilState(inputState);
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
     const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,12 +17,18 @@ export default function InputUserName() {
         setInputData(prev => ({ ...prev, name: newData }));
     };
 
+    useEffect(() => {
+        if (userInfo.username && inputData.name === "") {
+            setInputData(prev => ({ ...prev, name: userInfo.username }));
+        }
+    }, [userInfo.username, inputData.name, setInputData]);
+
     return (
         <>
             <Block.FlexBox direction="column" gap="10px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                 <Input.InfoBox
-                    value={userInfo.username || ""}
+                    value={userInfo.username}
                     placeholder="이름을 입력해주세요"
                     onFocus={handleFocus}
                     onBlur={handleBlur}
