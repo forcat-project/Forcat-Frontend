@@ -126,6 +126,20 @@ export default function CatEdit({
     setIsNeutered(selectedStatus);
   };
 
+  const handleDelete = async () => {
+    try {
+      const apiUrl = `${BASE_URL}/users/${userId}/cats/${cat.cat_id}`;
+      await axios.delete(apiUrl);
+
+      alert("고양이 정보가 삭제되었습니다.");
+      onReload();
+      onClose();
+    } catch (error: any) {
+      console.error("고양이 정보 삭제에 실패했습니다:", error);
+      alert("고양이 정보 삭제에 실패했습니다.");
+    }
+  };
+
   return (
     <StyledModal>
       <ModalHeader>
@@ -259,6 +273,16 @@ export default function CatEdit({
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
         />
+        {/* 삭제하기 버튼 */}
+        <Block.FlexBox justifyContent="center" margin="20px 0">
+          <Button.Confirm
+            onClick={handleDelete}
+            isDisabled={false} // 또는 필요한 논리로 설정
+            style={{ padding: "10px 20px", width: "100px", height: "40px" }}
+          >
+            <Text.TitleMenu100 color="White">삭제하기</Text.TitleMenu100>
+          </Button.Confirm>
+        </Block.FlexBox>
       </Block.FlexBox>
     </StyledModal>
   );
