@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 const settings = {
   dots: true, // 하단에 점(dot) 표시
   infinite: true, // 무한 반복
-  speed: 500, // 슬라이드 전환 속도 (ms)
+  speed: 300, // 슬라이드 전환 속도 (ms)
   slidesToShow: 1, // 한 번에 보여줄 슬라이드 수
   slidesToScroll: 1, // 한 번에 스크롤할 슬라이드 수
   autoplay: true, // 자동 재생

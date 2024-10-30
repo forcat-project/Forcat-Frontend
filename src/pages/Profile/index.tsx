@@ -23,33 +23,32 @@ export default function Profile() {
         key={reload.toString()} // `key`에 문자열로 변경
       >
         <UserInfo onReload={handleReload} />
-
         <div
           style={{
-            width: "calc(100% - 40px)", // 양옆에 20px씩 여백 추가
-            border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
-            borderRadius: "8px",
-            padding: "16px",
-            margin: "20px auto 10px", // 상단 여백과 아래쪽 여백 조정
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 부드러운 그림자 추가
-            backgroundColor: "white", // 배경을 흰색으로 설정
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
           }}
-        >
-          <Cats />
-        </div>
+        />
+        <Cats />
         <div
           style={{
-            width: "calc(100% - 40px)", // 양옆에 20px씩 여백 추가
-            border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
-            borderRadius: "8px",
-            padding: "16px",
-            margin: "20px auto 10px", // 상단 여백과 아래쪽 여백 조정
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 부드러운 그림자 추가
-            backgroundColor: "white", // 배경을 흰색으로 설정
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
           }}
-        >
-          <Purchase />
-        </div>
+        />
+        <Purchase />
+        <div
+          style={{
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
+          }}
+        />
         <AccountManage />
       </Block.FlexBox>
     </PageWrapper>
