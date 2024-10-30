@@ -1,3 +1,6 @@
+export { default as Banner1 } from "./Banner1";
+export { default as Banner2 } from "./Banner2";
+export { default as Banner3 } from "./Banner3";
 export { default as BannerEx } from "./BannerEx";
 export { default as BtnGoogle } from "./BtnGoogle";
 export { default as BtnKakao } from "./BtnKakao";
