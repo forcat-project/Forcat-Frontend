@@ -48,7 +48,9 @@ export default function InputPhoneNumber() {
                 type="text"
                 maxLength={11}
             />
-            {!isValid && <Text.Warning color="Warning">올바른 전화번호 형식을 입력해주세요</Text.Warning>}
+            <Block.AbsoluteBox width="550px" top="245px" style={{ display: "flex", justifyContent: "flex-end" }}>
+                {!isValid && <Text.Warning color="Warning">올바른 전화번호 형식을 입력해주세요</Text.Warning>}
+            </Block.AbsoluteBox>
         </Block.FlexBox>
     );
 }
