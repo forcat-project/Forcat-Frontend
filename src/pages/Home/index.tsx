@@ -4,7 +4,6 @@ import Footer from "../../components/Home/Footer";
 import CategoryBox from "../../components/Home/CategoryBox";
 
 export default function Home() {
-  console.log("환영합니다");
   return (
     <>
       <Block.FlexBox

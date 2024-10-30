@@ -14,6 +14,7 @@ import {
 } from "../../style/modal";
 import axios from "axios";
 import { User } from "../../interfaces/info";
+import { BASE_URL } from "../../api/constants";
 
 ReactModal.setAppElement("#root");
 
@@ -52,6 +53,13 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     }
   };
 
+  const handleResetImage = () => {
+    setProfilePicture(
+      "https://forcat-bucket.s3.amazonaws.com/imgs/3e53742c969111ef86e30242ac140003"
+    ); // 프로필 이미지를 null 또는 빈 문자열로 설정하여 기본 이미지로 변경
+    setSelectedFile(null); // 파일 선택도 초기화
+  };
+
   const handleSave = async () => {
     try {
       let uploadedImageUrl = profilePicture;
@@ -69,7 +77,8 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
         address_detail: addressDetail,
       };
 
-      await axios.put(`https://forcat.store/api/users/${user.id}`, updatedData);
+      await axios.put(`${BASE_URL}/users/${user.id}`, updatedData);
+
       alert("사용자 정보가 업데이트되었습니다.");
       console.log("업데이트된 데이터:", updatedData);
       onReload();
@@ -101,7 +110,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
         <SaveButton onClick={handleSave}>완료</SaveButton>
       </ModalHeader>
 
-      <Block.FlexBox direction="column" padding="20px" alignItems="center">
+      <Block.FlexBox direction="column" padding="10px" alignItems="center">
         <ProfileImageWrapper>
           <label htmlFor="profile-upload">
             <img
@@ -124,6 +133,13 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
             onChange={handleImageChange}
           />
         </ProfileImageWrapper>
+
+        <StyledTextButton
+          onClick={handleResetImage}
+          style={{ marginBottom: "30px" }}
+        >
+          기본이미지로 변경
+        </StyledTextButton>
 
         <StyledInput
           type="text"

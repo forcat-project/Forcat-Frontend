@@ -10,8 +10,9 @@ export interface User {
 }
 
 export interface Cat {
-  id?: number;
+  cat_id: number;
   name: string;
+  cat_breed: number;
   cat_breed_name: string;
   days_since_birth?: number;
   gender: number; // 0: 여아, 1: 남아

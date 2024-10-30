@@ -2,18 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
-import CatEdit from "../../pages/Profile/catEdit"; // CatEdit 모달 컴포넌트 임포트
+import CatEdit from "../../pages/Profile/catEdit";
 import { Cat } from "../../interfaces/info";
+import { BASE_URL } from "../../api/constants";
 
 export default function Cats() {
+  const userId = 1; // 사용자 ID를 설정
   const [cats, setCats] = useState<Cat[]>([]);
   const [, setLoading] = useState<boolean>(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
   useEffect(() => {
+    fetchCats();
+  }, []);
+
+  const fetchCats = () => {
     axios
-      .get("https://forcat.store/api/users/1/cats")
+      .get(`${BASE_URL}/users/${userId}/cats`)
       .then((response) => {
         const catData = Array.isArray(response.data)
           ? response.data
@@ -25,7 +31,7 @@ export default function Cats() {
         console.error("고양이 정보를 가져오는데 실패했습니다:", error);
         setLoading(false);
       });
-  }, []);
+  };
 
   const getMonthsFromDays = (days: number) => {
     if (days === undefined || days < 0) {
@@ -46,7 +52,9 @@ export default function Cats() {
 
   const handleSave = (updatedCat: Cat) => {
     setCats((prevCats) =>
-      prevCats.map((cat) => (cat.id === updatedCat.id ? updatedCat : cat))
+      prevCats.map((cat) =>
+        cat.cat_id === updatedCat.cat_id ? updatedCat : cat
+      )
     );
     closeEditModal();
   };
@@ -142,7 +150,9 @@ export default function Cats() {
       {isEditModalOpen && selectedCat && (
         <CatEdit
           cat={selectedCat}
+          userId={userId}
           onClose={closeEditModal}
+          onReload={fetchCats} // 프로필 페이지 reload
           onSave={handleSave}
         />
       )}
