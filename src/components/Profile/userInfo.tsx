@@ -4,19 +4,9 @@ import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
 import UserEdit from "../../pages/Profile/userEdit";
+import { User } from "../../interfaces/info";
 
 Modal.setAppElement("#root");
-
-interface User {
-  id: number;
-  username: string; // Add the username property
-  nickname: string;
-  profile_picture: string;
-  phone_number: string;
-  address: string;
-  address_detail: string;
-  points: number;
-}
 
 interface UserInfoProps {
   onReload: () => void; // Reload 함수 prop 추가

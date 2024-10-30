@@ -3,20 +3,11 @@ import axios from "axios";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
 import CatEdit from "../../pages/Profile/catEdit"; // CatEdit 모달 컴포넌트 임포트
-
-interface Cat {
-  name: string;
-  cat_breed_name: string;
-  days_since_birth: number;
-  gender: number;
-  is_neutered: number;
-  weight: string;
-  profile_image: string;
-}
+import { Cat } from "../../interfaces/info";
 
 export default function Cats() {
   const [cats, setCats] = useState<Cat[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
@@ -54,16 +45,11 @@ export default function Cats() {
   };
 
   const handleSave = (updatedCat: Cat) => {
-    // 업데이트된 고양이 정보를 반영하여 상태를 갱신
     setCats((prevCats) =>
-      prevCats.map((cat) => (cat.name === updatedCat.name ? updatedCat : cat))
+      prevCats.map((cat) => (cat.id === updatedCat.id ? updatedCat : cat))
     );
     closeEditModal();
   };
-
-  if (loading) {
-    return <Text.Notice200>로딩 중...</Text.Notice200>;
-  }
 
   return (
     <Block.FlexBox padding="20px" direction="column">
@@ -99,7 +85,7 @@ export default function Cats() {
                 나이
               </Text.Notice200>
               <Text.Notice200>
-                {getMonthsFromDays(cat.days_since_birth)}
+                {getMonthsFromDays(cat.days_since_birth || 0)}
               </Text.Notice200>
             </Block.FlexBox>
             <Block.FlexBox margin="5px 0">
@@ -153,7 +139,7 @@ export default function Cats() {
         </Block.FlexBox>
       ))}
 
-      {isEditModalOpen && (
+      {isEditModalOpen && selectedCat && (
         <CatEdit
           cat={selectedCat}
           onClose={closeEditModal}

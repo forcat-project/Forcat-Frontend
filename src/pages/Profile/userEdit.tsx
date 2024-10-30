@@ -11,17 +11,7 @@ import {
   StyledTextButton,
 } from "../../style/modal";
 import axios from "axios";
-
-interface User {
-  id: number;
-  username: string; // Add the username property
-  nickname: string;
-  profile_picture: string;
-  phone_number: string;
-  address: string;
-  address_detail: string;
-  points: number;
-}
+import { User } from "../../interfaces/info";
 
 interface UserEditProps {
   user: User;

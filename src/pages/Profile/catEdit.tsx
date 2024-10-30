@@ -1,4 +1,3 @@
-// CatEdit.tsx
 import { useState } from "react";
 import {
   StyledModal,
@@ -9,11 +8,12 @@ import {
   ProfileImageWrapper,
 } from "../../style/modal";
 import { Block, Text, Button } from "../../style/ui";
+import { Cat } from "../../interfaces/info";
 
 interface CatEditProps {
-  cat: any;
+  cat: Cat;
   onClose: () => void;
-  onSave: (updatedCat: any) => void;
+  onSave: (updatedCat: Cat) => void;
 }
 
 export default function CatEdit({ cat, onClose, onSave }: CatEditProps) {
@@ -26,13 +26,14 @@ export default function CatEdit({ cat, onClose, onSave }: CatEditProps) {
   const [weight, setWeight] = useState(cat.weight || "");
 
   const handleSave = () => {
-    const updatedCat = {
+    const updatedCat: Cat = {
       ...cat,
       name,
       cat_breed_name: breed,
       birth_date: `${birthYear}-${birthMonth}-${birthDay}`,
       gender,
       weight,
+      profile_image: cat.profile_image,
     };
     onSave(updatedCat);
     onClose();
