@@ -1,14 +1,17 @@
 import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
-import { catState } from "../../recoil";
+import { catState, inputState } from "../../recoil";
 
 export default function InputCatName() {
     const [catInfo, setCatInfo] = useRecoilState(catState);
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
+    const [, setInputData] = useRecoilState(inputState);
+
     const handleUserCatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCatInfo(prev => ({ ...prev, name: e.target.value }));
+        setInputData(prev => ({ ...prev, catName: e.target.value }));
     };
 
     return (
