@@ -4,7 +4,7 @@ import { catState } from "../../recoil";
 import { useState } from "react";
 
 export default function InputCatIsNeutered() {
-    const [catInfo, setCatInfo] = useRecoilState(catState);
+    const [, setCatInfo] = useRecoilState(catState);
     const [isNeutered, setIsNeutered] = useState(true);
 
     const [isFocused, setIsFocused] = useState(false);

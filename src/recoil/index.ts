@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { ICat, IProduct, IUser } from "../interfaces/product";
+import { ICat, IInputData, IProduct, IUser } from "../interfaces/product";
 
 export const exampleState = atom({
     key: "exampleState",
@@ -50,5 +50,20 @@ export const catState = atom<ICat>({
         weight: "",
         profile_image: "",
         days_since_birth: "",
+    },
+});
+
+export const inputState = atom<IInputData>({
+    key: "inputState",
+    default: {
+        name: "",
+        address: "",
+        nickname: "",
+        catName: "",
+        catBreed: "",
+        birthDate: "",
+        catGender: "",
+        isNeutered: "",
+        catWeight: "",
     },
 });

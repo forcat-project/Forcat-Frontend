@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../../recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { inputState, userState } from "../../recoil";
 import { useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
-import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 import InputAddress from "../../components/Signup/InputAddress";
 import InputUserNickName from "../../components/Signup/InputUserNickName";
 import InputCatName from "../../components/Signup/InputCatName";
@@ -13,37 +12,127 @@ import InputBirthDate from "../../components/Signup/InputBirthDate";
 import InputCatGender from "../../components/Signup/InputCatGender";
 import InputCatIsNeutered from "../../components/Signup/InputCatIsNeutered";
 import InputCatWeight from "../../components/Signup/InputCatWeight";
+import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 
 export default function Signup() {
-    const [userInfo, setUserInfo] = useRecoilState(userState);
+    const [, setUserInfo] = useRecoilState(userState);
+    const inputData = useRecoilValue(inputState);
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const userName = searchParams.get("username") || "";
-    const userProfileInfo = searchParams.get("profile_image") || "";
-    const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
+    const navigate = useNavigate();
+    const [step, setStep] = useState(1);
+
+    const steps = [
+        {
+            title: "보호자님의",
+            subtitle: "이름을 알려주세요",
+            components: [<InputUserName key="name" />],
+            requiredFields: ["name"],
+        },
+        {
+            title: "보호자님의",
+            subtitle: "휴대폰 번호를 알려주세요",
+            components: [<InputPhoneNumber key="phone" />, <InputUserName key="name" />],
+            requiredFields: ["phoneNumber", "name"],
+        },
+        {
+            title: "맞춤 서비스 제공을 위해",
+            subtitle: "추가 정보를 입력해 주세요",
+            components: [<InputAddress key="address" />],
+            requiredFields: ["address"],
+        },
+        {
+            title: "이제 포캣에서 활동할",
+            subtitle: "프로필을 등록해봐요",
+            components: [<InputUserNickName key="nickname" />],
+            requiredFields: ["nickname"],
+        },
+        {
+            title: "우리 고양이 이름을",
+            subtitle: "알려주세요",
+            components: [<InputCatName key="catName" />],
+            requiredFields: ["catName"],
+        },
+        {
+            title: "우리 고양이 품종을",
+            subtitle: "알려주세요",
+            components: [<InputCatBreed key="catBreed" />, <InputCatName key="catName" />],
+            requiredFields: ["catBreed", "catName"],
+        },
+        {
+            title: "우리 고양이 생년월일을",
+            subtitle: "알려주세요",
+            components: [
+                <InputBirthDate key="birthDate" />,
+                <InputCatBreed key="catBreed" />,
+                <InputCatName key="catName" />,
+            ],
+            requiredFields: ["birthDate", "catBreed", "catName"],
+        },
+        {
+            title: "우리 고양이 성별을",
+            subtitle: "알려주세요",
+            components: [
+                <InputCatGender key="catGender" />,
+                <InputBirthDate key="birthDate" />,
+                <InputCatBreed key="catBreed" />,
+                <InputCatName key="catName" />,
+            ],
+            requiredFields: ["catGender", "birthDate", "catBreed", "catName"],
+        },
+        {
+            title: "우리 고양이 중성화 수술 여부를",
+            subtitle: "알려주세요",
+            components: [
+                <InputCatIsNeutered key="isNeutered" />,
+                <InputCatGender key="catGender" />,
+                <InputBirthDate key="birthDate" />,
+                <InputCatBreed key="catBreed" />,
+                <InputCatName key="catName" />,
+            ],
+            requiredFields: ["isNeutered", "catGender", "birthDate", "catBreed", "catName"],
+        },
+        {
+            title: "우리 고양이 몸무게를",
+            subtitle: "알려주세요",
+            components: [
+                <InputCatWeight key="catWeight" />,
+                <InputCatIsNeutered key="isNeutered" />,
+                <InputCatGender key="catGender" />,
+                <InputBirthDate key="birthDate" />,
+                <InputCatBreed key="catBreed" />,
+                <InputCatName key="catName" />,
+            ],
+            requiredFields: ["catWeight", "isNeutered", "catGender", "birthDate", "catBreed", "catName"],
+        },
+    ];
 
     useEffect(() => {
-        setUserInfo(prev => ({
-            ...prev,
-            username: userName,
-            profile_picture: userProfileImage,
-        }));
-    }, [userName, userProfileImage, setUserInfo]);
-
-    const [step, setStep] = useState(1);
-    const navigate = useNavigate();
+        const searchParams = new URLSearchParams(location.search);
+        const userName = searchParams.get("username") || "";
+        const userProfileInfo = searchParams.get("profile_image") || "";
+        const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
+        setUserInfo(prev => ({ ...prev, username: userName, profile_picture: userProfileImage }));
+    }, [location.search, setUserInfo]);
 
     const handleButtonNext = () => {
-        console.log(userInfo);
-        setStep(step + 1);
-        if (step === 10) {
-            navigate("/home");
+        if (isStepValid()) {
+            if (step < steps.length) {
+                setStep(step + 1);
+            } else {
+                navigate("/home");
+            }
         }
     };
 
-    const handleRegistrationComplete = () => {
-        navigate("/home");
+    const isStepValid = () => {
+        const requiredFields = steps[step - 1].requiredFields;
+
+        return requiredFields.every(field => {
+            return inputData[field] && inputData[field].trim() !== "";
+        });
     };
+
+    const { title, subtitle, components } = steps[step - 1];
 
     return (
         <>
@@ -58,193 +147,11 @@ export default function Signup() {
             >
                 <section>
                     <Block.FlexBox direction="column" gap="64px">
-                        {step === 1 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
-                                    <Text.TitleMenu300>이름을 알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputUserName />
-                            </>
-                        )}
-                        {step === 2 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>보호자님의</Text.TitleMenu300>
-                                    <Text.TitleMenu300>휴대폰 번호를 알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputPhoneNumber setUserInfo={setUserInfo} />
-                                <InputUserName />
-                            </>
-                        )}
-                        {step === 3 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>맞춤 서비스 제공을 위해</Text.TitleMenu300>
-                                    <Text.TitleMenu300>추가 정보를 입력해 주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputAddress />
-                            </>
-                        )}
-                        {step === 4 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>이제 포캣에서 활동할</Text.TitleMenu300>
-                                    <Text.TitleMenu300>프로필을 등록해봐요</Text.TitleMenu300>
-                                    <Text.Warning color="Gray">프로필 사진은 나중에도 등록 가능해요!</Text.Warning>
-                                </Block.AbsoluteBox>
-                                <InputUserNickName />
-                            </>
-                        )}
-
-                        {step === 5 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    width="560px"
-                                    top="64px"
-                                    // border="1px solid red"
-                                    style={{ display: "flex", alignItems: "flex-end" }}
-                                >
-                                    <Block.FlexBox direction="column" gap="10px">
-                                        <Text.TitleMenu300>우리 고양이 이름을</Text.TitleMenu300>
-                                        <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                    </Block.FlexBox>
-
-                                    <Button.RadiusButton onClick={handleRegistrationComplete}>
-                                        <Text.Notice100 color="Yellow">고양이 정보는 나중에 등록할게요</Text.Notice100>
-                                    </Button.RadiusButton>
-                                </Block.AbsoluteBox>
-                                <InputCatName />
-                            </>
-                        )}
-
-                        {step === 6 && (
-                            <>
-                                {/* react-modal 연결하기 */}
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>우리 고양이 품종을</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputCatBreed />
-                                <InputCatName />
-                            </>
-                        )}
-                        {step === 7 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>우리 고양이 생년월일을</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputBirthDate />
-                                <InputCatBreed />
-                                <InputCatName />
-                            </>
-                        )}
-
-                        {step === 8 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>우리 고양이 성별을</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputCatGender />
-                                <InputBirthDate />
-                                <InputCatBreed />
-                                <InputCatName />
-                            </>
-                        )}
-
-                        {step === 9 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>우리 고양이 중성화 수술 여부를</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputCatIsNeutered />
-                                <InputCatGender />
-                                <InputBirthDate />
-                                <InputCatBreed />
-                                <InputCatName />
-                            </>
-                        )}
-
-                        {step === 10 && (
-                            <>
-                                <Block.AbsoluteBox
-                                    top="64px"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                    }}
-                                >
-                                    <Text.TitleMenu300>우리 고양이 몸무게를</Text.TitleMenu300>
-                                    <Text.TitleMenu300>알려주세요</Text.TitleMenu300>
-                                </Block.AbsoluteBox>
-                                <InputCatWeight />
-                                <InputCatIsNeutered />
-                                <InputCatGender />
-                                <InputBirthDate />
-                                <InputCatBreed />
-                                <InputCatName />
-                            </>
-                        )}
+                        <Block.AbsoluteBox top="64px" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                            <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                            <Text.TitleMenu300>{subtitle}</Text.TitleMenu300>
+                        </Block.AbsoluteBox>
+                        {components.map(component => component)}
                     </Block.FlexBox>
                 </section>
             </Block.FlexBox>
@@ -260,7 +167,7 @@ export default function Signup() {
                     alignItems: "center",
                 }}
             >
-                <Button.Confirm onClick={handleButtonNext}>
+                <Button.Confirm onClick={handleButtonNext} isDisabled={!isStepValid()}>
                     <Text.TitleMenu300 color="White">확인</Text.TitleMenu300>
                 </Button.Confirm>
             </Block.AbsoluteBox>
