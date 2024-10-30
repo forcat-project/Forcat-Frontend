@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import DaumPostcode from "react-daum-postcode";
+import ReactModal from "react-modal";
 import { uploadImage } from "../../api/upload";
 import { Block, Text } from "../../style/ui";
 import {
@@ -12,6 +14,8 @@ import {
 } from "../../style/modal";
 import axios from "axios";
 import { User } from "../../interfaces/info";
+
+ReactModal.setAppElement("#root");
 
 interface UserEditProps {
   user: User;
@@ -27,6 +31,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
   const [address, setAddress] = useState(user.address || "");
   const [addressDetail, setAddressDetail] = useState(user.address_detail || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("Phone Number:", user.phone_number);
@@ -78,6 +83,16 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     }
   };
 
+  const onToggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const handleComplete = (data: { address: string }) => {
+    setAddress(data.address);
+    setAddressDetail(""); // 상세 주소는 빈칸으로 설정
+    onToggleModal();
+  };
+
   return (
     <StyledModal>
       <ModalHeader>
@@ -127,10 +142,11 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
             padding="8px 0"
           >
             <Text.Notice200 color="Gray">주소</Text.Notice200>
-            <StyledTextButton onClick={() => alert()}>
+            <StyledTextButton onClick={onToggleModal}>
               주소 변경
             </StyledTextButton>
           </Block.FlexBox>
+
           <StyledInput
             type="text"
             placeholder="주소"
@@ -145,6 +161,29 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
           />
         </Block.FlexBox>
       </Block.FlexBox>
+
+      {/* 주소 검색 모달 */}
+      <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={onToggleModal}
+        contentLabel="주소 검색"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            width: "500px",
+            padding: "20px",
+          },
+        }}
+      >
+        <DaumPostcode onComplete={handleComplete} />
+      </ReactModal>
     </StyledModal>
   );
 }

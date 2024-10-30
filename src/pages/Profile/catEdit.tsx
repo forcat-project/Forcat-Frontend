@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyledModal,
   ModalHeader,
@@ -19,11 +19,21 @@ interface CatEditProps {
 export default function CatEdit({ cat, onClose, onSave }: CatEditProps) {
   const [name, setName] = useState(cat.name || "");
   const [breed, setBreed] = useState(cat.cat_breed_name || "");
-  const [birthYear, setBirthYear] = useState(""); // 연도 필드
-  const [birthMonth, setBirthMonth] = useState(""); // 월 필드
-  const [birthDay, setBirthDay] = useState(""); // 일 필드
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
   const [gender, setGender] = useState(cat.gender || 0); // 0: 여아, 1: 남아
   const [weight, setWeight] = useState(cat.weight || "");
+
+  // 생년월일 초기값 설정
+  useEffect(() => {
+    if (cat.birth_date) {
+      const [year, month, day] = cat.birth_date.split("-");
+      setBirthYear(year);
+      setBirthMonth(month);
+      setBirthDay(day);
+    }
+  }, [cat.birth_date]);
 
   const handleSave = () => {
     const updatedCat: Cat = {
@@ -94,19 +104,19 @@ export default function CatEdit({ cat, onClose, onSave }: CatEditProps) {
         <Block.FlexBox>
           <StyledInput
             type="text"
-            placeholder="년"
+            placeholder={birthYear || "년"}
             value={birthYear}
             onChange={(e) => setBirthYear(e.target.value)}
           />
           <StyledInput
             type="text"
-            placeholder="월"
+            placeholder={birthMonth || "월"}
             value={birthMonth}
             onChange={(e) => setBirthMonth(e.target.value)}
           />
           <StyledInput
             type="text"
-            placeholder="일"
+            placeholder={birthDay || "일"}
             value={birthDay}
             onChange={(e) => setBirthDay(e.target.value)}
           />
