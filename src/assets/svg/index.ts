@@ -4,6 +4,7 @@ export { default as BtnKakao } from "./BtnKakao";
 export { default as BtnNaver } from "./BtnNaver";
 export { default as Cart } from "./Cart";
 export { default as CartDisabled } from "./CartDisabled";
+export { default as Fish } from "./Fish";
 export { default as FooterLogo } from "./FooterLogo";
 export { default as GrayClose } from "./GrayClose";
 export { default as HeaderBackArrow } from "./HeaderBackArrow";

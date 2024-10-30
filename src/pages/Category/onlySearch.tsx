@@ -22,6 +22,7 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../components/Product/ProductContainer";
+import { BASE_URL } from "../../api/constants";
 
 export default function OnlySearch() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ export default function OnlySearch() {
     setIsFetching(true);
     setError(null);
     try {
-      const response = await axios.get("http://125.189.109.17/api/products", {
+      const response = await axios.get(`${BASE_URL}/products`, {
         params: {
           name: searchValue,
           cursor: cursorValue ? decodeURIComponent(cursorValue) : null,

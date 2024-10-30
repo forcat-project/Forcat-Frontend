@@ -17,6 +17,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
+import { BASE_URL } from "../../../api/constants";
 
 export default function MdRecommend() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -25,7 +26,7 @@ export default function MdRecommend() {
 
   useEffect(() => {
     axios
-      .get("https://forcat.store/api/products", {
+      .get(`${BASE_URL}/products`, {
         params: {
           categories: 68, // MD 추천 카테고리 ID
         },
