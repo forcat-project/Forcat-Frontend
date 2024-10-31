@@ -36,6 +36,7 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                         bottom: "0",
                         left: "50%",
                         transform: "translateX(-50%)",
+                        outline: "none",
                     },
                 }}
                 isOpen={isOpen}
