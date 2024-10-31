@@ -173,7 +173,7 @@ export default function Signup() {
         const searchParams = new URLSearchParams(location.search);
         const userName = searchParams.get("username") || "";
         const userProfileInfo = searchParams.get("profile_image") || "";
-        const kakaoId = searchParams.get("id") || "";
+        const kakaoId = searchParams.get("kakao_id") || "";
         const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
         setUserInfo(prev => ({ ...prev, kakao_id: kakaoId, username: userName, profile_picture: userProfileImage }));
     }, [location.search, setUserInfo]);

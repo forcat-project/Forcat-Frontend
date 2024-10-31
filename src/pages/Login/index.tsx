@@ -4,7 +4,6 @@ import { Block, Text } from "../../style/ui";
 
 export default function Login() {
     const handleKakaoLoginClick = () => {
-        console.log(KAKAO_LOGIN_URL);
         window.location.href = `${KAKAO_LOGIN_URL}`;
     };
     return (
