@@ -17,7 +17,7 @@ function App() {
     };
 
     const handleProfileClick = () => {
-        navigate("/login");
+        navigate("/profile");
     };
 
     return (
