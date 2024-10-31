@@ -4,7 +4,6 @@ import axios, { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
-
 import { BASE_URL } from "../../api/constants";
 import ForcatModal from "../../components/Modal/ForcatModal";
 import { Minus, Plus } from "../../assets/svg";
@@ -14,13 +13,12 @@ export default function MarketDetail() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
+    const [cartCount, setCartCount] = useState(1);
 
     const navigate = useNavigate();
 
     const isSoldOut = productDetail?.remain_count === 0;
     const handleCartButtonClick = () => {
-        // if (!isSoldOut) navigate("/cart");
-        console.log("장바구니에 담기");
         setIsModalOpen(true);
     };
 
@@ -47,11 +45,24 @@ export default function MarketDetail() {
         return <div>Error: {error.message}</div>;
     }
 
+    const handleMinusButtonClick = () => {
+        if (productDetail?.remain_count > 1 && cartCount > 1) {
+            setCartCount(prev => prev - 1);
+        }
+    };
+
+    const handlePlusButtonClick = () => {
+        if (productDetail?.remain_count >= cartCount) {
+            setCartCount(prev => prev + 1);
+        } else {
+            alert("재고 수량이 부족합니다.");
+        }
+    };
     return (
         <>
             <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} width="599px" height="320px" title="">
                 <Block.FlexBox
-                    width="560px"
+                    width="559px"
                     height="240px"
                     direction="column"
                     alignItems="center"
@@ -65,32 +76,57 @@ export default function MarketDetail() {
                         bgColor="#F8F8F8"
                         justifyContent="space-between"
                         alignItems="center"
+                        padding="20px"
                     >
-                        <Block.FlexBox
-                            width="100%"
-                            height="100%"
-                            padding="20px"
-                            direction="column"
-                            justifyContent="space-between"
-                        >
-                            <Text.Discount>애니몬다 봄파인스텐 마일드 주식캔 습식사료 5종 100g</Text.Discount>
-                            <Text.Discount>15,000원</Text.Discount>
+                        <Block.FlexBox width="100%" height="100%" direction="column" justifyContent="space-between">
+                            <Text.Menu>{productDetail?.name}</Text.Menu>
+                            <Text.Menu color="Gray">
+                                {Number(productDetail?.discount_rate) > 0 ? (
+                                    <>{Math.floor(Number(productDetail?.discounted_price)).toLocaleString()} 원</>
+                                ) : (
+                                    <> {productDetail && Math.floor(productDetail?.price).toLocaleString()} 원</>
+                                )}
+                            </Text.Menu>
                         </Block.FlexBox>
 
-                        <Block.FlexBox width="180px" justifyContent="space-evenly" alignItems="center">
-                            <Minus width={28} height={28} fill="#e8e8e8" />
-                            <Text.TitleMenu300>1</Text.TitleMenu300>
-                            <Plus width={28} height={28} fill="#e8e8e8" />
+                        <Block.FlexBox width="140px" justifyContent="space-between" alignItems="center">
+                            <Minus
+                                width={28}
+                                height={28}
+                                cursor="pointer"
+                                fill="#e8e8e8"
+                                onClick={handleMinusButtonClick}
+                            />
+                            <Text.TitleMenu300>{cartCount}</Text.TitleMenu300>
+                            <Plus
+                                width={28}
+                                height={28}
+                                cursor="pointer"
+                                fill="#e8e8e8"
+                                onClick={handlePlusButtonClick}
+                            />
                         </Block.FlexBox>
                     </Block.FlexBox>
 
-                    <Block.FlexBox justifyContent="space-between">
-                        <Text.Discount>총 상품 금액</Text.Discount>
+                    <Block.FlexBox justifyContent="space-between" padding="0 20px">
+                        <Text.TitleMenu200>총 상품 금액</Text.TitleMenu200>
 
-                        <Text.Discount>15,000원</Text.Discount>
+                        <Text.Discount color="Black">
+                            {Number(productDetail?.discount_rate) > 0 ? (
+                                <>
+                                    {(Math.floor(Number(productDetail?.discounted_price)) * cartCount).toLocaleString()}{" "}
+                                    원
+                                </>
+                            ) : (
+                                <>
+                                    {" "}
+                                    {productDetail && (Math.floor(productDetail?.price) * cartCount).toLocaleString()}원
+                                </>
+                            )}
+                        </Text.Discount>
                     </Block.FlexBox>
 
-                    <Button.CartConfirm>
+                    <Button.CartConfirm cursor="pointer">
                         <Text.TitleMenu200 color="Yellow">장바구니에 담기</Text.TitleMenu200>
                     </Button.CartConfirm>
                 </Block.FlexBox>
