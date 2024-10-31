@@ -9,10 +9,13 @@ import { Minus, Plus } from "../../assets/svg";
 import axiosInstance from "../../api/axiosInstance";
 import { useUserId } from "../../hooks/useUserId";
 
+import { ChoiceModalBody, ChoiceModalButton, ChoiceModalContent, ChoiceModalFooter, ChoiceModalHeader, ChoiceModalOverlay, ChoiceModalTitle } from "../../style/modal";
+
 export default function MarketDetail() {
   const { productId } = useParams();
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [isChoiceModalOpen, setIsChoiceModalOpen] = useState(false);
   const [productDetail, setProductDetail] = useState<IProduct | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [cartCount, setCartCount] = useState(1);
@@ -42,9 +45,11 @@ export default function MarketDetail() {
       try {
         const res = axiosInstance.post(`/users/${userId}/cart/products`, {
           product_id: productId,
+          quantity: cartCount
         });
         console.log(res);
-        alert("성공적으로 장바구니에 담겼습니다.");
+        setIsCartModalOpen(false);
+        setIsChoiceModalOpen(true);
       } catch (error) {
         alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
       }
@@ -118,6 +123,14 @@ export default function MarketDetail() {
     } else {
       alert("재고 수량이 부족합니다.");
     }
+  };
+
+  const handleContinueShopping = () => {
+    setIsChoiceModalOpen(false);
+  };
+
+  const handleGoToCart = () => {
+    navigate("/cart");
   };
 
   return (
@@ -440,6 +453,27 @@ export default function MarketDetail() {
           </Block.FlexBox>
         </Block.AbsoluteBox>
       </Block.FlexBox>
+
+      {isChoiceModalOpen && (
+        <ChoiceModalOverlay onClick={handleContinueShopping}>
+          <ChoiceModalContent onClick={(e) => e.stopPropagation()}>
+            <ChoiceModalHeader>
+              <ChoiceModalTitle>상품이 장바구니에 담겼습니다</ChoiceModalTitle>
+            </ChoiceModalHeader>
+            <ChoiceModalBody>
+              장바구니로 이동하시겠습니까?
+            </ChoiceModalBody>
+            <ChoiceModalFooter>
+              <ChoiceModalButton onClick={handleContinueShopping} variant="secondary">
+                계속 구경하기
+              </ChoiceModalButton>
+              <ChoiceModalButton onClick={handleGoToCart} variant="primary">
+                장바구니로 이동
+              </ChoiceModalButton>
+            </ChoiceModalFooter>
+          </ChoiceModalContent>
+        </ChoiceModalOverlay>
+      )}
     </>
   );
 }
