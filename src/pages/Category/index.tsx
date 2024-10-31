@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Block, Input } from "../../style/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import { BASE_URL } from "../../api/constants";
+import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 
 interface Category {
   category_id: number;
@@ -45,6 +46,7 @@ export default function Search() {
   return (
     <Container>
       {/* 검색 바 */}
+      <ChannelTalk />
       <SearchBar>
         <Block.FlexBox
           width="100%"

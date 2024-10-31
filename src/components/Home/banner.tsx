@@ -14,14 +14,15 @@ const settings = {
   autoplay: true, // 자동 재생
   autoplaySpeed: 3000, // 자동 재생 간격 (ms)
   arrows: false, // 좌우 화살표 숨김
+  centerMode: false, // 다른 슬라이드가 보이지 않도록 설정
 };
 
 // 배너 이미지를 배열로 정의
 // const banners = [<Banner1 />, <Banner2 />, <Banner3 />];
 const banners = [
-  "/banners/banner1.jpg",
-  "/banners/banner2.jpg",
   "/banners/banner3.jpg",
+  "/banners/banner2.jpg",
+  "/banners/banner1.jpg",
 ];
 
 // 슬라이더 컴포넌트 정의
@@ -33,6 +34,7 @@ export default function BannerSlider() {
           <div
             key={index}
             style={{
+              width: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
