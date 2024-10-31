@@ -6,7 +6,7 @@ import axios from "axios";
  */
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_URL,
     withCredentials: true, // 요청 시 쿠키를 자동으로 포함하도록
 });
 

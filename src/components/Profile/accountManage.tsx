@@ -20,9 +20,9 @@ export default function AccountManage() {
           padding="10px 0"
         >
           <Text.Menu>이용약관</Text.Menu>
-          <Text.Mini pointer color="Gray">
+          <Text.TitleMenu100 pointer color="Gray">
             {">"}
-          </Text.Mini>
+          </Text.TitleMenu100>
         </Block.FlexBox>
 
         <Block.FlexBox
@@ -32,9 +32,9 @@ export default function AccountManage() {
           padding="10px 0"
         >
           <Text.Menu>개인정보처리방침</Text.Menu>
-          <Text.Mini pointer color="Gray">
+          <Text.TitleMenu100 pointer color="Gray">
             {">"}
-          </Text.Mini>
+          </Text.TitleMenu100>
         </Block.FlexBox>
 
         <Block.FlexBox
