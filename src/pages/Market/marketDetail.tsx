@@ -236,13 +236,13 @@ export default function MarketDetail() {
                         <Text.Discount color="Black">
                             {Number(productDetail?.discount_rate) > 0 ? (
                                 <>
-                                    {(Math.floor(Number(productDetail?.discounted_price)) * cartCount).toLocaleString()}{" "}
+                                    {(Math.floor(Number(productDetail?.discounted_price)) * buyCount).toLocaleString()}{" "}
                                     원
                                 </>
                             ) : (
                                 <>
                                     {" "}
-                                    {productDetail && (Math.floor(productDetail?.price) * cartCount).toLocaleString()}원
+                                    {productDetail && (Math.floor(productDetail?.price) * buyCount).toLocaleString()}원
                                 </>
                             )}
                         </Text.Discount>
