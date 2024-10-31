@@ -52,8 +52,8 @@ export default function MarketDetail() {
     };
 
     useEffect(() => {
-        axios
-            .get(`${BASE_URL}/products/${productId}`)
+        axiosInstance
+            .get(`/products/${productId}`)
             .then(response => {
                 setProductDetail(response.data);
                 console.log("받은 데이터:", response.data);
@@ -84,25 +84,24 @@ export default function MarketDetail() {
 
     return (
         <>
-            <ForcatModal isOpen={isCartModalOpen} setIsOpen={setIsCartModalOpen} width="599px" height="320px" title="">
+            <ForcatModal isOpen={isCartModalOpen} setIsOpen={setIsCartModalOpen} width="599px" height="300px" title="">
                 <Block.FlexBox
                     width="559px"
                     height="240px"
                     direction="column"
-                    alignItems="center"
                     justifyContent="space-between"
-                    margin="20px 0 0 0"
+                    padding="20px 0 0 0"
                 >
                     <Block.FlexBox
                         width="100%"
-                        height="80px"
+                        height="95px"
                         borderRadius="16px"
                         bgColor="#F8F8F8"
                         justifyContent="space-between"
                         alignItems="center"
                         padding="20px"
                     >
-                        <Block.FlexBox width="100%" height="100%" direction="column" justifyContent="space-between">
+                        <Block.FlexBox width="70%" height="100%" direction="column" justifyContent="space-between">
                             <Text.Menu>{productDetail?.name}</Text.Menu>
                             <Text.Menu color="Gray">
                                 {Number(productDetail?.discount_rate) > 0 ? (
@@ -113,7 +112,7 @@ export default function MarketDetail() {
                             </Text.Menu>
                         </Block.FlexBox>
 
-                        <Block.FlexBox width="140px" justifyContent="space-between" alignItems="center">
+                        <Block.FlexBox width="100px" justifyContent="space-between" alignItems="center">
                             <Minus
                                 width={28}
                                 height={28}
