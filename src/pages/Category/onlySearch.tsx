@@ -22,6 +22,7 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../components/Product/ProductContainer";
+import { BASE_URL } from "../../api/constants";
 
 export default function OnlySearch() {
   const navigate = useNavigate();
@@ -32,6 +33,46 @@ export default function OnlySearch() {
   const [cursor, setCursor] = useState<string | null>(null); // 다음 페이지 요청을 위한 cursor 상태
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
+  const [popularKeywords, setPopularKeywords] = useState<string[]>([]); // 인기 검색어 상태
+  const [showPopularKeywords, setShowPopularKeywords] = useState<boolean>(true); // 인기 검색어 표시 상태
+
+  // 인기 검색어 API 호출
+  useEffect(() => {
+    const fetchPopularKeywords = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/products/popular-keywords`
+        );
+        console.log("API Response:", response.data); // 전체 데이터 구조 확인
+
+        // product_ids 배열에서 각 객체의 키를 추출하여 인기 검색어 목록 생성
+        const keywords = response.data.product_ids.map(
+          (item: any) => Object.keys(item)[0]
+        ); // 각 객체의 첫 번째 키를 키워드로 사용
+
+        console.log("인기 검색어 목록:", keywords);
+        setPopularKeywords(keywords); // 추출된 키워드로 인기 검색어 상태 업데이트
+      } catch (error) {
+        console.error("인기 검색어를 가져오는데 실패했습니다:", error);
+      }
+    };
+    fetchPopularKeywords();
+  }, []);
+
+  // 인기 검색어 순서대로 그룹핑하여 배열 생성
+  const orderedKeywords = [];
+  for (let i = 0; i < 5; i++) {
+    orderedKeywords.push([popularKeywords[i], popularKeywords[i + 5]]);
+  }
+
+  const handleKeywordClick = (keyword: string) => {
+    setSearchTerm(keyword); // 선택한 키워드를 검색어로 설정
+    setProducts([]); // 이전 검색 결과 초기화
+    setCursor(null); // cursor 초기화
+    setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
+    setShowPopularKeywords(false); // 검색 시 인기 검색어 숨기기
+    fetchProducts(keyword); // 선택한 키워드로 API 호출
+  };
 
   // 검색어 입력 시 상태 업데이트
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +85,7 @@ export default function OnlySearch() {
       setProducts([]); // 이전 검색 결과 초기화
       setCursor(null); // cursor 초기화
       setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
+      setShowPopularKeywords(false); // 검색 시 인기 검색어 숨기기
       fetchProducts(searchTerm); // 새로운 검색어로 API 호출
     }
   };
@@ -64,7 +106,7 @@ export default function OnlySearch() {
     setIsFetching(true);
     setError(null);
     try {
-      const response = await axios.get("http://125.189.109.17/api/products", {
+      const response = await axios.get(`${BASE_URL}/products`, {
         params: {
           name: searchValue,
           cursor: cursorValue ? decodeURIComponent(cursorValue) : null,
@@ -135,6 +177,32 @@ export default function OnlySearch() {
           />
         </SearchBar>
       </SearchHeader>
+
+      {/* 인기 검색어 리스트 */}
+      {showPopularKeywords && (
+        <PopularKeywordsContainer>
+          <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
+          <PopularKeywordsList>
+            {orderedKeywords.map((row, rowIndex) => (
+              <KeywordRow key={rowIndex}>
+                {row.map(
+                  (keyword, colIndex) =>
+                    keyword && (
+                      <KeywordItem
+                        key={colIndex}
+                        onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
+                        style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
+                      >
+                        <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
+                        <Keyword>{keyword}</Keyword>
+                      </KeywordItem>
+                    )
+                )}
+              </KeywordRow>
+            ))}
+          </PopularKeywordsList>
+        </PopularKeywordsContainer>
+      )}
 
       <MarketContainer style={{ marginTop: "-10px" }}>
         {loading && products.length === 0 ? (
@@ -230,4 +298,46 @@ const SearchBar = styled.div`
   border-radius: 24px;
   background-color: #ffffff;
   margin-left: 10px;
+`;
+
+const PopularKeywordsContainer = styled.div`
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  margin: 10px 20px;
+`;
+
+const PopularKeywordsTitle = styled.h3`
+  margin-bottom: 25px;
+  font-weight: bold;
+`;
+const PopularKeywordsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const KeywordRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const KeywordItem = styled.div`
+  display: flex;
+  align-items: center;
+  width: 45%; // 각 열의 너비 설정
+`;
+
+const Rank = styled.span`
+  font-weight: bold;
+  color: black;
+  margin-right: 20px;
+  font-size: 12px;
+  min-width: 15px; // 일정 너비 설정으로 정렬 개선
+`;
+
+const Keyword = styled.span`
+  color: #333;
+  font-weight: normal;
+  font-size: 12px;
 `;

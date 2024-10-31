@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { uploadImage } from "../../api/upload"; // 이미지 업로드 함수 가져오기
+import DaumPostcode from "react-daum-postcode";
+import ReactModal from "react-modal";
+import { uploadImage } from "../../api/upload";
 import { Block, Text } from "../../style/ui";
 import {
   StyledModal,
@@ -9,11 +11,15 @@ import {
   StyledInput,
   ProfileImageWrapper,
   StyledTextButton,
-} from "../../style/modal"; // modal.ts 파일에서 스타일 컴포넌트 가져오기
+} from "../../style/modal";
 import axios from "axios";
+import { User } from "../../interfaces/info";
+import { BASE_URL } from "../../api/constants";
+
+ReactModal.setAppElement("#root");
 
 interface UserEditProps {
-  user: any;
+  user: User;
   onClose: () => void;
   onReload: () => void;
 }
@@ -26,6 +32,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
   const [address, setAddress] = useState(user.address || "");
   const [addressDetail, setAddressDetail] = useState(user.address_detail || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("Phone Number:", user.phone_number);
@@ -33,13 +40,11 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     console.log("Address Detail:", user.address_detail);
   }, [user]);
 
-  // 파일 선택 시 FormData로 파일 설정 및 화면에 즉시 반영
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
 
-      // FileReader를 사용해 선택한 이미지를 화면에 바로 표시
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfilePicture(reader.result as string);
@@ -48,25 +53,32 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     }
   };
 
+  const handleResetImage = () => {
+    setProfilePicture(
+      "https://forcat-bucket.s3.amazonaws.com/imgs/3e53742c969111ef86e30242ac140003"
+    ); // 프로필 이미지를 null 또는 빈 문자열로 설정하여 기본 이미지로 변경
+    setSelectedFile(null); // 파일 선택도 초기화
+  };
+
   const handleSave = async () => {
     try {
       let uploadedImageUrl = profilePicture;
 
-      // 이미지 파일이 선택된 경우 서버에 업로드
       if (selectedFile) {
-        uploadedImageUrl = await uploadImage(selectedFile); // uploadImage 함수 호출
+        uploadedImageUrl = await uploadImage(selectedFile);
       }
 
       const updatedData = {
         username: user.username,
         nickname,
-        profile_picture: uploadedImageUrl, // 수정된 profile_picture URL
+        profile_picture: uploadedImageUrl,
         phone_number: user.phone_number,
         address,
         address_detail: addressDetail,
       };
 
-      await axios.put(`https://forcat.store/api/users/${user.id}`, updatedData);
+      await axios.put(`${BASE_URL}/users/${user.id}`, updatedData);
+
       alert("사용자 정보가 업데이트되었습니다.");
       console.log("업데이트된 데이터:", updatedData);
       onReload();
@@ -80,14 +92,25 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
     }
   };
 
+  const onToggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const handleComplete = (data: { address: string }) => {
+    setAddress(data.address);
+    setAddressDetail(""); // 상세 주소는 빈칸으로 설정
+    onToggleModal();
+  };
+
   return (
     <StyledModal>
       <ModalHeader>
         <CloseButton onClick={onClose}>×</CloseButton>
+        <Text.TitleMenu200>유저 정보 수정</Text.TitleMenu200>
         <SaveButton onClick={handleSave}>완료</SaveButton>
       </ModalHeader>
 
-      <Block.FlexBox direction="column" padding="20px" alignItems="center">
+      <Block.FlexBox direction="column" padding="10px" alignItems="center">
         <ProfileImageWrapper>
           <label htmlFor="profile-upload">
             <img
@@ -111,6 +134,13 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
           />
         </ProfileImageWrapper>
 
+        <StyledTextButton
+          onClick={handleResetImage}
+          style={{ marginBottom: "30px" }}
+        >
+          기본이미지로 변경
+        </StyledTextButton>
+
         <StyledInput
           type="text"
           placeholder="닉네임"
@@ -128,10 +158,11 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
             padding="8px 0"
           >
             <Text.Notice200 color="Gray">주소</Text.Notice200>
-            <StyledTextButton onClick={() => alert()}>
+            <StyledTextButton onClick={onToggleModal}>
               주소 변경
             </StyledTextButton>
           </Block.FlexBox>
+
           <StyledInput
             type="text"
             placeholder="주소"
@@ -146,6 +177,29 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
           />
         </Block.FlexBox>
       </Block.FlexBox>
+
+      {/* 주소 검색 모달 */}
+      <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={onToggleModal}
+        contentLabel="주소 검색"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            width: "500px",
+            padding: "20px",
+          },
+        }}
+      >
+        <DaumPostcode onComplete={handleComplete} />
+      </ReactModal>
     </StyledModal>
   );
 }

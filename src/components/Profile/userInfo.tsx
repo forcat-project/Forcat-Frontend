@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
+import { Fish } from "../../assets/svg";
 import { Block, Text, Button } from "../../style/ui";
 import UserEdit from "../../pages/Profile/userEdit";
 import { useUserId } from "../../hooks/useUserId";
 import axiosInstance from "../../api/axiosInstance";
 
+import { User } from "../../interfaces/info";
+
 Modal.setAppElement("#root");
 
-interface User {
-    nickname: string;
-    profile_picture: string;
-    phone_number: string;
-    address: string;
-    address_detail: string;
-}
-
 interface UserInfoProps {
-    onReload: () => void; // Reload 함수 prop 추가
+  onReload: () => void;
 }
 
 export default function UserInfo({ onReload }: UserInfoProps) {
-    const [user, setUser] = useState<User | null>(null);
-    const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+  console.log(Fish); // Fish가 제대로 import되는지 확인
+
+  const [user, setUser] = useState<User | null>(null);
+  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
     const userId = useUserId();
 
@@ -67,35 +64,51 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                     </Block.FlexBox>
                 </Block.FlexBox>
 
-                <Button.EditButton onClick={toggleEditModal}>
-                    <Text.Mini>편집</Text.Mini>
-                </Button.EditButton>
-            </Block.FlexBox>
-
-            <Modal
-                isOpen={isEditModalOpen}
-                onRequestClose={toggleEditModal}
-                style={{
-                    overlay: {
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    },
-                    content: {
-                        border: "none",
-                        background: "transparent",
-                        padding: 0,
-                        inset: "auto",
-                        maxWidth: "400px",
-                        width: "90%",
-                        borderRadius: "8px",
-                        overflow: "visible",
-                    },
-                }}
-            >
-                <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />
-            </Modal>
-        </Block.FlexBox>
-    );
+  
+        <Button.EditButton onClick={toggleEditModal}>
+          <Text.Mini>편집</Text.Mini>
+        </Button.EditButton>
+      </Block.FlexBox>
+      {/* 생선 포인트 UI 추가 */}
+      <Block.FlexBox
+        direction="row"
+        alignItems="center"
+        style={{ marginLeft: "10px" }}
+      >
+        {" "}
+        <Fish width="50px" height="50px" />{" "}
+        <Text.Mini color="Gray" style={{ marginRight: "10px" }}>
+          모은 생선 포인트
+        </Text.Mini>
+        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>{" "}
+        {/* 포인트 표시 */}
+      </Block.FlexBox>
+      <Modal
+        isOpen={isEditModalOpen}
+        onRequestClose={toggleEditModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          content: {
+            border: "none",
+            background: "transparent",
+            padding: 0,
+            inset: "auto",
+            maxWidth: "400px",
+            width: "90%",
+            borderRadius: "8px",
+            overflow: "visible",
+          },
+        }}
+      >
+        {user && (
+          <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />
+        )}
+      </Modal>
+    </Block.FlexBox>
+  );
 }

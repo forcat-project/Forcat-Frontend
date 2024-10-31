@@ -18,6 +18,7 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
+import { BASE_URL } from "../../../api/constants";
 
 export default function Discount() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -48,7 +49,7 @@ export default function Discount() {
 
     setIsFetching(true); // 데이터 요청 상태 설정
     axios
-      .get("https://forcat.store/api/products", {
+      .get(`${BASE_URL}/products`, {
         params: {
           categories: null, // categories는 null
           ordering: "-discount_rate", // 구매 횟수 기준으로 정렬
