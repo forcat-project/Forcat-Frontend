@@ -13,21 +13,16 @@ import { Cat } from "../../interfaces/info";
 import axios from "axios";
 import { BASE_URL } from "../../api/constants";
 import { uploadImage } from "../../api/upload";
+import { useUserId } from "../../hooks/useUserId";
 
 interface CatEditProps {
   cat: Cat;
-  userId: number; // 사용자 ID 추가
   onClose: () => void;
   onReload: () => void;
   onSave: (updatedCat: Cat) => void; // onSave prop 추가
 }
 
-export default function CatEdit({
-  cat,
-  userId,
-  onClose,
-  onReload,
-}: CatEditProps) {
+export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
   const [name, setName] = useState(cat.name || "");
   const [breed, setBreed] = useState(cat.cat_breed_name || "");
   const [breedId, setBreedId] = useState(cat.cat_breed || 0); // 종 ID
@@ -39,6 +34,8 @@ export default function CatEdit({
   const [weight, setWeight] = useState(cat.weight || "");
   const [profileImage, setProfileImage] = useState(cat.profile_image || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const userId = useUserId();
 
   useEffect(() => {
     if (cat.birth_date) {

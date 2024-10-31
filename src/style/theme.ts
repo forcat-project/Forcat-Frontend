@@ -13,7 +13,7 @@ const fontColor = {
   Gray400: "#A7A9B7",
   Gray500: "#80818C",
   Gray600: "#383840", // [ Dark Gray ]
-  Green: "#", //
+  Green: "#82d295", //
 };
 
 const fontSize = {
