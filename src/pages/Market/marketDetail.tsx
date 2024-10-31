@@ -16,6 +16,8 @@ export default function MarketDetail() {
     const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
     const [cartCount, setCartCount] = useState(1);
+    const [buyCount, setBuyCount] = useState(1);
+
     const userId = useUserId();
 
     const navigate = useNavigate();
@@ -23,12 +25,14 @@ export default function MarketDetail() {
     const isSoldOut = productDetail?.remain_count === 0;
     const handleCartModalOpen = () => {
         if (!isSoldOut) {
+            setCartCount(1);
             setIsCartModalOpen(true);
         }
     };
 
     const handleBuyModalOpen = () => {
         if (!isSoldOut) {
+            setBuyCount(1);
             setIsBuyModalOpen(true);
         }
     };
@@ -85,15 +89,29 @@ export default function MarketDetail() {
         return <div>Error: {error.message}</div>;
     }
 
-    const handleMinusButtonClick = () => {
+    const handleMinusCartClick = () => {
         if (productDetail?.remain_count > 1 && cartCount > 1) {
             setCartCount(prev => prev - 1);
         }
     };
 
-    const handlePlusButtonClick = () => {
+    const handlePlusCartClick = () => {
         if (productDetail?.remain_count >= cartCount) {
             setCartCount(prev => prev + 1);
+        } else {
+            alert("재고 수량이 부족합니다.");
+        }
+    };
+
+    const handleMinusBuyClick = () => {
+        if (productDetail?.remain_count > 1 && buyCount > 1) {
+            setBuyCount(prev => prev - 1);
+        }
+    };
+
+    const handlePlusBuyClick = () => {
+        if (productDetail?.remain_count >= buyCount) {
+            setBuyCount(prev => prev + 1);
         } else {
             alert("재고 수량이 부족합니다.");
         }
@@ -135,7 +153,7 @@ export default function MarketDetail() {
                                 height={28}
                                 cursor="pointer"
                                 fill="#e8e8e8"
-                                onClick={handleMinusButtonClick}
+                                onClick={handleMinusCartClick}
                             />
                             <Text.TitleMenu300>{cartCount}</Text.TitleMenu300>
                             <Plus
@@ -143,7 +161,7 @@ export default function MarketDetail() {
                                 height={28}
                                 cursor="pointer"
                                 fill="#e8e8e8"
-                                onClick={handlePlusButtonClick}
+                                onClick={handlePlusCartClick}
                             />
                         </Block.FlexBox>
                     </Block.FlexBox>
@@ -205,16 +223,10 @@ export default function MarketDetail() {
                                 height={28}
                                 cursor="pointer"
                                 fill="#e8e8e8"
-                                onClick={handleMinusButtonClick}
+                                onClick={handleMinusBuyClick}
                             />
-                            <Text.TitleMenu300>{cartCount}</Text.TitleMenu300>
-                            <Plus
-                                width={28}
-                                height={28}
-                                cursor="pointer"
-                                fill="#e8e8e8"
-                                onClick={handlePlusButtonClick}
-                            />
+                            <Text.TitleMenu300>{buyCount}</Text.TitleMenu300>
+                            <Plus width={28} height={28} cursor="pointer" fill="#e8e8e8" onClick={handlePlusBuyClick} />
                         </Block.FlexBox>
                     </Block.FlexBox>
 
