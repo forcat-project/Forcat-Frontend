@@ -21,6 +21,7 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
+import { BASE_URL } from "../../api/constants";
 
 export default function CategoryDetail() {
   const { category_id } = useParams<{ category_id: string }>();
@@ -56,7 +57,7 @@ export default function CategoryDetail() {
     if (isFetching || !hasMore) return;
     setIsFetching(true);
     axios
-      .get("https://forcat.store/api/products", {
+      .get(`${BASE_URL}/products`, {
         params: {
           categories: category_id,
           cursor: cursor ? decodeURIComponent(cursor) : null,
