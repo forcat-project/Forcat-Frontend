@@ -12,22 +12,23 @@ import { User } from "../../interfaces/info";
 Modal.setAppElement("#root");
 
 interface UserInfoProps {
-  onReload: () => void;
+    onReload: () => void;
 }
 
 export default function UserInfo({ onReload }: UserInfoProps) {
-  console.log(Fish); // Fish가 제대로 import되는지 확인
+    console.log(Fish); // Fish가 제대로 import되는지 확인
 
-  const [user, setUser] = useState<User | null>(null);
-  const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
     const userId = useUserId();
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                if (userId) {
+                if (userId !== null) {
                     const response = await axiosInstance.get(`/users/${userId}`);
+                    console.log("유저정보~!!", response);
                     setUser(response.data);
                 }
             } catch (error) {
@@ -64,51 +65,43 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                     </Block.FlexBox>
                 </Block.FlexBox>
 
-  
-        <Button.EditButton onClick={toggleEditModal}>
-          <Text.Mini>편집</Text.Mini>
-        </Button.EditButton>
-      </Block.FlexBox>
-      {/* 생선 포인트 UI 추가 */}
-      <Block.FlexBox
-        direction="row"
-        alignItems="center"
-        style={{ marginLeft: "10px" }}
-      >
-        {" "}
-        <Fish width="50px" height="50px" />{" "}
-        <Text.Mini color="Gray" style={{ marginRight: "10px" }}>
-          모은 생선 포인트
-        </Text.Mini>
-        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>{" "}
-        {/* 포인트 표시 */}
-      </Block.FlexBox>
-      <Modal
-        isOpen={isEditModalOpen}
-        onRequestClose={toggleEditModal}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          },
-          content: {
-            border: "none",
-            background: "transparent",
-            padding: 0,
-            inset: "auto",
-            maxWidth: "400px",
-            width: "90%",
-            borderRadius: "8px",
-            overflow: "visible",
-          },
-        }}
-      >
-        {user && (
-          <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />
-        )}
-      </Modal>
-    </Block.FlexBox>
-  );
+                <Button.EditButton onClick={toggleEditModal}>
+                    <Text.Mini>편집</Text.Mini>
+                </Button.EditButton>
+            </Block.FlexBox>
+            {/* 생선 포인트 UI 추가 */}
+            <Block.FlexBox direction="row" alignItems="center" style={{ marginLeft: "10px" }}>
+                {" "}
+                <Fish width="50px" height="50px" />{" "}
+                <Text.Mini color="Gray" style={{ marginRight: "10px" }}>
+                    모은 생선 포인트
+                </Text.Mini>
+                <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300> {/* 포인트 표시 */}
+            </Block.FlexBox>
+            <Modal
+                isOpen={isEditModalOpen}
+                onRequestClose={toggleEditModal}
+                style={{
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    },
+                    content: {
+                        border: "none",
+                        background: "transparent",
+                        padding: 0,
+                        inset: "auto",
+                        maxWidth: "400px",
+                        width: "90%",
+                        borderRadius: "8px",
+                        overflow: "visible",
+                    },
+                }}
+            >
+                {user && <UserEdit user={user} onClose={toggleEditModal} onReload={onReload} />}
+            </Modal>
+        </Block.FlexBox>
+    );
 }
