@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
 import { Block, Img, Text } from "../../style/ui";
-import { getCookie } from "../../api/cookie";
-import { useNavigate } from "react-router-dom";
+import { setCookie } from "../../api/cookie";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const handleKakaoLoginClick = () => {
@@ -11,12 +11,22 @@ export default function Login() {
     };
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        if (getCookie("access_token") && getCookie("access_token") !== "undefined") {
-            navigate("/profile");
+        const queryParams = new URLSearchParams(location.search);
+        const accessToken = queryParams.get("access_token");
+
+        if (accessToken) {
+            setCookie("access_token", accessToken, { path: "/", maxAge: 3600 }); // 1시간 만료
+            console.log("accessToken saved to cookie");
+
+            window.location.href = "/home";
+        } else {
+            console.log("등록해주세요");
+            navigate("/signup");
         }
-    }, []);
+    }, [location.search]);
 
     return (
         <>
