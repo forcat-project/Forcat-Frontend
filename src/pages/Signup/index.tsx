@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { inputState, userState } from "../../recoil";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
 import InputAddress from "../../components/Signup/InputAddress";
@@ -13,8 +13,8 @@ import InputCatGender from "../../components/Signup/InputCatGender";
 import InputCatIsNeutered from "../../components/Signup/InputCatIsNeutered";
 import InputCatWeight from "../../components/Signup/InputCatWeight";
 import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
-import axios from "axios";
-import { BASE_URL } from "../../api/constants";
+import axiosInstance from "../../api/axiosInstance";
+import { getCookie } from "../../api/cookie";
 
 export default function Signup() {
     const [, setUserInfo] = useRecoilState(userState);
@@ -32,13 +32,15 @@ export default function Signup() {
 
     const handleSubmitUserInfo = async () => {
         try {
-            await axios
-                .post(`${BASE_URL}/users/sign-up`, {
-                    username: userInfo.username,
-                    nickname: userInfo.nickname,
-                })
-                .then(res => console.log(res));
+            const res = await axiosInstance.post(`/users/sign-up`, {
+                kakao_id: userInfo.kakao_id,
+                username: userInfo.username,
+                nickname: userInfo.nickname,
+            });
+            console.log(res);
             alert("사용자 정보 등록에 성공했습니다.");
+
+            console.log(userInfo);
             setStep(step + 1);
         } catch (error) {
             alert("사용자 정보 등록에 실패했습니다. 다시 시도해 주세요.");
@@ -168,13 +170,27 @@ export default function Signup() {
         },
     ];
 
+    const navigateToHome = useCallback(() => navigate("/home"), [navigate]);
+
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const userName = searchParams.get("username") || "";
-        const userProfileInfo = searchParams.get("profile_image") || "";
-        const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
-        setUserInfo(prev => ({ ...prev, username: userName, profile_picture: userProfileImage }));
-    }, [location.search, setUserInfo]);
+        const isExistedCookie = getCookie("access_token");
+
+        if (!isExistedCookie) {
+            const searchParams = new URLSearchParams(location.search);
+            const userName = searchParams.get("username") || "";
+            const userProfileInfo = searchParams.get("profile_image") || "";
+            const kakaoId = searchParams.get("kakao_id") || "";
+            const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
+            setUserInfo(prev => ({
+                ...prev,
+                kakao_id: kakaoId,
+                username: userName,
+                profile_picture: userProfileImage,
+            }));
+        } else {
+            navigateToHome();
+        }
+    }, [location.search, setUserInfo, navigateToHome]);
 
     const isStepValid = () => {
         const requiredFields = steps[step - 1].requiredFields;

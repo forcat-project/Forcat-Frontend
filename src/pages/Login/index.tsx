@@ -1,12 +1,23 @@
+import { useEffect } from "react";
 import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
 import { Block, Text } from "../../style/ui";
+import { getCookie } from "../../api/cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const handleKakaoLoginClick = () => {
-        console.log(KAKAO_LOGIN_URL);
         window.location.href = `${KAKAO_LOGIN_URL}`;
     };
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (getCookie("access_token") && getCookie("access_token") !== "undefined") {
+            navigate("/profile");
+        }
+    }, []);
+
     return (
         <>
             <Block.FlexBox direction="column" alignItems="center" justifyContent="center" gap="34px">

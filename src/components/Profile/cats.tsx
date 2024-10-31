@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../style/ui";
+
 import CatEdit from "../../pages/Profile/catEdit";
 import { Cat } from "../../interfaces/info";
 import { BASE_URL } from "../../api/constants";
+    import axiosInstance from "../../api/axiosInstance";
+import { useUserId } from "../../hooks/useUserId";
+
 
 export default function Cats() {
   const userId = 1; // 사용자 ID를 설정
@@ -13,6 +16,10 @@ export default function Cats() {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
+      const userId = useUserId();
+
+  
+  
   useEffect(() => {
     fetchCats();
   }, []);
@@ -33,22 +40,32 @@ export default function Cats() {
       });
   };
 
-  const getMonthsFromDays = (days: number) => {
-    if (days === undefined || days < 0) {
-      return "정보 없음";
-    }
-    return `${Math.max(1, Math.floor(days / 30))}개월`;
-  };
+    useEffect(() => {
+        axiosInstance
+            .get(`/users/${userId}/cats`)
+            .then(response => {
+                const catData = Array.isArray(response.data) ? response.data : [response.data];
+                setCats(catData);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("고양이 정보를 가져오는데 실패했습니다:", error);
+                setLoading(false);
+            });
+    }, []);
 
-  const openEditModal = (cat: Cat) => {
-    setSelectedCat(cat);
-    setIsEditModalOpen(true);
-  };
+    const getMonthsFromDays = (days: number) => {
+        if (days === undefined || days < 0) {
+            return "정보 없음";
+        }
+        return `${Math.max(1, Math.floor(days / 30))}개월`;
+    };
 
-  const closeEditModal = () => {
-    setSelectedCat(null);
-    setIsEditModalOpen(false);
-  };
+    const openEditModal = (cat: Cat) => {
+        setSelectedCat(cat);
+        setIsEditModalOpen(true);
+    };
+
 
   const handleSave = (updatedCat: Cat) => {
     setCats((prevCats) =>
