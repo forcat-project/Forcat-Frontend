@@ -19,12 +19,8 @@ function App() {
 
   useScrollRestoration(); // 페이지 전환 시 스크롤 복원
 
-  const handleBackButtonClick = () => {
-    navigate(-1);
-  };
-
   const handleProfileClick = () => {
-    navigate("/login");
+    navigate("/profile");
   };
 
   return (
