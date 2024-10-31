@@ -210,6 +210,18 @@ export const Button = {
         background-color: ${({ isDisabled }) => (isDisabled ? "#e8e8e8 " : "#f4b647")};
         cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
     `,
+    CartConfirm: styled.div<StyleButton>`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 560px;
+        height: 53px;
+        border-radius: 16px;
+        color: #ffffff;
+        background-color: #ffffff;
+        border: 1px solid #f6ecd7;
+        cursor: pointer;
+    `,
     Select: styled.div<StyleButton>`
         display: flex;
         justify-content: center;
@@ -253,9 +265,9 @@ export const Button = {
         height: 53px;
         border-radius: 19px;
         color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
-        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#f6ecd7")};
+        background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#fff")};
         cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
-        border: ${props => props.border};
+        border: ${({ isSoldOut }) => (isSoldOut ? "none" : "2px solid #f6ecd7")};
     `,
     BuyButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;

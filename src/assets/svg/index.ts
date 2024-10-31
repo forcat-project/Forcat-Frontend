@@ -17,6 +17,8 @@ export { default as HomeDisabled } from "./HomeDisabled";
 export { default as LoginLogo } from "./LoginLogo";
 export { default as Market } from "./Market";
 export { default as MarketDisabled } from "./MarketDisabled";
+export { default as Minus } from "./Minus";
+export { default as Plus } from "./Plus";
 export { default as Profile } from "./Profile";
 export { default as ProfileDisabled } from "./ProfileDisabled";
 export { default as Search } from "./Search";

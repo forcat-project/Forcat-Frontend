@@ -36,13 +36,14 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                         bottom: "0",
                         left: "50%",
                         transform: "translateX(-50%)",
+                        outline: "none",
                     },
                 }}
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
                 className="MODAL"
             >
-                <Block.FlexBox width="599px" margin="40px 0" direction="column" justifyContent="center">
+                <Block.FlexBox width="596px" margin="40px 0 0 0" direction="column" justifyContent="center">
                     <Block.FlexBox justifyContent="center">
                         <Text.TitleMenu300>{title}</Text.TitleMenu300>
                         <Block.AbsoluteBox
