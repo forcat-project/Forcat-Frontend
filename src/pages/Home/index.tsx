@@ -2,10 +2,12 @@ import { Block } from "../../style/ui";
 import Footer from "../../components/Home/Footer";
 import CategoryBox from "../../components/Home/CategoryBox";
 import BannerSlider from "../../components/Home/banner"; // BannerSlider import
+import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 
 export default function Home() {
   return (
     <>
+      <ChannelTalk /> {/* ChannelTalk 컴포넌트 추가 */}
       <Block.FlexBox
         width="100%"
         margin="89px 0 93px 0"

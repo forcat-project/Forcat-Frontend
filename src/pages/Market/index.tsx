@@ -17,6 +17,7 @@ import {
   DiscountedPrice,
   SoldoutBox,
 } from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
+import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -99,6 +100,8 @@ export default function Market() {
 
   return (
     <MarketContainer>
+      <ChannelTalk />
+
       <ProductGrid>
         {products.map((product) => (
           <ProductCard
