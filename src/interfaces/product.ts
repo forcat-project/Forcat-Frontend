@@ -65,3 +65,18 @@ export interface IInputData {
     catWeight: string;
     [key: string]: string;
 }
+
+export interface IOrderProduct {
+    product_id: number;
+    product_name: string;
+    price: number;
+    quantity: number;
+    product_company: string;
+    discount_rate: number;
+}
+
+
+export interface IAmount {
+    currency: string;
+    value: number;
+  }
