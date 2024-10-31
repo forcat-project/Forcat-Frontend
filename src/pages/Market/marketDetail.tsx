@@ -1,10 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { Block, Button, Img, Text } from "../../style/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
-import { BASE_URL } from "../../api/constants";
 import ForcatModal from "../../components/Modal/ForcatModal";
 import { Minus, Plus } from "../../assets/svg";
 import axiosInstance from "../../api/axiosInstance";
@@ -49,6 +48,24 @@ export default function MarketDetail() {
             alert("로그인 후 장바구니에 담을 수 있어요!");
             navigate("/login");
         }
+    };
+
+    const handleBuyConfirmButtonClick = () => {
+        console.log("결제");
+        // 결제 API 나오면 주소, body 전달할 값만 넘겨주면 됨!
+        // if (userId !== null) {
+        //     try {
+        //         const res = axiosInstance.post(``, {
+        //         });
+        //         console.log(res);
+        //         alert("결제 페이지로 이동합니다.");
+        //     } catch (error) {
+        //         alert("결제 페이지로 이동 실패했어요, 다시 시도해 주세요.");
+        //     }
+        // } else {
+        //     alert("로그인 후 결제해주세요!");
+        //     navigate("/login");
+        // }
     };
 
     useEffect(() => {
@@ -152,6 +169,76 @@ export default function MarketDetail() {
                     <Button.CartConfirm cursor="pointer" onClick={handleCartConfirmButtonClick}>
                         <Text.TitleMenu200 color="Yellow">장바구니에 담기</Text.TitleMenu200>
                     </Button.CartConfirm>
+                </Block.FlexBox>
+            </ForcatModal>
+            <ForcatModal isOpen={isBuyModalOpen} setIsOpen={setIsBuyModalOpen} width="599px" height="300px" title="">
+                <Block.FlexBox
+                    width="559px"
+                    height="240px"
+                    direction="column"
+                    justifyContent="space-between"
+                    padding="20px 0 0 0"
+                >
+                    <Block.FlexBox
+                        width="100%"
+                        height="95px"
+                        borderRadius="16px"
+                        bgColor="#F8F8F8"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        padding="20px"
+                    >
+                        <Block.FlexBox width="70%" height="100%" direction="column" justifyContent="space-between">
+                            <Text.Menu>{productDetail?.name}</Text.Menu>
+                            <Text.Menu color="Gray">
+                                {Number(productDetail?.discount_rate) > 0 ? (
+                                    <>{Math.floor(Number(productDetail?.discounted_price)).toLocaleString()} 원</>
+                                ) : (
+                                    <> {productDetail && Math.floor(productDetail?.price).toLocaleString()} 원</>
+                                )}
+                            </Text.Menu>
+                        </Block.FlexBox>
+
+                        <Block.FlexBox width="100px" justifyContent="space-between" alignItems="center">
+                            <Minus
+                                width={28}
+                                height={28}
+                                cursor="pointer"
+                                fill="#e8e8e8"
+                                onClick={handleMinusButtonClick}
+                            />
+                            <Text.TitleMenu300>{cartCount}</Text.TitleMenu300>
+                            <Plus
+                                width={28}
+                                height={28}
+                                cursor="pointer"
+                                fill="#e8e8e8"
+                                onClick={handlePlusButtonClick}
+                            />
+                        </Block.FlexBox>
+                    </Block.FlexBox>
+
+                    <Block.FlexBox justifyContent="space-between" padding="0 20px">
+                        <Text.TitleMenu200>총 상품 금액</Text.TitleMenu200>
+
+                        <Text.Discount color="Black">
+                            {Number(productDetail?.discount_rate) > 0 ? (
+                                <>
+                                    {(Math.floor(Number(productDetail?.discounted_price)) * cartCount).toLocaleString()}{" "}
+                                    원
+                                </>
+                            ) : (
+                                <>
+                                    {" "}
+                                    {productDetail && (Math.floor(productDetail?.price) * cartCount).toLocaleString()}원
+                                </>
+                            )}
+                        </Text.Discount>
+                    </Block.FlexBox>
+
+                    <Button.Confirm cursor="pointer" onClick={handleBuyConfirmButtonClick} isDisabled={false}>
+                        <Text.TitleMenu200 color="White">결제하기</Text.TitleMenu200>
+                    </Button.Confirm>
                 </Block.FlexBox>
             </ForcatModal>
             <Block.FlexBox margin="89px 0" direction="column" style={{ overflow: "auto", scrollbarWidth: "none" }}>
