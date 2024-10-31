@@ -267,7 +267,7 @@ export const Button = {
         color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
         background-color: ${({ isSoldOut }) => (isSoldOut ? "#F8F8F8" : "#fff")};
         cursor: ${({ isSoldOut }) => (isSoldOut ? "not-allowed" : "pointer")};
-        border: 2px solid #f6ecd7;
+        border: ${({ isSoldOut }) => (isSoldOut ? "none" : "2px solid #f6ecd7")};
     `,
     BuyButton: styled.div<StyleButton & { isSoldOut: boolean }>`
         display: flex;

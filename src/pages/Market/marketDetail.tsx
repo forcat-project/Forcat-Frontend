@@ -7,24 +7,47 @@ import styled from "styled-components";
 import { BASE_URL } from "../../api/constants";
 import ForcatModal from "../../components/Modal/ForcatModal";
 import { Minus, Plus } from "../../assets/svg";
+import axiosInstance from "../../api/axiosInstance";
+import { useUserId } from "../../hooks/useUserId";
 
 export default function MarketDetail() {
     const { productId } = useParams();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+    const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
     const [productDetail, setProductDetail] = useState<IProduct | null>(null);
     const [error, setError] = useState<AxiosError | null>(null);
     const [cartCount, setCartCount] = useState(1);
+    const userId = useUserId();
 
     const navigate = useNavigate();
 
     const isSoldOut = productDetail?.remain_count === 0;
-    const handleCartButtonClick = () => {
-        setIsModalOpen(true);
+    const handleCartModalOpen = () => {
+        if (!isSoldOut) {
+            setIsCartModalOpen(true);
+        }
     };
 
-    const handleBuyButtonClick = () => {
+    const handleBuyModalOpen = () => {
         if (!isSoldOut) {
-            // 바로 상품 담고 구매하기 페이지로 연결
+            setIsBuyModalOpen(true);
+        }
+    };
+
+    const handleCartConfirmButtonClick = () => {
+        if (userId !== null) {
+            try {
+                const res = axiosInstance.post(`/users/${userId}/cart/products`, {
+                    product_id: productId,
+                });
+                console.log(res);
+                alert("성공적으로 장바구니에 담겼습니다.");
+            } catch (error) {
+                alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
+            }
+        } else {
+            alert("로그인 후 장바구니에 담을 수 있어요!");
+            navigate("/login");
         }
     };
 
@@ -58,9 +81,10 @@ export default function MarketDetail() {
             alert("재고 수량이 부족합니다.");
         }
     };
+
     return (
         <>
-            <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} width="599px" height="320px" title="">
+            <ForcatModal isOpen={isCartModalOpen} setIsOpen={setIsCartModalOpen} width="599px" height="320px" title="">
                 <Block.FlexBox
                     width="559px"
                     height="240px"
@@ -126,7 +150,7 @@ export default function MarketDetail() {
                         </Text.Discount>
                     </Block.FlexBox>
 
-                    <Button.CartConfirm cursor="pointer">
+                    <Button.CartConfirm cursor="pointer" onClick={handleCartConfirmButtonClick}>
                         <Text.TitleMenu200 color="Yellow">장바구니에 담기</Text.TitleMenu200>
                     </Button.CartConfirm>
                 </Block.FlexBox>
@@ -196,10 +220,10 @@ export default function MarketDetail() {
 
                 <Block.AbsoluteBox bottom="0" left="0" zIndex="3">
                     <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
-                        <Button.CartButton onClick={handleCartButtonClick} isSoldOut={isSoldOut}>
+                        <Button.CartButton onClick={handleCartModalOpen} isSoldOut={isSoldOut}>
                             장바구니
                         </Button.CartButton>
-                        <Button.BuyButton onClick={handleBuyButtonClick} isSoldOut={isSoldOut}>
+                        <Button.BuyButton onClick={handleBuyModalOpen} isSoldOut={isSoldOut}>
                             구매하기
                         </Button.BuyButton>
                     </Block.FlexBox>
