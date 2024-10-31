@@ -72,12 +72,12 @@ export default function Cats() {
         <div
           style={{
             width: "calc(100% - 40px)", // 양옆에 20px씩 여백 추가
-            border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
+            // border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
             borderRadius: "8px",
             padding: "16px",
             margin: "20px auto 10px", // 상단 여백과 아래쪽 여백 조정
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 부드러운 그림자 추가
-            backgroundColor: "white", // 배경을 흰색으로 설정
+            backgroundColor: "#f8f8f8", // 배경을 흰색으로 설정
           }}
         >
           <Block.FlexBox
