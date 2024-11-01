@@ -331,6 +331,7 @@ export const Button = {
     background-color: #fffaec;
     color: #f4b647;
     border: 1px solid #fffaec;
+
     border-radius: 5px;
     padding: 2px 8px;
     font-size: 12px;
