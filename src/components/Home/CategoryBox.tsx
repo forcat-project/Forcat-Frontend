@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import { Block, Text } from "../../style/ui";
 import { IProducts } from "../../interfaces/product";
+import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 type CategoryBlockProps = {
   categoryId: number | null;
   categoryName: string;
   morePagePath: string;
-  ordering?: string;
-};
-
-type ProductParams = {
-  categories: number | null;
-  limit: number;
   ordering?: string;
 };
 
@@ -29,17 +24,16 @@ export default function CategoryBox({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params: ProductParams = {
-      categories: categoryId,
-      limit: 3,
+    const params: ProductQueryParams = {
+      ordering: ordering,
     };
 
-    if (ordering) {
-      params.ordering = ordering;
+    if (categoryId) {
+      params.categories = categoryId;
     }
 
-    axios
-      .get("https://forcat.store/api/products", { params })
+    productAPI
+      .getProducts(params)
       .then((response) => {
         setProducts(response.data.results.slice(0, 3));
       })

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
@@ -22,7 +22,7 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../components/Product/ProductContainer";
-import { BASE_URL } from "../../api/constants";
+import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function OnlySearch() {
   const navigate = useNavigate();
@@ -40,17 +40,13 @@ export default function OnlySearch() {
   useEffect(() => {
     const fetchPopularKeywords = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/products/popular-keywords`
-        );
-        console.log("API Response:", response.data); // 전체 데이터 구조 확인
+        const response = await productAPI.getPopularKeywords();
 
         // product_ids 배열에서 각 객체의 키를 추출하여 인기 검색어 목록 생성
         const keywords = response.data.product_ids.map(
           (item: any) => Object.keys(item)[0]
         ); // 각 객체의 첫 번째 키를 키워드로 사용
 
-        console.log("인기 검색어 목록:", keywords);
         setPopularKeywords(keywords); // 추출된 키워드로 인기 검색어 상태 업데이트
       } catch (error) {
         console.error("인기 검색어를 가져오는데 실패했습니다:", error);
@@ -105,13 +101,14 @@ export default function OnlySearch() {
     if (isFetching || !hasMore) return;
     setIsFetching(true);
     setError(null);
+
     try {
-      const response = await axios.get(`${BASE_URL}/products`, {
-        params: {
-          name: searchValue,
-          cursor: cursorValue ? decodeURIComponent(cursorValue) : null,
-        },
-      });
+      const params: ProductQueryParams = {name: searchValue};
+      if (cursorValue) {
+        params.cursor = decodeURIComponent(cursorValue)
+      }
+
+      const response = await productAPI.getProducts(params);
       const { results, next } = response.data;
       console.log("Received results:", results); // 받은 results 값 출력
       setProducts((prevProducts) => [...prevProducts, ...results]);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 import {
@@ -17,7 +17,10 @@ import {
   DiscountedPrice,
   SoldoutBox,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
-import { BASE_URL } from "../../../api/constants";
+import {
+  ProductQueryParams,
+  productAPI,
+} from "../../../api/resourses/products";
 
 export default function MdRecommend() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -25,12 +28,11 @@ export default function MdRecommend() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/products`, {
-        params: {
-          categories: 68, // MD 추천 카테고리 ID
-        },
-      })
+    const params: ProductQueryParams = {
+      categories: 68,
+    };
+    productAPI
+      .getProducts(params)
       .then((response) => {
         setProducts(response.data.results);
       })
