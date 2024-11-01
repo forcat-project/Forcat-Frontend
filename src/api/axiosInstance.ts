@@ -20,7 +20,6 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // URL이 정의되어 있고, publicPaths에 포함되지 않은 경우에만 Authorization 헤더 추가
 
-    console.log(config);
     if (
       config.url &&
       !publicPaths.some((path) => config.url.startsWith(path))
@@ -62,21 +61,6 @@ export const cartProductAPI = {
     ),
   deleteCartProduct: (userId: string, productId: string) =>
     axiosInstance.delete(`/users/${userId}/cart/products/${productId}`),
-};
-
-// Cats API
-export const catAPI = {
-  getCats: (userId: string) => axiosInstance.get(`/users/${userId}/cats`),
-  createCat: (userId: string, catData: any) =>
-    axiosInstance.post(`/users/${userId}/cats`, catData),
-  getCat: (userId: string, catId: string) =>
-    axiosInstance.get(`/users/${userId}/cats/${catId}`),
-  updateCat: (userId: string, catId: string, catData: any) =>
-    axiosInstance.put(`/users/${userId}/cats/${catId}`, catData),
-  updateCatPartial: (userId: string, catId: string, catData: any) =>
-    axiosInstance.patch(`/users/${userId}/cats/${catId}`, catData),
-  deleteCat: (userId: string, catId: string) =>
-    axiosInstance.delete(`/users/${userId}/cats/${catId}`),
 };
 
 // Categories API

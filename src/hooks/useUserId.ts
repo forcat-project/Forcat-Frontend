@@ -3,11 +3,11 @@ import { jwtDecode } from "jwt-decode";
 import { useLocation } from "react-router-dom";
 
 interface CustomJwtPayload {
-  user_id: string;
+  user_id: number;
 }
 
 export function useUserId() {
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<number>(0);
   const location = useLocation();
 
   useEffect(() => {
