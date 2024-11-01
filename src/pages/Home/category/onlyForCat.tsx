@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 import {
@@ -17,7 +17,10 @@ import {
   DiscountedPrice,
   SoldoutBox,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
-import { BASE_URL } from "../../../api/constants";
+import {
+  ProductQueryParams,
+  productAPI,
+} from "../../../api/resourses/products";
 
 export default function OnlyForCat() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -47,13 +50,13 @@ export default function OnlyForCat() {
     if (isFetching || !hasMore) return; // 중복 요청 방지 및 더 이상 데이터가 없을 때 중단
 
     setIsFetching(true); // 데이터 요청 상태 설정
-    axios
-      .get(`${BASE_URL}/products`, {
-        params: {
-          categories: 67, // MD 추천 카테고리 ID
-          cursor: cursor ? decodeURIComponent(cursor) : null, // cursor가 null이면 첫 페이지 호출
-        },
-      })
+
+    const params: ProductQueryParams = { categories: 67 }; // MD 추천 카테고리 ID
+    if (cursor) {
+      params.cursor = decodeURIComponent(cursor);
+    }
+    productAPI
+      .getProducts(params)
       .then((response) => {
         const { results, next } = response.data;
         setProducts((prevProducts) => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가
