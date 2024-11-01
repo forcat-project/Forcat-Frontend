@@ -90,7 +90,10 @@ export default function AccountManage() {
               cursor="pointer"
               isSoldOut={false}
               onClick={() => {
-                // 로그아웃 처리 로직 추가
+                // 세션에서 access_token 제거
+                sessionStorage.removeItem("access_token");
+                // 로그인 페이지로 이동
+                window.location.href = "/login";
                 setIsModalOpen(false);
               }}
             >
