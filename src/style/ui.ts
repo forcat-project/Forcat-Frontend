@@ -196,6 +196,7 @@ type StyleButton = {
     bgColor?: keyof DefaultTheme["color"] | string;
     cursor?: string;
     border?: string;
+    variant: "primary" | "secondary";
 };
 
 export const Button = {
@@ -232,6 +233,23 @@ export const Button = {
         color: #f4b647; // disabled이면 "#000000" 로 변경되도록 수정하기
         background-color: #f6ecd7; // disabled이면 "#F8F8F8" 로 변경되도록 수정하기
         cursor: pointer;
+    `,
+    AlertModalSelect: styled.div<StyleButton>`
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid ${props => (props.variant === "primary" ? "#F4B647" : "#E8E8E8")};
+        background-color: ${props => (props.variant === "primary" ? "#F4B647" : "white")};
+        color: ${props => (props.variant === "primary" ? "white" : "#666")};
+        width: 180px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+            background-color: ${props => (props.variant === "primary" ? "orange" : "#f5f5f5")};
+        }
     `,
     SelectInput: styled.div<StyleButton & { isActive: boolean }>`
         display: flex;
