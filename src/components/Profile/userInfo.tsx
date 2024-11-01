@@ -24,7 +24,7 @@ export default function UserInfo({ onReload }: UserInfoProps) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        if (userId !== null) {
+        if (userId) {
           const response = await userAPI.getUser(Number(userId));
           setUser(response.data);
         }
