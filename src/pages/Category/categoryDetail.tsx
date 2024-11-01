@@ -1,6 +1,6 @@
 // CategoryDetail.tsx
 import { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
@@ -21,7 +21,7 @@ import {
     SoldoutBox,
     LoadingMessage,
 } from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
-import { BASE_URL } from "../../api/constants";
+import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function CategoryDetail() {
     const { category_id } = useParams<{ category_id: string }>();
@@ -55,14 +55,13 @@ export default function CategoryDetail() {
 
     const fetchProducts = (cursor: string | null = null) => {
         if (isFetching || !hasMore) return;
+        
+        const params: ProductQueryParams = {};
+        if (cursor) {
+            params.cursor = decodeURIComponent(cursor)
+        }
         setIsFetching(true);
-        axios
-            .get(`${BASE_URL}/products`, {
-                params: {
-                    categories: category_id,
-                    cursor: cursor ? decodeURIComponent(cursor) : null,
-                },
-            })
+        productAPI.getProducts(params)
             .then(response => {
                 const { results, next } = response.data;
                 setProducts(prevProducts => [...prevProducts, ...results]);

@@ -3,7 +3,6 @@ import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
 import { Block, Img, Text } from "../../style/ui";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUserId } from "../../hooks/useUserId";
 
 export default function Login() {
     const handleKakaoLoginClick = () => {
@@ -13,18 +12,14 @@ export default function Login() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const userId = useUserId();
-    console.log("login ::::::::::::::::::::", userId);
-
     useEffect(() => {
-        if (userId === null) {
-            console.log("유저 아이디 없음! ~!~!!!!!!!!!!");
-            navigate("/signup");
-        } else {
-            // navigate("/home");
-            console.log("dddd");
+        const queryParams = new URLSearchParams(location.search);
+        const accessToken = queryParams.get("access_token");
+        if (accessToken) {
+            sessionStorage.setItem('access_token', accessToken)
+            navigate("/")
         }
-    }, [userId, location.search]);
+    }, [location.search]);
 
     return (
         <>

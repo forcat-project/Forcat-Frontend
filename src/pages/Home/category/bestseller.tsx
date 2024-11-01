@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../../interfaces/product";
 import {
@@ -18,7 +18,10 @@ import {
   SoldoutBox,
   LoadingMessage,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
-import { BASE_URL } from "../../../api/constants";
+import {
+  ProductQueryParams,
+  productAPI,
+} from "../../../api/resourses/products";
 
 export default function BestSeller() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -48,14 +51,15 @@ export default function BestSeller() {
     if (isFetching || !hasMore) return;
 
     setIsFetching(true); // 데이터 요청 상태 설정
-    axios
-      .get(`${BASE_URL}/products`, {
-        params: {
-          categories: null, // categories는 null
-          ordering: "-purchase_count", // 구매 횟수 기준으로 정렬
-          cursor: cursor ? decodeURIComponent(cursor) : null, // cursor 값으로 페이지 처리
-        },
-      })
+
+    const params: ProductQueryParams = {
+      ordering: "-purchase_count", // 구매 횟수 기준으로 정렬
+    };
+    if (cursor) {
+      params.cursor = decodeURIComponent(cursor);
+    }
+    productAPI
+      .getProducts(params)
       .then((response) => {
         const { results, next } = response.data;
         setProducts((prevProducts) => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가

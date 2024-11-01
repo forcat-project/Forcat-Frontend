@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { IProducts } from "../../interfaces/product";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,6 +18,7 @@ import {
   SoldoutBox,
 } from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -43,17 +44,16 @@ export default function Market() {
   }, [handleScroll]);
 
   // API 요청 함수
-  const fetchProducts = (cursor: string | null = null) => {
+  const fetchProducts = (cursor: string | undefined = undefined) => {
     if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
     setIsFetching(true); // 데이터 요청 상태 설정
-    axios
-      .get("https://forcat.store/api/products", {
-        params: {
-          name: null,
-          categories: null,
-          cursor: cursor ? decodeURIComponent(cursor) : null, // 이중 인코딩 방지
-        },
-      })
+    
+    const params: ProductQueryParams = {};
+    if (cursor) {
+      params.cursor = decodeURIComponent(cursor)
+    }
+    
+    productAPI.getProducts(params)
       .then((response) => {
         const { results, next } = response.data;
         console.log("받은 results:", results); // 받은 results 값 출력
