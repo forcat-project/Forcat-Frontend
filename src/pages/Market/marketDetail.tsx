@@ -9,7 +9,7 @@ import { Minus, Plus } from "../../assets/svg";
 import axiosInstance from "../../api/axiosInstance";
 import { useUserId } from "../../hooks/useUserId";
 
-import { ChoiceModalBody, ChoiceModalButton, ChoiceModalContent, ChoiceModalFooter, ChoiceModalHeader, ChoiceModalOverlay, ChoiceModalTitle } from "../../style/modal";
+import ChoiceModal from "../../components/Modal/ChoiceModel";
 
 export default function MarketDetail() {
   const { productId } = useParams();
@@ -455,24 +455,14 @@ export default function MarketDetail() {
       </Block.FlexBox>
 
       {isChoiceModalOpen && (
-        <ChoiceModalOverlay onClick={handleContinueShopping}>
-          <ChoiceModalContent onClick={(e) => e.stopPropagation()}>
-            <ChoiceModalHeader>
-              <ChoiceModalTitle>상품이 장바구니에 담겼습니다</ChoiceModalTitle>
-            </ChoiceModalHeader>
-            <ChoiceModalBody>
-              장바구니로 이동하시겠습니까?
-            </ChoiceModalBody>
-            <ChoiceModalFooter>
-              <ChoiceModalButton onClick={handleContinueShopping} variant="secondary">
-                계속 구경하기
-              </ChoiceModalButton>
-              <ChoiceModalButton onClick={handleGoToCart} variant="primary">
-                장바구니로 이동
-              </ChoiceModalButton>
-            </ChoiceModalFooter>
-          </ChoiceModalContent>
-        </ChoiceModalOverlay>
+            <ChoiceModal
+            title="상품이 장바구니에 담겼습니다"
+            bodyText="장바구니로 이동하시겠습니까?"
+            onPrimaryAction={handleGoToCart}
+            onSecondaryAction={handleContinueShopping}
+            primaryButtonText="장바구니로 이동"
+            secondaryButtonText="계속 구경하기"
+          />
       )}
     </>
   );
