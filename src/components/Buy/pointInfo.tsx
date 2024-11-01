@@ -25,7 +25,7 @@ export default function PointInfo() {
           marginRight: "20px",
         }}
       >
-        보유: P
+        보유: 0P
       </Text.Notice200>
     </PointContainer>
   );
