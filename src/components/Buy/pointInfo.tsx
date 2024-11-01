@@ -13,13 +13,20 @@ export default function PointInfo() {
         style={{ marginTop: "5px", gap: "12px" }}
       >
         <StyledInput placeholder="0" defaultValue="0" />
-        <StyledButton>전액사용</StyledButton>
+        <Button.PointAllin>전액사용</Button.PointAllin>
       </Block.FlexBox>
 
       {/* 보유 포인트 텍스트 */}
-      <Text.Mini style={{ marginTop: "8px", color: "#A6A9B8" }}>
+      <Text.Notice200
+        style={{
+          marginTop: "8px",
+          color: "#333",
+          alignSelf: "flex-end",
+          marginRight: "20px",
+        }}
+      >
         보유: 0P
-      </Text.Mini>
+      </Text.Notice200>
     </PointContainer>
   );
 }
@@ -39,19 +46,4 @@ const StyledInput = styled(Input.InfoBox)`
   font-size: 14px;
   border: 1px solid #d9d9d9;
   color: #000000;
-`;
-
-const StyledButton = styled(Button.Select)`
-  padding: 8px 12px;
-  border-radius: 8px;
-  background-color: #f1f3f5;
-  color: #2d2d2d;
-  font-weight: 500;
-  font-size: 14px;
-  border: none;
-
-  cursor: pointer;
-  &:hover {
-    background-color: #e9ecef;
-  }
 `;

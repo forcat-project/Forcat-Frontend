@@ -337,6 +337,23 @@ export const Button = {
     font-weight: bold;
     cursor: pointer;
   `,
+  PointAllin: styled.div<StyleButton>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px; /* 버튼의 가로 크기를 이미지와 동일하게 줄여주세요 */
+    height: 36px; /* 버튼의 높이를 이미지와 맞추어 설정 */
+    border-radius: 18px; /* 버튼의 둥근 모서리 */
+    color: #2d2d2d; /* 텍스트 색상 */
+    background-color: #f7f8fa; /* 버튼 배경색 */
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    &:hover {
+      background-color: #e9ecef; /* 마우스를 올렸을 때의 배경색 */
+    }
+  `,
 };
 
 // 재사용 될 이미지
