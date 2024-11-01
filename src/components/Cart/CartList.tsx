@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Checked, Unchecked } from "../../assets/svg";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Img, Text } from "../../style/ui";
 
 type Product = {
     product_id: number;
@@ -20,9 +20,39 @@ type Props = {
 
 export function CartList({ onPayment, dummyProducts }: Props) {
     const [isAllCheckButtonClick, setIsAllCheckButtonClick] = useState(false);
+    const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+
+    const groupedProducts = dummyProducts.reduce((acc, product) => {
+        (acc[product.company] = acc[product.company] || []).push(product);
+        return acc;
+    }, {} as { [company: string]: Product[] });
+
+    const handleProductCheckToggle = (productId: number) => {
+        setSelectedProducts(prev => {
+            if (prev.includes(productId)) {
+                return prev.filter(id => id !== productId);
+            } else {
+                return [...prev, productId];
+            }
+        });
+    };
+
+    const handleAllCheckToggle = () => {
+        if (isAllCheckButtonClick) {
+            setSelectedProducts([]);
+        } else {
+            setSelectedProducts(dummyProducts.map(product => product.product_id));
+        }
+        setIsAllCheckButtonClick(prev => !prev);
+    };
+
+    const totalPrice = selectedProducts.reduce((total, productId) => {
+        const product = dummyProducts.find(p => p.product_id === productId);
+        return total + (product ? product.discounted_price : 0);
+    }, 0);
 
     return (
-        <Block.FlexBox margin="110px 0 0 0">
+        <Block.FlexBox margin="110px 0 0 0" direction="column">
             <Block.FlexBox justifyContent="center">
                 <Block.FlexBox
                     width="90%"
@@ -30,26 +60,70 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                     alignItems="center"
                     gap="10px"
                     style={{ borderBottom: "2px solid #D9D9D9" }}
+                    onClick={handleAllCheckToggle}
                 >
                     {isAllCheckButtonClick ? (
-                        <Checked
-                            cursor="pointer"
-                            onClick={() => setIsAllCheckButtonClick(false)}
-                            width={21}
-                            height={21}
-                        />
+                        <Checked width={21} height={21} cursor="pointer" />
                     ) : (
-                        <Unchecked
-                            cursor="pointer"
-                            onClick={() => setIsAllCheckButtonClick(true)}
-                            width={21}
-                            height={21}
-                        />
+                        <Unchecked width={21} height={21} cursor="pointer" />
                     )}
-
-                    <Text.Menu200>전체 선택</Text.Menu200>
+                    <Text.TitleMenu100>전체 선택</Text.TitleMenu100>
                 </Block.FlexBox>
             </Block.FlexBox>
+
+            <Block.FlexBox
+                width="100%"
+                height="87%"
+                padding="0 0 30px 0"
+                direction="column"
+                style={{
+                    overflowY: "scroll",
+                    scrollbarWidth: "none",
+                }}
+            >
+                {Object.entries(groupedProducts).map(([company, products]) => (
+                    <Block.FlexBox padding="30px 40px" gap="30px" direction="column" key={company}>
+                        <Text.TitleMenu300>{company}</Text.TitleMenu300>
+                        {products.map(product => (
+                            <Block.FlexBox key={product.product_id}>
+                                <Block.FlexBox
+                                    width="23px"
+                                    height="23px"
+                                    onClick={() => handleProductCheckToggle(product.product_id)}
+                                >
+                                    {selectedProducts.includes(product.product_id) ? (
+                                        <Checked width={21} height={21} cursor="pointer" />
+                                    ) : (
+                                        <Unchecked width={21} height={21} cursor="pointer" />
+                                    )}
+                                </Block.FlexBox>
+
+                                <Block.FlexBox margin="0 0 0 20px" alignItems="center">
+                                    <Img.AngledIcon
+                                        width="90px"
+                                        height="90px"
+                                        src={product.thumbnail_url}
+                                        alt={product.name}
+                                        style={{
+                                            borderRadius: "16px",
+                                        }}
+                                    />
+                                    <Block.FlexBox margin="0px 0 0 20px" direction="column" gap="10px">
+                                        <Text.Menu>{product.name}</Text.Menu>
+                                        <Block.FlexBox direction="column" gap="3px">
+                                            <Text.OriginalPrice>{product.price.toLocaleString()}원</Text.OriginalPrice>
+                                            <Text.TitleMenu200>
+                                                {product.discounted_price.toLocaleString()}원
+                                            </Text.TitleMenu200>
+                                        </Block.FlexBox>
+                                    </Block.FlexBox>
+                                </Block.FlexBox>
+                            </Block.FlexBox>
+                        ))}
+                    </Block.FlexBox>
+                ))}
+            </Block.FlexBox>
+
             <Block.AbsoluteBox
                 width="599px"
                 height="90px"
@@ -57,8 +131,10 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                 bottom="0"
                 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             >
-                <Button.Confirm isDisabled={false} onClick={onPayment}>
-                    결제하기 ( 원)
+                <Button.Confirm isDisabled={selectedProducts.length === 0} onClick={onPayment}>
+                    <Text.TitleMenu200 color="White">
+                        {totalPrice.toLocaleString()}원 결제하기 ({selectedProducts.length}개)
+                    </Text.TitleMenu200>
                 </Button.Confirm>
             </Block.AbsoluteBox>
         </Block.FlexBox>
