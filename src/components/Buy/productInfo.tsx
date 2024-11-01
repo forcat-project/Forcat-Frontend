@@ -6,20 +6,7 @@ import {
   DiscountRate,
   DiscountedPrice,
 } from "../../components/Product/ProductContainer";
-
-interface ProductInfoProps {
-  product: {
-    thumbnail_url: string;
-    name: string;
-    company: string;
-    discount_rate: number;
-    discounted_price: number;
-    price: number;
-  };
-  count: number;
-  isProductInfoExpanded: boolean;
-  toggleProductInfo: () => void;
-}
+import { ProductInfoProps } from "../../interfaces/info";
 
 export default function ProductInfo({
   product,

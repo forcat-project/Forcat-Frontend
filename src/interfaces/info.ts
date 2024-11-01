@@ -21,3 +21,17 @@ export interface Cat {
   profile_image: string;
   birth_date?: string;
 }
+
+export interface ProductInfoProps {
+  product: {
+    thumbnail_url: string;
+    name: string;
+    company: string;
+    discount_rate: number;
+    discounted_price: number;
+    price: number;
+  };
+  count: number;
+  isProductInfoExpanded: boolean;
+  toggleProductInfo: () => void;
+}

@@ -11,6 +11,7 @@ function App() {
   const isMarketDetailPage = /^\/market\/\d+$/.test(location.pathname);
   const isLoginPage = location.pathname.startsWith("/login");
   const isSignupPage = location.pathname.startsWith("/signup");
+  const isBuyPage = location.pathname.startsWith("/buy");
 
   useScrollRestoration(); // 페이지 전환 시 스크롤 복원
 
@@ -36,6 +37,7 @@ function App() {
           isLoginPage={isLoginPage}
           isSignupPage={isSignupPage}
           isMarketDetailPage={isMarketDetailPage}
+          isBuyPage={isBuyPage}
         />
       </Block.FlexBox>
     </>
