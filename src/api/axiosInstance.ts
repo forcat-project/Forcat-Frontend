@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
       !publicPaths.some((path) => config.url.startsWith(path))
     ) {
       const token = sessionStorage.getItem("access_token"); // sessionStorage에서 토큰 가져오기
-      if (token && config.headers) {
+      if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       } else {
         // 로그인 페이지로 리다이렉트

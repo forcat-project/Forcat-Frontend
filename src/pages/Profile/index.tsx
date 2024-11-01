@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { Block, Divider } from "../../style/ui";
+import { useEffect, useState } from "react";
+import { Block } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
 import Purchase from "../../components/Profile/purchase";
 import AccountManage from "../../components/Profile/accountManage";
 import { PageWrapper } from "../../style/ui";
-// import { getCookie } from "../../api/cookie";
-// import { useNavigate } from "react-router-dom";
 
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 
@@ -17,12 +15,7 @@ export default function Profile() {
     setReload(!reload);
   };
 
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!getCookie("access_token")) {
-  //     navigate("/login");
-  //   }
-  // }, []);
+  useEffect(() => {}, []);
 
   return (
     <PageWrapper>
@@ -35,14 +28,32 @@ export default function Profile() {
         key={reload.toString()} // `key`에 문자열로 변경
       >
         <UserInfo onReload={handleReload} />
-        <Divider />
-
+        <div
+          style={{
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
+          }}
+        />
         <Cats />
-        <Divider />
-
+        <div
+          style={{
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
+          }}
+        />
         <Purchase />
-        <Divider />
-
+        <div
+          style={{
+            width: "100%",
+            height: "10px",
+            backgroundColor: "#f0f0f0", // 연한 회색
+            margin: "20px 0", // 위아래 여백
+          }}
+        />
         <AccountManage />
       </Block.FlexBox>
     </PageWrapper>
