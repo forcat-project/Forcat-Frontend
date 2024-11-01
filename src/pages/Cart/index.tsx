@@ -68,7 +68,7 @@ export default function Cart() {
 
     return (
         <>
-            {dummyProducts.length !== 0 ? (
+            {dummyProducts.length === 0 ? (
                 <CartEmpty onContinueShopping={handleContinueShoppingButtonClick} />
             ) : (
                 <CartList onPayment={handlePaymentButtonClick} />
