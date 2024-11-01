@@ -55,9 +55,13 @@ export default function MarketDetail() {
   };
 
   const handleBuyConfirmButtonClick = () => {
-    console.log("결제");
     setIsBuyModalOpen(false);
-    navigate("/buy");
+    navigate("/buy", {
+      state: {
+        product: productDetail,
+        count: buyCount,
+      },
+    });
 
     // 결제 API 나오면 주소, body 전달할 값만 넘겨주면 됨!
     // if (userId !== null) {
