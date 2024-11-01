@@ -19,6 +19,7 @@ export { default as Minus } from "./Minus";
 export { default as Plus } from "./Plus";
 export { default as Profile } from "./Profile";
 export { default as ProfileDisabled } from "./ProfileDisabled";
+export { default as RemoveGray } from "./RemoveGray";
 export { default as Search } from "./Search";
 export { default as SearchDisabled } from "./SearchDisabled";
 export { default as Unchecked } from "./Unchecked";

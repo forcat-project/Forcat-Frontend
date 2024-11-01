@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checked, Unchecked } from "../../assets/svg";
+import { Checked, RemoveGray, Unchecked, X } from "../../assets/svg";
 import { Block, Button, Img, Text } from "../../style/ui";
 
 type Product = {
@@ -44,6 +44,10 @@ export function CartList({ onPayment, dummyProducts }: Props) {
             setSelectedProducts(dummyProducts.map(product => product.product_id));
         }
         setIsAllCheckButtonClick(prev => !prev);
+    };
+
+    const handleProductRemove = () => {
+        console.log("지우기");
     };
 
     const totalPrice = selectedProducts.reduce((total, productId) => {
@@ -108,15 +112,30 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                                             borderRadius: "16px",
                                         }}
                                     />
-                                    <Block.FlexBox margin="0px 0 0 20px" direction="column" gap="10px">
+                                    <Block.FlexBox width="270px" margin="0px 0 0 20px" direction="column" gap="10px">
                                         <Text.Menu>{product.name}</Text.Menu>
                                         <Block.FlexBox direction="column" gap="3px">
-                                            <Text.OriginalPrice>{product.price.toLocaleString()}원</Text.OriginalPrice>
-                                            <Text.TitleMenu200>
-                                                {product.discounted_price.toLocaleString()}원
-                                            </Text.TitleMenu200>
+                                            {Number(product?.discount_rate) > 0 ? (
+                                                <>
+                                                    <Text.OriginalPrice>
+                                                        {product && Math.floor(product?.price).toLocaleString()} 원{" "}
+                                                    </Text.OriginalPrice>
+                                                    <Text.TitleMenu200>
+                                                        {Math.floor(Number(product?.discounted_price)).toLocaleString()}{" "}
+                                                        원
+                                                    </Text.TitleMenu200>
+                                                </>
+                                            ) : (
+                                                <Text.TitleMenu200>
+                                                    {Math.floor(Number(product?.discounted_price)).toLocaleString()} 원
+                                                </Text.TitleMenu200>
+                                            )}
                                         </Block.FlexBox>
                                     </Block.FlexBox>
+                                </Block.FlexBox>
+
+                                <Block.FlexBox width="30px" alignItems="flex-start">
+                                    <RemoveGray width={10} cursor="pointer" onClick={handleProductRemove} />
                                 </Block.FlexBox>
                             </Block.FlexBox>
                         ))}
