@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checked, MinusGray, PlusGray, RemoveGray, Unchecked, X } from "../../assets/svg";
+import { Checked, MinusGray, PlusGray, RemoveGray, Unchecked } from "../../assets/svg";
 import { Block, Button, Img, Text } from "../../style/ui";
 
 type Product = {
@@ -21,6 +21,12 @@ type Props = {
 export function CartList({ onPayment, dummyProducts }: Props) {
     const [isAllCheckButtonClick, setIsAllCheckButtonClick] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+    const [quantity, setQuantity] = useState<{ [key: number]: number }>(
+        dummyProducts.reduce((acc, product) => {
+            acc[product.product_id] = 1;
+            return acc;
+        }, {} as { [key: number]: number })
+    );
 
     const groupedProducts = dummyProducts.reduce((acc, product) => {
         (acc[product.company] = acc[product.company] || []).push(product);
@@ -50,9 +56,17 @@ export function CartList({ onPayment, dummyProducts }: Props) {
         console.log("지우기");
     };
 
+    const handleQuantityChange = (productId: number, delta: number) => {
+        setQuantity(prev => {
+            const newQuantity = Math.max(prev[productId] + delta, 1);
+            return { ...prev, [productId]: newQuantity };
+        });
+    };
+
     const totalPrice = selectedProducts.reduce((total, productId) => {
         const product = dummyProducts.find(p => p.product_id === productId);
-        return total + (product ? product.discounted_price : 0);
+        const productQuantity = quantity[productId] || 1;
+        return total + (product ? product.discounted_price * productQuantity : 0);
     }, 0);
 
     return (
@@ -119,19 +133,15 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                                                 {Number(product?.discount_rate) > 0 ? (
                                                     <>
                                                         <Text.OriginalPrice>
-                                                            {product && Math.floor(product?.price).toLocaleString()}원{" "}
+                                                            {Math.floor(product?.price).toLocaleString()}원
                                                         </Text.OriginalPrice>
                                                         <Text.TitleMenu200>
-                                                            {Math.floor(
-                                                                Number(product?.discounted_price)
-                                                            ).toLocaleString()}{" "}
-                                                            원
+                                                            {Math.floor(product?.discounted_price).toLocaleString()}원
                                                         </Text.TitleMenu200>
                                                     </>
                                                 ) : (
                                                     <Text.TitleMenu200>
-                                                        {Math.floor(Number(product?.discounted_price)).toLocaleString()}{" "}
-                                                        원
+                                                        {Math.floor(product?.discounted_price).toLocaleString()}원
                                                     </Text.TitleMenu200>
                                                 )}
                                             </Block.FlexBox>
@@ -144,9 +154,19 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                                             justifyContent="space-around"
                                             alignItems="center"
                                         >
-                                            <MinusGray cursor="pointer" width={10} height={21} />
-                                            <Text.Notice100>1</Text.Notice100>
-                                            <PlusGray cursor="pointer" width={10} height={21} />
+                                            <MinusGray
+                                                cursor="pointer"
+                                                width={10}
+                                                height={21}
+                                                onClick={() => handleQuantityChange(product.product_id, -1)}
+                                            />
+                                            <Text.Notice100>{quantity[product.product_id]}</Text.Notice100>
+                                            <PlusGray
+                                                cursor="pointer"
+                                                width={10}
+                                                height={21}
+                                                onClick={() => handleQuantityChange(product.product_id, 1)}
+                                            />
                                         </Block.FlexBox>
                                     </Block.FlexBox>
                                 </Block.FlexBox>
