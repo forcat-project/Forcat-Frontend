@@ -326,6 +326,17 @@ export const Button = {
     cursor: pointer;
     font-size: 20px;
   `,
+
+  OptionButton: styled.div<StyleButton>`
+    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    color: #6994ff; /* 파란색 텍스트 */
+    border: 1px solid #f0f8ff; /* 파란색 테두리 */
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  `,
 };
 
 // 재사용 될 이미지
@@ -478,4 +489,15 @@ export const PageWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; //스크롤바 숨김
   }
+`;
+
+export const Section = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+  height: 10px;
+  background-color: #f0f0f0;
+  margin: 20px 0;
 `;

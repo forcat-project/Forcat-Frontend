@@ -2,7 +2,6 @@ import { Block, Text, Button, Img } from "../../style/ui";
 import styled from "styled-components";
 import {
   ProductCompany,
-  ProductName,
   OriginalPrice,
   DiscountRate,
   DiscountedPrice,
@@ -50,7 +49,7 @@ export default function ProductInfo({
               <Text.Menu style={{ fontSize: "20px" }}>{product.name}</Text.Menu>
               {/* 옵션 버튼과 수량 */}
               <Block.FlexBox alignItems="center" gap="10px">
-                <OptionButton>옵션</OptionButton>
+                <Button.OptionButton>옵션</Button.OptionButton>
                 <Text.Menu color="Gray">{count}개</Text.Menu>
               </Block.FlexBox>
               {/* 할인 정보 */}
@@ -81,15 +80,4 @@ export default function ProductInfo({
 // Styled Components
 const ProductInform = styled(Block.FlexBox)`
   gap: 15px; /* 여백을 15px로 늘림 */
-`;
-
-const OptionButton = styled.button`
-  background-color: #f0f8ff; /* 연한 파란색 배경 */
-  color: #6994ff; /* 파란색 텍스트 */
-  border: 1px solid #f0f8ff; /* 파란색 테두리 */
-  border-radius: 5px;
-  padding: 2px 8px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
 `;

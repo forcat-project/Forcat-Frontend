@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { Block, Text, Button, Input } from "../../style/ui";
+import { Block, Text, Button, Input, Divider } from "../../style/ui";
 import styled from "styled-components";
 import { useState } from "react";
 import ProductInfo from "../../components/Buy/productInfo"; // Import ProductInfo component
@@ -110,13 +110,6 @@ const SectionTitle = styled(Text.TitleMenu200)`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 10px;
-  background-color: #f0f0f0;
-  margin: 20px 0;
 `;
 
 const StyledInput = styled(Input.InfoBox)`
