@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Block, Button, Img, Text } from "../../style/ui";
+import { CartEmpty } from "../../components/Cart/CartEmpty";
+import { CartList } from "../../components/Cart/CartList";
 
 export default function Cart() {
     const navigate = useNavigate();
@@ -67,43 +68,10 @@ export default function Cart() {
 
     return (
         <>
-            {dummyProducts.length === 0 ? (
-                <Block.FlexBox bgColor="#F9F9F9" alignItems="center">
-                    <Block.FlexBox
-                        width="100%"
-                        height="93px"
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        gap="12px"
-                    >
-                        <Text.TitleMenu200> 장바구니에 담은 상품이 없어요</Text.TitleMenu200>
-
-                        <Text.Notice100>상품을 추가해보세요!</Text.Notice100>
-                    </Block.FlexBox>
-                    <Block.AbsoluteBox
-                        width="599px"
-                        height="90px"
-                        bgColor="white"
-                        bottom="0"
-                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-                    >
-                        <Button.Confirm onClick={handleContinueShoppingButtonClick}>쇼핑 계속하기</Button.Confirm>
-                    </Block.AbsoluteBox>
-                </Block.FlexBox>
+            {dummyProducts.length !== 0 ? (
+                <CartEmpty onContinueShopping={handleContinueShoppingButtonClick} />
             ) : (
-                <Block.FlexBox margin="100px 0 0 0">
-                    전체 선택
-                    <Block.AbsoluteBox
-                        width="599px"
-                        height="90px"
-                        bgColor="white"
-                        bottom="0"
-                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-                    >
-                        <Button.Confirm onClick={handlePaymentButtonClick}>결제하기 ( 원)</Button.Confirm>
-                    </Block.AbsoluteBox>
-                </Block.FlexBox>
+                <CartList onPayment={handlePaymentButtonClick} />
             )}
         </>
     );

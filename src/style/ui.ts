@@ -196,7 +196,7 @@ type StyleButton = {
     bgColor?: keyof DefaultTheme["color"] | string;
     cursor?: string;
     border?: string;
-    variant: "primary" | "secondary";
+    variant?: "primary" | "secondary";
 };
 
 export const Button = {
