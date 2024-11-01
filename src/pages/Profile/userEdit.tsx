@@ -12,9 +12,8 @@ import {
   ProfileImageWrapper,
   StyledTextButton,
 } from "../../style/modal";
-import axios from "axios";
 import { User } from "../../interfaces/info";
-import { BASE_URL } from "../../api/constants";
+import { UserDataParams, userAPI } from "../../api/resourses/users";
 
 ReactModal.setAppElement("#root");
 
@@ -68,7 +67,7 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
         uploadedImageUrl = await uploadImage(selectedFile);
       }
 
-      const updatedData = {
+      const userData: UserDataParams = {
         username: user.username,
         nickname,
         profile_picture: uploadedImageUrl,
@@ -77,10 +76,8 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
         address_detail: addressDetail,
       };
 
-      await axios.put(`${BASE_URL}/users/${user.id}`, updatedData);
-
+      await userAPI.updateUser(user.id, userData);
       alert("사용자 정보가 업데이트되었습니다.");
-      console.log("업데이트된 데이터:", updatedData);
       onReload();
       onClose();
     } catch (error: any) {

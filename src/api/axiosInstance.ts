@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 // 인증이 필요 없는 API 경로 목록
 const publicPaths: string[] = [
-  "/users/signup",
+  "/users/sign-up",
   "/categories",
   "/oauth/kakao",
   "/products",
@@ -39,16 +39,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-// Users API
-export const userAPI = {
-  signup: (userData: any) => axiosInstance.post("/users/sign-up", userData),
-  getUser: (userId: string) => axiosInstance.get(`/users/${userId}`),
-  updateUser: (userId: string, userData: any) =>
-    axiosInstance.put(`/users/${userId}`, userData),
-  updateUserPartial: (userId: string, userData: any) =>
-    axiosInstance.patch(`/users/${userId}`, userData),
-};
 
 // CartProduct API
 export const cartProductAPI = {
