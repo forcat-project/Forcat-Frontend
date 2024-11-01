@@ -19,6 +19,7 @@ export default function MarketDetail() {
     const [buyCount, setBuyCount] = useState(1);
 
     const userId = useUserId();
+    console.log("marketDetail :::::::::::::", userId);
 
     const navigate = useNavigate();
 
