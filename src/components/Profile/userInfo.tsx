@@ -22,6 +22,7 @@ export default function UserInfo({ onReload }: UserInfoProps) {
     const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
 
     const userId = useUserId();
+    console.log("userInfo ::::::::::::::::::::", userId);
 
     useEffect(() => {
         const fetchUserData = async () => {

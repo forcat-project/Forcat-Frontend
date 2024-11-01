@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getCookie } from "../api/cookie";
+import { useLocation } from "react-router-dom";
+import { setCookie } from "../api/cookie";
 
 interface CustomJwtPayload {
     user_id: string;
 }
 
 export function useUserId() {
-    const [userId, setUserId] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string>("");
+    const location = useLocation();
 
     useEffect(() => {
-        const cookie = getCookie("access_token");
+        const queryParams = new URLSearchParams(location.search);
+        const accessToken = queryParams.get("access_token");
 
-        if (cookie) {
+        if (accessToken) {
+            setCookie("access_token", accessToken, { path: "/", maxAge: 3600 });
+
             try {
-                const decoded = jwtDecode(cookie) as CustomJwtPayload;
+                const decoded = jwtDecode<CustomJwtPayload>(accessToken);
                 setUserId(decoded.user_id);
             } catch (error) {
-                console.log("유저 id 가져오기에 실패했습니다.");
+                console.error("유저 ID를 가져오는 데 실패했습니다.", error);
             }
+        } else {
+            console.warn("accessToken이 존재하지 않습니다.");
         }
-    }, []);
-
+    }, [location.search]);
     return userId;
 }

@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
 import { Block, Img, Text } from "../../style/ui";
-import { setCookie } from "../../api/cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserId } from "../../hooks/useUserId";
 
@@ -15,29 +14,17 @@ export default function Login() {
     const location = useLocation();
 
     const userId = useUserId();
-    const [isCheckingUser, setIsCheckingUser] = useState(true);
+    console.log("login ::::::::::::::::::::", userId);
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const accessToken = queryParams.get("access_token");
-
-        if (accessToken) {
-            setCookie("access_token", accessToken, { path: "/", maxAge: 3600 });
-
-            if (userId !== null) {
-                navigate("/home");
-            } else {
-                navigate("/signup");
-            }
+        if (userId === null) {
+            console.log("유저 아이디 없음! ~!~!!!!!!!!!!");
+            navigate("/signup");
         } else {
-            console.log("로그인이 필요합니다.");
-            navigate("/login");
+            // navigate("/home");
+            console.log("dddd");
         }
-
-        setIsCheckingUser(false);
     }, [userId, location.search]);
-
-    if (isCheckingUser) return <div>로딩 중...</div>;
 
     return (
         <>

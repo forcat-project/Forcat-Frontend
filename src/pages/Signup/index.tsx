@@ -43,6 +43,7 @@ export default function Signup() {
             console.log(userInfo);
             setStep(step + 1);
         } catch (error) {
+            console.log(error);
             alert("사용자 정보 등록에 실패했습니다. 다시 시도해 주세요.");
         }
     };
