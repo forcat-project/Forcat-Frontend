@@ -12,6 +12,7 @@ export default function Cats() {
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
     const userId = useUserId();
+    console.log("cats ::::::::::::::::::::", userId);
 
     useEffect(() => {
         fetchCats();

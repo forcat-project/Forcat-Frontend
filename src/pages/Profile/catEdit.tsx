@@ -36,6 +36,7 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const userId = useUserId();
+    console.log("catEdit :::::::::::::", userId);
 
     useEffect(() => {
         if (cat.birth_date) {
