@@ -53,9 +53,9 @@ export default function MarketDetail() {
                 alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
             }
         } else {
-            alert("로그인 후 장바구니에 담을 수 있어요!");
-            navigate("/login");
-            // setIsChoiceModalOpen(true);
+            // alert("로그인 후 장바구니에 담을 수 있어요!");
+            // navigate("/login");
+            setIsChoiceModalOpen(true);
         }
     };
 
@@ -126,6 +126,7 @@ export default function MarketDetail() {
     };
 
     const handleContinueShopping = () => {
+        setIsCartModalOpen(false);
         setIsChoiceModalOpen(false);
     };
 
