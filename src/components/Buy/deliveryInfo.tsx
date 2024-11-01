@@ -119,7 +119,7 @@ export default function DeliveryInfo({
             bottom: "auto",
             transform: "translate(-50%, -50%)",
             width: "500px",
-            padding: "10px",
+            padding: "20px",
           },
         }}
       >
