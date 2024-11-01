@@ -2,6 +2,47 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface ModalComponentProps {
+  title: string;
+  bodyText: string;
+  onPrimaryAction: () => void;
+  onSecondaryAction: () => void;
+  primaryButtonText: string;
+  secondaryButtonText: string;
+}
+
+const ChoiceModal: React.FC<ModalComponentProps> = ({ 
+  title, 
+  bodyText, 
+  onPrimaryAction, 
+  onSecondaryAction, 
+  primaryButtonText, 
+  secondaryButtonText 
+}) => {
+  return (
+    <ModalOverlay onClick={onSecondaryAction}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <ModalHeader>
+          <ModalTitle>{title}</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+          {bodyText}
+        </ModalBody>
+        <ModalFooter>
+          <ModalButton onClick={onSecondaryAction} variant="secondary">
+            {secondaryButtonText}
+          </ModalButton>
+          <ModalButton onClick={onPrimaryAction} variant="primary">
+            {primaryButtonText}
+          </ModalButton>
+        </ModalFooter>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
+
+export default ChoiceModal;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -58,44 +99,3 @@ const ModalButton = styled.button<{ variant: 'primary' | 'secondary' }>`
     background-color: ${props => props.variant === 'primary' ? 'orange' : '#f5f5f5'};
   }
 `;
-
-interface ModalComponentProps {
-  title: string;
-  bodyText: string;
-  onPrimaryAction: () => void;
-  onSecondaryAction: () => void;
-  primaryButtonText: string;
-  secondaryButtonText: string;
-}
-
-const ChoiceModal: React.FC<ModalComponentProps> = ({ 
-  title, 
-  bodyText, 
-  onPrimaryAction, 
-  onSecondaryAction, 
-  primaryButtonText, 
-  secondaryButtonText 
-}) => {
-  return (
-    <ModalOverlay onClick={onSecondaryAction}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-          {bodyText}
-        </ModalBody>
-        <ModalFooter>
-          <ModalButton onClick={onSecondaryAction} variant="secondary">
-            {secondaryButtonText}
-          </ModalButton>
-          <ModalButton onClick={onPrimaryAction} variant="primary">
-            {primaryButtonText}
-          </ModalButton>
-        </ModalFooter>
-      </ModalContent>
-    </ModalOverlay>
-  );
-};
-
-export default ChoiceModal;
