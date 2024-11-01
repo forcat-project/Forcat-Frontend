@@ -27,6 +27,11 @@ export default function ProductInfo({
   isProductInfoExpanded,
   toggleProductInfo,
 }: ProductInfoProps) {
+  // Calculate the original price before the discount
+  const calculatedOriginalPrice = Math.round(
+    product.discounted_price * (1 + product.discount_rate / 100)
+  );
+
   return (
     <>
       {/* 주문 상품 */}
@@ -42,22 +47,23 @@ export default function ProductInfo({
           <ProductInform>
             <Img.BuyImg src={product.thumbnail_url} alt={product.name} />
             <Block.FlexBox direction="column" gap="10px">
-              {" "}
               <ProductCompany color="Gray" style={{ fontSize: "15px" }}>
                 {product.company}
               </ProductCompany>
-              <Text.Menu style={{ fontSize: "20px" }}>{product.name}</Text.Menu>
+              <Text.Menu style={{ fontSize: "18px" }}>{product.name}</Text.Menu>
+
               {/* 옵션 버튼과 수량 */}
               <Block.FlexBox alignItems="center" gap="10px">
                 <Button.OptionButton>옵션</Button.OptionButton>
                 <Text.Menu color="Gray">{count}개</Text.Menu>
               </Block.FlexBox>
+
               {/* 할인 정보 */}
               <Block.FlexBox gap="5px" alignItems="center">
                 {product.discount_rate > 0 && (
                   <>
                     <OriginalPrice>
-                      {Math.round(product.price).toLocaleString()}원
+                      {(calculatedOriginalPrice * count).toLocaleString()}원
                     </OriginalPrice>
                     <DiscountRate>
                       {Math.round(product.discount_rate).toLocaleString()}% 할인
@@ -65,9 +71,13 @@ export default function ProductInfo({
                   </>
                 )}
               </Block.FlexBox>
-              {/* 할인된 가격 */}
+
+              {/* 할인된 가격 계산 */}
               <DiscountedPrice>
-                {Math.round(product.discounted_price).toLocaleString()}원
+                {(
+                  Math.round(product.discounted_price) * count
+                ).toLocaleString()}
+                원
               </DiscountedPrice>
             </Block.FlexBox>
           </ProductInform>

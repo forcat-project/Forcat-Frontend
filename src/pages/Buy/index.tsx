@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 import { Block, Text, Button, Input, Divider } from "../../style/ui";
 import styled from "styled-components";
 import { useState } from "react";
-import ProductInfo from "../../components/Buy/productInfo"; // Import ProductInfo component
-import DeliveryInfo from "../../components/Buy/deliveryInfo"; // Import DeliveryInfo component
+import ProductInfo from "../../components/Buy/productInfo";
+import DeliveryInfo from "../../components/Buy/deliveryInfo";
 
 export default function Buy() {
   const location = useLocation();
@@ -82,10 +82,11 @@ export default function Buy() {
             </Block.FlexBox>
           </Section>
         </Block.FlexBox>
-        <Divider />
 
         {/* 결제 버튼 */}
-        <StyledButton>결제하기</StyledButton>
+        <Block.FlexBox padding="20px" justifyContent="center">
+          <StyledButton>결제하기</StyledButton>
+        </Block.FlexBox>
       </Block.FlexBox>
     </ScrollableContainer>
   );
@@ -93,8 +94,8 @@ export default function Buy() {
 
 // Styled Components
 const ScrollableContainer = styled.div`
-  max-height: 100vh;
-  overflow-y: scroll;
+  max-height: calc(100vh - 90px); /* Adjust max-height to prevent overflow */
+  overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
