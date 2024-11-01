@@ -43,7 +43,14 @@ export default function AccountManage() {
           alignItems="center"
           padding="10px 0"
         >
-          <Text.Menu>로그아웃</Text.Menu>
+          <button
+            onClick={() => {
+              sessionStorage.removeItem("access_token");
+              window.location.href = "/login";
+            }}
+          >
+            로그아웃
+          </button>
         </Block.FlexBox>
 
         <Block.FlexBox
