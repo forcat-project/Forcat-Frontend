@@ -39,6 +39,13 @@ export const Text = {
         color: ${({ color }) => (color ? theme.color[color] : theme.color.Black)};
         cursor: ${props => props.pointer && "pointer"};
     `,
+    Menu200: styled.span<StyleText>`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Bold)};
+        font-size: ${({ size }) => (size ? theme.size[size] : theme.size.size400)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.Black)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
     TitleMenu100: styled.span<StyleText>`
         display: inline-block;
         font-weight: ${({ weight }) => (weight ? theme.weight[weight] : theme.weight.Normal)};
