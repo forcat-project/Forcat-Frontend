@@ -39,37 +39,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// CartProduct API
-export const cartProductAPI = {
-  getCartProducts: (userId: string) =>
-    axiosInstance.get(`/users/${userId}/cart/products`),
-  addCartProduct: (userId: string, productData: any) =>
-    axiosInstance.post(`/users/${userId}/cart/products`, productData),
-  updateCartProduct: (userId: string, productId: string, productData: any) =>
-    axiosInstance.put(
-      `/users/${userId}/cart/products/${productId}`,
-      productData
-    ),
-  updateCartProductPartial: (
-    userId: string,
-    productId: string,
-    productData: any
-  ) =>
-    axiosInstance.patch(
-      `/users/${userId}/cart/products/${productId}`,
-      productData
-    ),
-  deleteCartProduct: (userId: string, productId: string) =>
-    axiosInstance.delete(`/users/${userId}/cart/products/${productId}`),
-};
-
-// Categories API
-export const categoryAPI = {
-  getCategories: () => axiosInstance.get("/categories"),
-  getCategory: (categoryId: string) =>
-    axiosInstance.get(`/categories/${categoryId}`),
-};
-
 // OAuth API
 export const oauthAPI = {
   getKakaoAuth: () => axiosInstance.get("/oauth/kakao"),

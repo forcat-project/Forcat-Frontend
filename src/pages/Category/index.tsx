@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Block, Input } from "../../style/ui";
 import { Search as SearchIcon } from "../../assets/svg";
-import { BASE_URL } from "../../api/constants";
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+import { categoryAPI } from "../../api/resourses/categories";
 
 interface Category {
   category_id: number;
@@ -25,8 +25,8 @@ export default function Search() {
 
   // API 호출 함수
   const fetchCategories = () => {
-    axios
-      .get(`${BASE_URL}/categories`)
+    categoryAPI
+      .getCategories()
       .then((response) => {
         setCategories(response.data);
       })
