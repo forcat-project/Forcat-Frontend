@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Block, Divider } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
@@ -15,12 +15,12 @@ export default function Profile() {
     setReload(!reload);
   };
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!getCookie("access_token")) {
-      navigate("/login");
-    }
-  }, []);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (!getCookie("access_token")) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   return (
     <PageWrapper>

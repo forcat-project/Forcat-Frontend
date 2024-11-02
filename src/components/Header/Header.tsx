@@ -58,6 +58,7 @@ export default function Header({
       title: "서비스 이용약관",
       component: WithOnlyBackHeader,
     },
+<<<<<<< HEAD
     {
       path: "/privacypolicy",
       title: "개인정보처리방침",
@@ -73,6 +74,8 @@ export default function Header({
       title: "회원탈퇴",
       component: WithOnlyBackHeader,
     },
+=======
+>>>>>>> fdcb618 (feat: 서비스이용약관 구현)
   ];
 
   const currentPage = pageData.find((page) =>
