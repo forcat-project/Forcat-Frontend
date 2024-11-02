@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `;
 
 export const MaxWidthContainer = styled.div`
-  max-width: 540px;
+  max-width: 500px;
   width: 100%;
 `;
 

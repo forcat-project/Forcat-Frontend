@@ -1,3 +1,4 @@
+// FailPage.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -28,8 +29,8 @@ const FailPage: React.FC = () => {
     setErrorData({ code, message });
 
     // 백엔드에서 오는 에러 코드와 메시지 확인
-    console.log("Received Error Code:", code);
-    console.log("Received Error Message:", message);
+    // console.log("Received Error Code:", code);
+    // console.log("Received Error Message:", message);
   }, []);
 
   return (
@@ -60,10 +61,7 @@ const FailPage: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          <Button
-            className="primary"
-            onClick={() => navigate(`/market/`)}
-          >
+          <Button className="primary" onClick={() => navigate(`/market/`)}>
             확인
           </Button>
           <Button

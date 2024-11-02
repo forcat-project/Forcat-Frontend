@@ -1,14 +1,12 @@
-// CheckoutPage.tsx
 import { useEffect, useState } from "react";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
-import { IOrderProduct } from "../../interfaces/product";
-// import { useNavigate} from "react-router-dom";
+import { IOrderProduct, ICreateOrderRequest } from "../../interfaces/product";
 import {
   Wrapper,
   MaxWidthContainer,
   ButtonWrapper,
   Button,
-} from "../../../src/style/CheckoutPage.styles"; // 스타일 파일 import
+} from "../../../src/style/CheckoutPage.styles";
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_ID;
 
@@ -39,11 +37,31 @@ type PaymentWidgetInstance = {
 export default function CheckoutPage() {
   const [ready, setReady] = useState<boolean>(false);
   const [widgets, setWidgets] = useState<PaymentWidgetInstance | null>(null);
-  // const [amount, setAmount] = useState<IAmount>({ currency: "KRW", value: 0 });
 
   const products: IOrderProduct[] = [
-    { product_id: 1, product_name: "상품1", price: 3000, quantity: 1, discount_rate: 5, product_company: "포동" },
-    { product_id: 2, product_name: "상품2", price: 2000, quantity: 2, discount_rate: 10, product_company: "포캣" },
+    {
+      product_id: 11,
+      product_name: "네코이찌 발톱깍이",
+      price: 18500,
+      quantity: 1,
+      discount_rate: 0,
+      product_company: "템테이션",
+      product_image:
+        "https://neko.co.kr/web/product/big/202103/e0c9f9908e722d0c6350d4e8c229d88f.jpg",
+      product_status: "",
+    },
+    {
+      product_id: 26,
+      product_name:
+        "위스카스 포켓 캣 고양이 헤어볼닭고기 참치 오션피쉬 사료 1.1kg/3kg/7kg",
+      price: 10500,
+      quantity: 2,
+      discount_rate: 0,
+      product_company: "힐링타임",
+      product_image:
+        "https://neko.co.kr/web/product/big/202103/9fd529767482ef5ea23eb40195bf6bf5.png",
+      product_status: "",
+    },
   ];
 
   const pointUsed = 1000;
@@ -90,21 +108,32 @@ export default function CheckoutPage() {
 
   const handlePayment = async () => {
     try {
-      const orderId = generateRandomString();
-      const createOrderResponse = await createOrder(
+      const orderId = generateNumericString();
+      const createOrderResponse = await createOrder({
         orderId,
+        amount: totalAmount,
         originalAmount,
-        pointUsed,
-        totalAmount,
-        products
-      );
-  
+        userId: 1,
+        userName: "김토스",
+        phoneNumber: "01012341234",
+        shippingAddress: "서울시 강남구...",
+        shippingAddressDetail: "Apt 101호",
+        paymentMethod: "card",
+        shippingMemo: "부재시 문 앞에 놔둬주세요!",
+        pointsUsed: pointUsed,
+        products,
+      });
+
       if (createOrderResponse.status === "주문이 생성되었습니다") {
         await widgets?.requestPayment({
           orderId: createOrderResponse.orderId,
           orderName: "여러 상품 결제",
           successUrl: `${window.location.origin}/success`,
-          failUrl: `${window.location.origin}/fail?code=payment_failed&message=${encodeURIComponent("결제에 실패했습니다.")}`,
+          failUrl: `${
+            window.location.origin
+          }/fail?code=payment_failed&message=${encodeURIComponent(
+            "결제에 실패했습니다."
+          )}`,
           customerName: "김토스",
           customerMobilePhone: "01012341234",
         });
@@ -119,32 +148,13 @@ export default function CheckoutPage() {
     }
   };
 
-  async function createOrder(
-    orderId: string,
-    originalAmount: number,
-    pointUsed: number,
-    totalAmount: number,
-    products: IOrderProduct[]
-  ) {
+  async function createOrder(order: ICreateOrderRequest) {
     const response = await fetch(
       "http://localhost:8000/api/payments/create_order",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          orderId,
-          amount: totalAmount,
-          originalAmount,
-          userId: 1,
-          userName: "김토스",  // 추가된 필드
-          phoneNumber: "01012341234",  // 추가된 필드
-          shippingAddress: "서울시 강남구...",
-          shippingAddressDetail: "Apt 101호",  // 추가된 필드
-          paymentMethod: "card",
-          shippingMemo: "부재시 문 앞에 놔둬주세요!",
-          pointsUsed: pointUsed,
-          products,
-        }),
+        body: JSON.stringify(order),
       }
     );
 
@@ -156,11 +166,12 @@ export default function CheckoutPage() {
     return response.json();
   }
 
-  function generateRandomString(): string {
-    return (
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15)
-    );
+  function generateNumericString(length: number = 12): string {
+    let result = "";
+    while (result.length < length) {
+      result += Math.floor(Math.random() * 10);
+    }
+    return result;
   }
 
   return (

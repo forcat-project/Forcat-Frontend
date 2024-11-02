@@ -2,13 +2,13 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 600px;
+  /* width: 600px; */
   margin: 0 auto;
   text-align: center;
 `;
 
 export const BoxSection = styled.div`
-  width: 600px;
+  /* width: 600px; */
   text-align: center;
   margin: 20px auto;
 `;
