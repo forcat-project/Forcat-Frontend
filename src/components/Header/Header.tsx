@@ -53,6 +53,11 @@ export default function Header({
       component: WithBackAndIconHeader,
     },
     { path: "/buy", title: "상품 구매", component: WithOnlyBackHeader },
+    {
+      path: "/termsofuse",
+      title: "서비스 이용약관",
+      component: WithOnlyBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import ProductInfo from "../../components/Buy/productInfo";
 import DeliveryInfo from "../../components/Buy/deliveryInfo";
 import PointInfo from "../../components/Buy/pointInfo";
-import Total from "../../components/Buy/total"; // Import Total component
+import Total from "../../components/Buy/total";
 
 export default function Buy() {
   const location = useLocation();
