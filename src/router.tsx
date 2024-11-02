@@ -17,13 +17,11 @@ import Search from "./pages/Category";
 import BestSeller from "./pages/Home/category/bestseller";
 import Buy from "./pages/Buy";
 import TermsOfUse from "./pages/Profile/termsofUse";
-<<<<<<< HEAD
+
 import PrivacyPolicy from "./pages/Profile/privacyPolicy";
 import Unregister1 from "./pages/Profile/unregister/unregister1";
 import Unregister2 from "./pages/Profile/unregister/unregister2";
 
-=======
->>>>>>> fdcb618 (feat: 서비스이용약관 구현)
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -93,7 +91,7 @@ export const router = createBrowserRouter([
         path: "termsofuse",
         element: <TermsOfUse />,
       },
-<<<<<<< HEAD
+
       {
         path: "privacypolicy",
         element: <PrivacyPolicy />,
@@ -106,8 +104,6 @@ export const router = createBrowserRouter([
         path: "unregister2",
         element: <Unregister2 />,
       },
-=======
->>>>>>> fdcb618 (feat: 서비스이용약관 구현)
     ],
   },
 ]);
