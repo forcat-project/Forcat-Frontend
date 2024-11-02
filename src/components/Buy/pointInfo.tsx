@@ -35,6 +35,12 @@ export default function PointInfo({
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
+    // 문자가 입력되면 차단
+    if (isNaN(Number(value))) {
+      return;
+    }
+
     setInputValue(value);
 
     if (Number(value) > points) {
