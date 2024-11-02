@@ -35,3 +35,8 @@ export interface ProductInfoProps {
   isProductInfoExpanded: boolean;
   toggleProductInfo: () => void;
 }
+
+export interface PointInfoProps {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+}

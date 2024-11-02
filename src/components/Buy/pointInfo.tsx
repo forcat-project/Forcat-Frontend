@@ -2,11 +2,7 @@ import { useEffect, useState, ChangeEvent } from "react";
 import { Block, Text, Button, Input } from "../../style/ui";
 import styled, { keyframes } from "styled-components";
 import axiosInstance from "../../api/axiosInstance";
-
-interface PointInfoProps {
-  inputValue: string;
-  setInputValue: (value: string) => void;
-}
+import { PointInfoProps } from "../../interfaces/info";
 
 export default function PointInfo({
   inputValue,
@@ -50,7 +46,7 @@ export default function PointInfo({
 
       setTimeout(() => {
         setAlertMessage("");
-        setInputValue("");
+
         setShake(false);
       }, 5000);
     }
