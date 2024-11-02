@@ -1,4 +1,4 @@
-import { Block, PageWrapper } from "../../style/ui";
+import { PageWrapper } from "../../style/ui";
 import styled from "styled-components";
 
 // 이미지 파일을 import합니다.

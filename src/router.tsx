@@ -16,7 +16,8 @@ import OnlyForCat from "./pages/Home/category/onlyForCat";
 import Search from "./pages/Category";
 import BestSeller from "./pages/Home/category/bestseller";
 import Buy from "./pages/Buy";
-import TermsOfUse from "./pages/Profile/termsOfUse";
+import TermsOfUse from "./pages/Profile/termsofUse";
+import PrivacyPolicy from "./pages/Profile/privacyPolicy";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "termsofuse",
         element: <TermsOfUse />,
+      },
+      {
+        path: "privacypolicy",
+        element: <PrivacyPolicy />,
       },
     ],
   },

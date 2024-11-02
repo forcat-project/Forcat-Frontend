@@ -29,7 +29,10 @@ export default function AccountManage() {
         </StyledButton>
 
         {/* 개인정보처리방침 */}
-        <StyledButton isDisabled={false}>
+        <StyledButton
+          isDisabled={false}
+          onClick={() => navigate("/privacypolicy")}
+        >
           <Text.Menu>개인정보처리방침</Text.Menu>
           <Text.TitleMenu100 pointer color="Gray">
             {">"}

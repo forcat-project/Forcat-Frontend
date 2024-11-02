@@ -58,6 +58,11 @@ export default function Header({
       title: "서비스 이용약관",
       component: WithOnlyBackHeader,
     },
+    {
+      path: "/privacypolicy",
+      title: "개인정보처리방침",
+      component: WithOnlyBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>

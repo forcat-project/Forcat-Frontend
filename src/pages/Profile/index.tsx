@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Block, Divider } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
