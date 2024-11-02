@@ -328,9 +328,9 @@ export const Button = {
   `,
 
   OptionButton: styled.div<StyleButton>`
-    background-color: #fffaec; /* 연한 파란색 배경 */
-    color: #f4b647; /* 파란색 텍스트 */
-    border: 1px solid #fffaec; /* 파란색 테두리 */
+    background-color: #fffaec;
+    color: #f4b647;
+    border: 1px solid #fffaec;
     border-radius: 5px;
     padding: 2px 8px;
     font-size: 12px;

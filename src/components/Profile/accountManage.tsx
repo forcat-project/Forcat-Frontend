@@ -1,9 +1,13 @@
 import { Block, Text, Button } from "../../style/ui";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅을 import
+import { useState } from "react"; // useState 훅을 import
+import ForcatModal from "../Modal/ForcatModal"; // ForcatModal 컴포넌트 import
+import { Warning } from "../../assets/svg";
 
 export default function AccountManage() {
   const navigate = useNavigate(); // useNavigate 훅을 사용
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태 관리
 
   return (
     <Block.FlexBox
@@ -40,7 +44,7 @@ export default function AccountManage() {
         </StyledButton>
 
         {/* 로그아웃 */}
-        <StyledButton isDisabled={false}>
+        <StyledButton isDisabled={false} onClick={() => setIsModalOpen(true)}>
           <Text.Menu>로그아웃</Text.Menu>
         </StyledButton>
 
@@ -49,11 +53,54 @@ export default function AccountManage() {
           <Text.Menu>회원탈퇴</Text.Menu>
         </StyledButton>
       </Block.FlexBox>
+
+      {/* 로그아웃 모달 */}
+      <ForcatModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        title=""
+        width="28%"
+        height="200px"
+      >
+        {/* 모달 내용 */}
+        <Block.FlexBox direction="column" alignItems="center">
+          <Warning
+            width="40px"
+            height="40px"
+            style={{ marginBottom: "15px" }}
+          ></Warning>
+          <Text.TitleMenu300>로그아웃 하시겠어요?</Text.TitleMenu300>
+          <Block.FlexBox
+            width="100%"
+            height="93px"
+            justifyContent="center"
+            alignItems="center"
+            gap="12px"
+          >
+            <Button.CartButton
+              onClick={() => setIsModalOpen(false)}
+              isSoldOut={false}
+            >
+              취소
+            </Button.CartButton>
+            <Button.BuyButton
+              cursor="pointer"
+              isSoldOut={false}
+              onClick={() => {
+                // 로그아웃 처리 로직 추가
+                setIsModalOpen(false);
+              }}
+            >
+              로그아웃
+            </Button.BuyButton>
+          </Block.FlexBox>
+        </Block.FlexBox>
+      </ForcatModal>
     </Block.FlexBox>
   );
 }
 
-// Styled Components for Buttons
+// Styled Components
 const StyledButton = styled(Button.Confirm)`
   display: flex;
   justify-content: space-between;
