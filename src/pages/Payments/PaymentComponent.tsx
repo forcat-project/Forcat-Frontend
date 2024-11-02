@@ -150,7 +150,7 @@ export default function CheckoutPage() {
 
   async function createOrder(order: ICreateOrderRequest) {
     const response = await fetch(
-      "http://localhost:8000/api/payments/create_order",
+      "http://localhost:8000/api/payments/orders",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
