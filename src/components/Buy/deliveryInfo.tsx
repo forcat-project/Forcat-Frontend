@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Block, Text, Input, Button, Section } from "../../style/ui";
 import styled from "styled-components";
-import axiosInstance from "../../api/axiosInstance";
-import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
+import DaumPostcode from "react-daum-postcode";
+import { userAPI } from "../../api/resourses/users"; // 수정된 부분: userAPI 임포트
 import { User } from "../../interfaces/info";
+import { useUserId } from "../../hooks/useUserId"; // useUserId 훅 임포트
 
 ReactModal.setAppElement("#root");
 
@@ -21,13 +22,13 @@ export default function DeliveryInfo({
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const userId = 5;
+  const userId = useUserId(); // 수정된 부분: userId 가져오기
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (userId) {
-          const response = await axiosInstance.get(`/users/${userId}`);
+          const response = await userAPI.getUser(userId); // 수정된 부분: userAPI 사용
           console.log(response.data);
           setUser(response.data);
           setAddress(response.data.address || "");

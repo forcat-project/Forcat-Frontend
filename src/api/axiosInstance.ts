@@ -18,11 +18,10 @@ const publicPaths: string[] = [
 // 인터셉터 설정
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // URL이 정의되어 있고, publicPaths에 포함되지 않은 경우에만 Authorization 헤더 추가
-
+    // URL이 정의되어 있는지 확인
     if (
       config.url &&
-      !publicPaths.some((path) => config.url.startsWith(path))
+      !publicPaths.some((path) => config.url!.startsWith(path))
     ) {
       const token = sessionStorage.getItem("access_token"); // sessionStorage에서 토큰 가져오기
       if (token) {
