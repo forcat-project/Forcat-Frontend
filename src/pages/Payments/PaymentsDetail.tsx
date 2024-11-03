@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import { BoxSection, Grid } from "../../style/SuccessPage.styles";
 import { MarketContainer } from "../../components/Product/ProductContainer";
-import {IResponseData } from "../../interfaces/product";
+import { IResponseData } from "../../interfaces/product";
 
 const PaymentsDetail: React.FC = () => {
   const [responseData, setResponseData] = useState<IResponseData | null>(null);
@@ -13,15 +14,17 @@ const PaymentsDetail: React.FC = () => {
       if (!orderId || !userId) return;
 
       try {
-        const response = await fetch(
-          `http://localhost:8000/api/orders/${userId}/${orderId}/details`
-        );
-        if (!response.ok)
-          throw new Error("주문 정보를 불러오는 데 실패했습니다.");
-        const data = await response.json();
-        // console.log(data);
+        // params 객체로 요청 파라미터 구성
+        const params = {
+          userId,
+          orderId,
+        };
 
-        setResponseData(data);
+        const response = await axios.get(
+          "/orders/{userId}/{orderId}/details",
+          { params }
+        );
+        setResponseData(response.data); // 응답 데이터 설정
       } catch (error) {
         console.error("주문 상세 정보 요청 중 오류 발생:", error);
       }

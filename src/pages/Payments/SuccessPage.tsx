@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   BoxSection,
   Image,
@@ -21,40 +22,29 @@ const SuccessPage: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    setPaymentData({
+    // 조건에 따라 paymentData 설정
+    const data: PaymentData = {
       paymentKey: urlParams.get("paymentKey"),
       orderId: urlParams.get("orderId"),
       amount: urlParams.get("amount"),
-    });
+    };
+    setPaymentData(data);
 
     const confirmPayment = async () => {
       try {
-        const requestData = {
-          paymentKey: urlParams.get("paymentKey"),
-          orderId: urlParams.get("orderId"),
-          amount: urlParams.get("amount"),
-        };
-
-        const response = await fetch(
-          "http://localhost:8000/api/payments/confirm",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-          }
+        const response = await axios.post(
+          "/payments/confirm",
+          data // paymentData 객체 사용
         );
-
-        const json = await response.json();
-
-        if (!response.ok) {
-          navigate(`/fail?message=${json.message}&code=${json.code}`);
-        } else {
-          setResponseData(json); // 응답 데이터 설정
-        }
+        setResponseData(response.data);
       } catch (error) {
-        console.error("결제 승인 요청 중 오류 발생:", error);
+        if (axios.isAxiosError(error) && error.response) {
+          navigate(
+            `/fail?message=${error.response.data.message}&code=${error.response.data.code}`
+          );
+        } else {
+          console.error("결제 승인 요청 중 오류 발생:", error);
+        }
       }
     };
 
@@ -114,13 +104,6 @@ const SuccessPage: React.FC = () => {
           </Button>
         </div>
       </BoxSection>
-
-      {/* <BoxSection>
-        <b>응답 데이터:</b>
-        <div>
-          <pre>{JSON.stringify(responseData, null, 4)}</pre>
-        </div>
-      </BoxSection> */}
     </MarketContainer>
   );
 };

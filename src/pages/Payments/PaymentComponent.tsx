@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+import axios from "axios";
 import { IOrderProduct, ICreateOrderRequest } from "../../interfaces/product";
 import {
   Wrapper,
@@ -109,7 +110,7 @@ export default function CheckoutPage() {
   const handlePayment = async () => {
     try {
       const orderId = generateNumericString();
-      const createOrderResponse = await createOrder({
+      const orderParams: ICreateOrderRequest = {
         orderId,
         amount: totalAmount,
         originalAmount,
@@ -122,7 +123,9 @@ export default function CheckoutPage() {
         shippingMemo: "부재시 문 앞에 놔둬주세요!",
         pointsUsed: pointUsed,
         products,
-      });
+      };
+
+      const createOrderResponse = await createOrder(orderParams);
 
       if (createOrderResponse.status === "주문이 생성되었습니다") {
         await widgets?.requestPayment({
@@ -149,21 +152,24 @@ export default function CheckoutPage() {
   };
 
   async function createOrder(order: ICreateOrderRequest) {
-    const response = await fetch(
-      "http://localhost:8000/api/payments/orders",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(order),
+    try {
+      const response = await axios.post(
+        "/paymnets/orders",
+        order,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorData = error.response.data;
+        throw new Error(errorData.error || "서버 오류가 발생했습니다.");
+      } else {
+        throw new Error("주문 생성 요청 중 알 수 없는 오류가 발생했습니다.");
       }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "서버 오류가 발생했습니다.");
     }
-
-    return response.json();
   }
 
   function generateNumericString(length: number = 12): string {

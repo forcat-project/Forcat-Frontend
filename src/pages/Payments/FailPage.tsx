@@ -1,6 +1,6 @@
-// FailPage.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 import {
   BoxSection,
   Grid,
@@ -22,15 +22,20 @@ const FailPage: React.FC = () => {
   });
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    const message = urlParams.get("message");
+    const fetchErrorData = async () => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const params: ErrorData = {
+          code: urlParams.get("code"),
+          message: urlParams.get("message"),
+        };
+        setErrorData(params);
+      } catch (error) {
+        console.error("에러 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
 
-    setErrorData({ code, message });
-
-    // 백엔드에서 오는 에러 코드와 메시지 확인
-    // console.log("Received Error Code:", code);
-    // console.log("Received Error Message:", message);
+    fetchErrorData();
   }, []);
 
   return (
