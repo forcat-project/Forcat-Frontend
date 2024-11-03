@@ -12,6 +12,8 @@ function App() {
   const isLoginPage = location.pathname.startsWith("/login");
   const isSignupPage = location.pathname.startsWith("/signup");
   const isBuyPage = location.pathname.startsWith("/buy");
+  const isPrivacyPolicyPage = location.pathname.startsWith("/privacypolicy");
+  const isTermsOfUsePage = location.pathname.startsWith("/termsofuse");
 
   useScrollRestoration(); // 페이지 전환 시 스크롤 복원
 
@@ -38,6 +40,8 @@ function App() {
           isSignupPage={isSignupPage}
           isMarketDetailPage={isMarketDetailPage}
           isBuyPage={isBuyPage}
+          isPrivacyPolicyPage={isPrivacyPolicyPage}
+          isTermsOfUsePage={isTermsOfUsePage}
         />
       </Block.FlexBox>
     </>

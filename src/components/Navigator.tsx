@@ -18,6 +18,8 @@ type Props = {
   isSignupPage: boolean;
   isMarketDetailPage: boolean;
   isBuyPage: boolean;
+  isPrivacyPolicyPage: boolean;
+  isTermsOfUsePage: boolean;
 };
 
 export default function Navigator({
@@ -25,6 +27,8 @@ export default function Navigator({
   isSignupPage,
   isMarketDetailPage,
   isBuyPage,
+  isPrivacyPolicyPage,
+  isTermsOfUsePage,
 }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,42 +84,47 @@ export default function Navigator({
 
   return (
     <>
-      {!isLoginPage && !isSignupPage && !isMarketDetailPage && !isBuyPage && (
-        <Block.AbsoluteBox
-          width="599px"
-          height="93px"
-          bottom="0"
-          bgColor="white"
-          style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
-        >
-          <Block.FlexBox>
-            {navItems.map((item, index) => {
-              const isActive = location.pathname.startsWith(item.path);
+      {!isLoginPage &&
+        !isSignupPage &&
+        !isMarketDetailPage &&
+        !isBuyPage &&
+        !isPrivacyPolicyPage &&
+        !isTermsOfUsePage && (
+          <Block.AbsoluteBox
+            width="599px"
+            height="93px"
+            bottom="0"
+            bgColor="white"
+            style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
+          >
+            <Block.FlexBox>
+              {navItems.map((item, index) => {
+                const isActive = location.pathname.startsWith(item.path);
 
-              return (
-                <Block.FlexBox
-                  key={index}
-                  width="100%"
-                  height="100px"
-                  justifyContent="center"
-                  alignItems="center"
-                  direction="column"
-                  gap="10px"
-                  pointer
-                  onClick={() => navigate(item.path)}
-                >
-                  {item.icon}
-                  <Text.Notice200
-                    style={{ color: isActive ? "#000" : "#C9CBD4" }}
+                return (
+                  <Block.FlexBox
+                    key={index}
+                    width="100%"
+                    height="100px"
+                    justifyContent="center"
+                    alignItems="center"
+                    direction="column"
+                    gap="10px"
+                    pointer
+                    onClick={() => navigate(item.path)}
                   >
-                    {item.label}
-                  </Text.Notice200>
-                </Block.FlexBox>
-              );
-            })}
-          </Block.FlexBox>
-        </Block.AbsoluteBox>
-      )}
+                    {item.icon}
+                    <Text.Notice200
+                      style={{ color: isActive ? "#000" : "#C9CBD4" }}
+                    >
+                      {item.label}
+                    </Text.Notice200>
+                  </Block.FlexBox>
+                );
+              })}
+            </Block.FlexBox>
+          </Block.AbsoluteBox>
+        )}
     </>
   );
 }

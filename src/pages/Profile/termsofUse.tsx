@@ -2,13 +2,17 @@ import { PageWrapper } from "../../style/ui";
 import styled from "styled-components";
 
 const images = [
-  "../../../public/TermsofUse/이용약관1.png",
-  "../../../public/TermsofUse/이용약관2.png",
-  "../../../public/TermsofUse/이용약관3.png",
-  "../../../public/TermsofUse/이용약관4.png",
-  "../../../public/TermsofUse/이용약관5.png",
-  "../../../public/TermsofUse/이용약관6.png",
-  "../../../public/TermsofUse/이용약관7.png",
+  "/TermsofUse/TermsofUse1.png",
+  "/TermsofUse/TermsofUse2.png",
+  "/TermsofUse/TermsofUse3.png",
+  "/TermsofUse/TermsofUse4.png",
+  "/TermsofUse/TermsofUse5.png",
+  "/TermsofUse/TermsofUse6.png",
+  "/TermsofUse/TermsofUse7.png",
+  "/TermsofUse/TermsofUse8.png",
+  "/TermsofUse/TermsofUse9.png",
+  "/TermsofUse/TermsofUse10.png",
+  "/TermsofUse/TermsofUse11.png",
 ];
 
 export default function TermsOfUse() {
