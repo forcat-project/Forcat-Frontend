@@ -4,20 +4,31 @@ import {
   Block,
   Button,
   ContentWrapper,
-  Divider,
 } from "../../../style/ui";
 import styled from "styled-components";
+import { Checked, Unchecked } from "../../../assets/svg";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 훅 import
 
 export default function Unregister2() {
+  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  // 토글 함수
+  const toggleCheck = () => {
+    setIsChecked((prev) => !prev);
+  };
+
   return (
     <PageWrapper>
       <ContentWrapper>
-        <Text.TitleMenu100 style={{ color: "#C8C8C8", marginBottom: "10px" }}>
+        <Text.TitleMenu100 style={{ color: "#C8C8C8", marginBottom: "20px" }}>
           마지막으로, 아래 내용을{" "}
           <strong style={{ color: "#F34747" }}>꼭</strong> 확인해 주세요
         </Text.TitleMenu100>
-        <Text.TitleMenu300 style={{ color: "#333", marginBottom: "20px" }}>
-          모든 정보와 데이터가 삭제되며 복구가 불가능해요
+        <Text.TitleMenu300 style={{ color: "#333", marginBottom: "40px" }}>
+          모든 정보와 데이터가 삭제되며 <br />
+          복구가 불가능해요
         </Text.TitleMenu300>
         <InfoList>
           <li>
@@ -25,22 +36,35 @@ export default function Unregister2() {
             있어요.
           </li>
           <li>
-            - 삐따귀물 상품 배송 전 탈퇴할 경우 구매 정보가 삭제되어 배송이
-            어려우니 신중히 선택해 주세요.
+            - 상품 배송 전 탈퇴할 경우 구매 정보가 삭제되어 배송이 어려우니
+            신중히 선택해 주세요.
           </li>
           <li>
-            - 포동 탈퇴 후 재가입 하더라도 탈퇴 전 보유하고 있던 쿠폰, 삐따귀
+            - 포켓 탈퇴 후 재가입 하더라도 탈퇴 전 보유하고 있던 쿠폰, 생선
             포인트, 이벤트 진행 내역 등 모든 정보는 삭제되어 복구가 불가능해요.
           </li>
           <li>
-            - 포동 서비스 이용에 불편이 있어 탈퇴를 결정하셨다면, 카카오톡
-            채널로 불편사항을 말씀해 주세요.
+            - 포켓 서비스 이용에 불편이 있어 탈퇴를 결정하셨다면, 포켓
+            채널톡으로 불편사항을 말씀해 주세요.
           </li>
         </InfoList>
-        <Divider />
-        <AgreementBox>
+
+        <AgreementBox onClick={toggleCheck}>
           <Text.Menu>
-            <CheckIcon /> 안내사항을 모두 확인하였으며, 탈퇴에 동의합니다.
+            {isChecked ? (
+              <Checked
+                width={"40px"}
+                height={"40px"}
+                style={{ marginBottom: "-12px" }}
+              />
+            ) : (
+              <Unchecked
+                width={"40px"}
+                height={"40px"}
+                style={{ marginBottom: "-12px" }}
+              />
+            )}{" "}
+            안내사항을 모두 확인하였으며, 탈퇴에 동의합니다.
           </Text.Menu>
         </AgreementBox>
       </ContentWrapper>
@@ -57,13 +81,13 @@ export default function Unregister2() {
           alignItems="center"
           gap="12px"
         >
-          <Button.CartButton onClick={() => {}} isSoldOut={false}>
+          <Button.CartButton onClick={() => {}} isSoldOut={!isChecked}>
             확인
           </Button.CartButton>
           <Button.BuyButton
             cursor="pointer"
             isSoldOut={false}
-            onClick={() => {}}
+            onClick={() => navigate("/home")}
           >
             계속 이용할게요
           </Button.BuyButton>
@@ -97,13 +121,5 @@ const AgreementBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const CheckIcon = styled.span`
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: #ccc;
-  border-radius: 50%;
-  margin-right: 8px;
+  cursor: pointer; /* 클릭 가능하도록 설정 */
 `;

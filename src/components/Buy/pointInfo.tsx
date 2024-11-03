@@ -1,8 +1,9 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { Block, Text, Button, Input } from "../../style/ui";
 import styled, { keyframes } from "styled-components";
-import axiosInstance from "../../api/axiosInstance";
+import { userAPI } from "../../api/resourses/users"; // userAPI 임포트
 import { PointInfoProps } from "../../interfaces/info";
+import { useUserId } from "../../hooks/useUserId"; // useUserId 훅 임포트
 
 export default function PointInfo({
   inputValue,
@@ -11,13 +12,13 @@ export default function PointInfo({
   const [points, setPoints] = useState<number>(0);
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [shake, setShake] = useState<boolean>(false);
-  const userId = 5;
+  const userId = useUserId(); // useUserId 훅 사용
 
   useEffect(() => {
     const fetchUserPoints = async () => {
       try {
         if (userId) {
-          const response = await axiosInstance.get(`/users/${userId}`);
+          const response = await userAPI.getUser(userId); // userAPI 사용
           const { points } = response.data;
           setPoints(points);
         }
@@ -46,7 +47,6 @@ export default function PointInfo({
 
       setTimeout(() => {
         setAlertMessage("");
-
         setShake(false);
       }, 5000);
     }
