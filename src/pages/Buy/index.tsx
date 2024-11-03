@@ -51,7 +51,6 @@ export default function Buy() {
           pointsToDeduct={pointsToDeduct}
           finalPrice={finalPrice}
         />{" "}
-        {/* Use Total component */}
         <Block.AbsoluteBox
           bottom="1%"
           left="0%"

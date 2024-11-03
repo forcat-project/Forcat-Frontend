@@ -63,6 +63,16 @@ export default function Header({
       title: "개인정보처리방침",
       component: WithOnlyBackHeader,
     },
+    {
+      path: "/unregister1",
+      title: "회원탈퇴",
+      component: WithOnlyBackHeader,
+    },
+    {
+      path: "/unregister2",
+      title: "회원탈퇴",
+      component: WithOnlyBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>

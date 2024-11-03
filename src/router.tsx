@@ -18,6 +18,9 @@ import BestSeller from "./pages/Home/category/bestseller";
 import Buy from "./pages/Buy";
 import TermsOfUse from "./pages/Profile/termsofUse";
 import PrivacyPolicy from "./pages/Profile/privacyPolicy";
+import Unregister1 from "./pages/Profile/unregister/unregister1";
+import Unregister2 from "./pages/Profile/unregister/unregister2";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -90,6 +93,14 @@ export const router = createBrowserRouter([
       {
         path: "privacypolicy",
         element: <PrivacyPolicy />,
+      },
+      {
+        path: "unregister1",
+        element: <Unregister1 />,
+      },
+      {
+        path: "unregister2",
+        element: <Unregister2 />,
       },
     ],
   },

@@ -20,6 +20,8 @@ type Props = {
   isBuyPage: boolean;
   isPrivacyPolicyPage: boolean;
   isTermsOfUsePage: boolean;
+  isUnregister1Page: boolean;
+  isUnregister2Page: boolean;
 };
 
 export default function Navigator({
@@ -29,6 +31,8 @@ export default function Navigator({
   isBuyPage,
   isPrivacyPolicyPage,
   isTermsOfUsePage,
+  isUnregister1Page,
+  isUnregister2Page,
 }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -89,7 +93,9 @@ export default function Navigator({
         !isMarketDetailPage &&
         !isBuyPage &&
         !isPrivacyPolicyPage &&
-        !isTermsOfUsePage && (
+        !isTermsOfUsePage &&
+        !isUnregister1Page &&
+        !isUnregister2Page && (
           <Block.AbsoluteBox
             width="599px"
             height="93px"

@@ -508,6 +508,16 @@ export const PageWrapper = styled.div`
   }
 `;
 
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  margin-top: 90px; /* 헤더 높이에 따라 조정 */
+`;
+
 export const Section = styled.div`
   margin-bottom: 20px;
 `;

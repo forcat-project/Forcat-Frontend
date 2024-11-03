@@ -49,7 +49,10 @@ export default function AccountManage() {
         </StyledButton>
 
         {/* 회원탈퇴 */}
-        <StyledButton isDisabled={false}>
+        <StyledButton
+          isDisabled={false}
+          onClick={() => navigate("/unregister1")}
+        >
           <Text.Menu>회원탈퇴</Text.Menu>
         </StyledButton>
       </Block.FlexBox>
