@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
 import ForcatModal from "../Modal/ForcatModal";

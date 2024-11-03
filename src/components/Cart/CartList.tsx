@@ -1,37 +1,27 @@
 import { useState } from "react";
 import { Checked, MinusGray, PlusGray, RemoveGray, Unchecked } from "../../assets/svg";
 import { Block, Button, Img, Text } from "../../style/ui";
-
-type Product = {
-    product_id: number;
-    name: string;
-    company: string;
-    price: string;
-    discount_rate: string;
-    discounted_price: number;
-    thumbnail_url: string;
-    remain_count: number;
-};
+import { IProduct } from "../../interfaces/product";
 
 type Props = {
     onPayment: () => void;
-    dummyProducts: Product[];
+    products: IProduct[];
 };
 
-export function CartList({ onPayment, dummyProducts }: Props) {
+export function CartList({ onPayment, products }: Props) {
     const [isAllCheckButtonClick, setIsAllCheckButtonClick] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
     const [quantity, setQuantity] = useState<{ [key: number]: number }>(
-        dummyProducts.reduce((acc, product) => {
+        products.reduce((acc, product) => {
             acc[product.product_id] = 1;
             return acc;
         }, {} as { [key: number]: number })
     );
 
-    const groupedProducts = dummyProducts.reduce((acc, product) => {
+    const groupedProducts = products.reduce((acc, product) => {
         (acc[product.company] = acc[product.company] || []).push(product);
         return acc;
-    }, {} as { [company: string]: Product[] });
+    }, {} as { [company: string]: IProduct[] });
 
     const handleProductCheckToggle = (productId: number) => {
         setSelectedProducts(prev => {
@@ -47,7 +37,7 @@ export function CartList({ onPayment, dummyProducts }: Props) {
         if (isAllCheckButtonClick) {
             setSelectedProducts([]);
         } else {
-            setSelectedProducts(dummyProducts.map(product => product.product_id));
+            setSelectedProducts(products.map(product => product.product_id));
         }
         setIsAllCheckButtonClick(prev => !prev);
     };
@@ -58,15 +48,17 @@ export function CartList({ onPayment, dummyProducts }: Props) {
 
     const handleQuantityChange = (productId: number, delta: number) => {
         setQuantity(prev => {
-            const newQuantity = Math.max(prev[productId] + delta, 1);
+            const currentQuantity = prev[productId] || 1;
+            const newQuantity = Math.max(currentQuantity + delta, 1);
             return { ...prev, [productId]: newQuantity };
         });
     };
 
     const totalPrice = selectedProducts.reduce((total, productId) => {
-        const product = dummyProducts.find(p => p.product_id === productId);
+        const product = products.find(p => p.product_id === productId);
         const productQuantity = quantity[productId] || 1;
-        return total + (product ? product.discounted_price * productQuantity : 0);
+        const discountedPrice = product?.discounted_price || 0;
+        return total + discountedPrice * productQuantity;
     }, 0);
 
     return (
@@ -133,7 +125,7 @@ export function CartList({ onPayment, dummyProducts }: Props) {
                                                 {Number(product?.discount_rate) > 0 ? (
                                                     <>
                                                         <Text.OriginalPrice>
-                                                            {Math.floor(product?.price).toLocaleString()}원
+                                                            {Math.floor(Number(product?.price)).toLocaleString()}원
                                                         </Text.OriginalPrice>
                                                         <Text.TitleMenu200>
                                                             {Math.floor(product?.discounted_price).toLocaleString()}원
