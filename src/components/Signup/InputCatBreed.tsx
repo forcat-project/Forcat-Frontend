@@ -8,20 +8,15 @@ import axiosInstance from "../../api/axiosInstance";
 
 export default function InputCatBreed() {
     const { isFocused, handleFocus, handleBlur } = useFocus();
-
+    const userId = useUserId();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleBreedSelectButtonClick = () => {
         setIsModalOpen(true);
-    };
-    const userId = useUserId();
-    console.log("inputCatBreed ::::::::::::::::::::", userId);
-
-    useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axiosInstance.get(`/users/${userId}/cats`);
-                console.log(response);
+                console.log(response.data);
             } catch (error) {
                 console.log("동물 정보 가져오기 실패");
             }
@@ -29,10 +24,10 @@ export default function InputCatBreed() {
 
         if (userId !== null) {
             fetchData();
-        } else {
-            console.log("유저아이디 받아오기 실패!!!", userId);
         }
-    }, [userId]);
+    };
+
+    console.log("inputCatBreed ::::::::::::::::::::", userId);
 
     return (
         <>
