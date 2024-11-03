@@ -27,6 +27,7 @@ export default function UserInfo({ onReload }: UserInfoProps) {
         if (userId) {
           const response = await userAPI.getUser(Number(userId));
           setUser(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("사용자 정보를 가져오는데 실패했습니다:", error);
@@ -76,13 +77,11 @@ export default function UserInfo({ onReload }: UserInfoProps) {
         alignItems="center"
         style={{ marginLeft: "10px" }}
       >
-        {" "}
-        <Fish width="50px" height="50px" />{" "}
+        <Fish width="50px" height="50px" />
         <Text.Mini color="Gray" style={{ marginRight: "10px" }}>
           모은 생선 포인트
         </Text.Mini>
-        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>{" "}
-        {/* 포인트 표시 */}
+        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>
       </Block.FlexBox>
       <Modal
         isOpen={isEditModalOpen}
