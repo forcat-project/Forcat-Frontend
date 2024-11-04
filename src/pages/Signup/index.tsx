@@ -17,6 +17,8 @@ import { userAPI } from "../../api/resourses/users";
 import { ICat, IInputData, IUser } from "../../interfaces/product";
 import { catAPI } from "../../api/resourses/cats";
 import { useUserId } from "../../hooks/useUserId";
+import styled from "styled-components";
+import ButtonMUI from "@mui/material/Button";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -257,7 +259,7 @@ export default function Signup() {
                                     style={{ display: "flex", justifyContent: "flex-end" }}
                                     onClick={handleSkipClick}
                                 >
-                                    <Block.FlexBox
+                                    <HoverFillButton
                                         width="200px"
                                         height="35px"
                                         justifyContent="center"
@@ -266,7 +268,7 @@ export default function Signup() {
                                         border="1px solid #F6ECD7"
                                     >
                                         <Text.Warning color="Yellow">고양이 정보는 나중에 등록할게요</Text.Warning>
-                                    </Block.FlexBox>
+                                    </HoverFillButton>
                                 </Block.AbsoluteBox>
                             )}
                             <Text.TitleMenu300>{title}</Text.TitleMenu300>
@@ -296,3 +298,25 @@ export default function Signup() {
         </>
     );
 }
+
+const HoverFillButton = styled(Block.FlexBox)`
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #f4b647;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover::before {
+        opacity: 0.3;
+    }
+`;
