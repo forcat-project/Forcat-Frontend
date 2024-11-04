@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
-import { Fish } from "../../assets/svg";
 import { Block, Text, Button } from "../../style/ui";
 import UserEdit from "../../pages/Profile/userEdit";
 import { useUserId } from "../../hooks/useUserId";
