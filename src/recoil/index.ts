@@ -61,10 +61,10 @@ export const inputState = atom<IInputData>({
         address_detail: "",
         nickname: "",
         catName: "",
-        catBreed: "",
+        catBreed: null,
         birthDate: "",
-        catGender: "",
-        isNeutered: "",
+        catGender: null,
+        isNeutered: null,
         catWeight: "",
     },
 });

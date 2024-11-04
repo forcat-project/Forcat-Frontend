@@ -14,6 +14,7 @@ import InputCatIsNeutered from "../../components/Signup/InputCatIsNeutered";
 import InputCatWeight from "../../components/Signup/InputCatWeight";
 import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
 import { UserDataParams, userAPI } from "../../api/resourses/users";
+import { IInputData } from "../../interfaces/product";
 
 export default function Signup() {
     const [, setUserInfo] = useRecoilState(userState);
@@ -202,7 +203,10 @@ export default function Signup() {
         const requiredFields = steps[step - 1].requiredFields;
 
         return requiredFields.every(field => {
-            return inputData[field] && inputData[field].trim() !== "";
+            const fieldKey = field as keyof IInputData;
+            const value = inputData[fieldKey];
+
+            return typeof value === "string" ? value.trim() !== "" : value !== null;
         });
     };
 

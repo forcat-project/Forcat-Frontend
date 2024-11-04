@@ -7,7 +7,7 @@ export default function InputCatGender() {
     const [, setCatInfo] = useRecoilState(catState);
     const [isFemaleCat, setIsFemaleCat] = useState(true);
     const [isFocused, setIsFocused] = useState(false);
-    const [inputData, setInputData] = useRecoilState(inputState);
+    const [, setInputData] = useRecoilState(inputState);
 
     const handleGenderClick = (isFemale: boolean) => {
         setIsFemaleCat(isFemale);
