@@ -27,7 +27,6 @@ export default function UserInfo({ onReload }: UserInfoProps) {
         if (userId) {
           const response = await userAPI.getUser(Number(userId));
           setUser(response.data);
-          console.log(response.data);
         }
       } catch (error) {
         console.error("사용자 정보를 가져오는데 실패했습니다:", error);

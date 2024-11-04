@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -26,5 +27,8 @@ dist-ssr
 .env
 .env.development
 
+# Yarn
 .yarn
 
+# asdf version file
+.tool-versions

@@ -21,4 +21,5 @@ export const userAPI = {
     axiosInstance.put(`/users/${userId}`, userData),
   updateUserPartial: (userId: number, userData: UserDataParams) =>
     axiosInstance.patch(`/users/${userId}`, userData),
+  deleteUser: (userId: number) => axiosInstance.delete(`/users/${userId}`), // 회원가입 시 테스트를 위한 임시 api
 };

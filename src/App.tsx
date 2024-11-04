@@ -16,6 +16,7 @@ function App() {
   const isTermsOfUsePage = location.pathname.startsWith("/termsofuse");
   const isUnregister1Page = location.pathname.startsWith("/unregister1");
   const isUnregister2Page = location.pathname.startsWith("/unregister2");
+  const isCartPage = location.pathname.startsWith("/cart");
 
   useScrollRestoration(); // 페이지 전환 시 스크롤 복원
 
@@ -46,6 +47,7 @@ function App() {
           isTermsOfUsePage={isTermsOfUsePage}
           isUnregister1Page={isUnregister1Page}
           isUnregister2Page={isUnregister2Page}
+          isCartPage={isCartPage}
         />
       </Block.FlexBox>
     </>

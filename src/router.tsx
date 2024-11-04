@@ -17,10 +17,13 @@ import Search from "./pages/Category";
 import BestSeller from "./pages/Home/category/bestseller";
 import Buy from "./pages/Buy";
 import TermsOfUse from "./pages/Profile/termsofUse";
-
 import PrivacyPolicy from "./pages/Profile/privacyPolicy";
 import Unregister1 from "./pages/Profile/unregister/unregister1";
 import Unregister2 from "./pages/Profile/unregister/unregister2";
+import CheckoutPage from "./pages/Payments/PaymentComponent";
+import SuccessPage from "./pages/Payments/SuccessPage";
+import FailPage from "./pages/Payments/FailPage";
+import Detail from "./pages/Payments/PaymentsDetail";
 
 export const router = createBrowserRouter([
   {
@@ -76,10 +79,6 @@ export const router = createBrowserRouter([
         element: <MarketDetail />,
       },
       {
-        path: "buy",
-        element: <Buy />,
-      },
-      {
         path: "cart",
         element: <Cart />,
       },
@@ -103,6 +102,22 @@ export const router = createBrowserRouter([
       {
         path: "unregister2",
         element: <Unregister2 />,
+      },
+      {
+        path: "payments",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "success",
+        element: <SuccessPage />,
+      },
+      {
+        path: "fail",
+        element: <FailPage />,
+      },
+      {
+        path: "orders/:userId/:orderId/details",
+        element: <Detail />,
       },
     ],
   },

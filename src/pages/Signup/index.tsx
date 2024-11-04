@@ -45,6 +45,7 @@ export default function Signup() {
 
       const res = await userAPI.signup(userData);
       alert("사용자 정보 등록에 성공했습니다.");
+      sessionStorage.setItem("access_token", res.data["access_token"]);
       setStep(step + 1);
     } catch (error) {
       console.log(error);

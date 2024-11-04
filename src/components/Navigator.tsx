@@ -22,6 +22,7 @@ type Props = {
   isTermsOfUsePage: boolean;
   isUnregister1Page: boolean;
   isUnregister2Page: boolean;
+  isCartPage: boolean;
 };
 
 export default function Navigator({
@@ -33,6 +34,7 @@ export default function Navigator({
   isTermsOfUsePage,
   isUnregister1Page,
   isUnregister2Page,
+  isCartPage,
 }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -95,7 +97,8 @@ export default function Navigator({
         !isPrivacyPolicyPage &&
         !isTermsOfUsePage &&
         !isUnregister1Page &&
-        !isUnregister2Page && (
+        !isUnregister2Page &&
+        !isCartPage && (
           <Block.AbsoluteBox
             width="599px"
             height="93px"
