@@ -53,6 +53,12 @@ export default function Signup() {
         }
     };
 
+    const handleStepButtonClick = () => {
+        if (isStepValid()) {
+            steps[step - 1].onButtonClick();
+        }
+    };
+
     const steps = [
         {
             title: "보호자님의",
@@ -255,7 +261,7 @@ export default function Signup() {
                     alignItems: "center",
                 }}
             >
-                <Button.Confirm onClick={steps[step - 1].onButtonClick} isDisabled={!isStepValid()}>
+                <Button.Confirm onClick={handleStepButtonClick} isDisabled={!isStepValid()}>
                     <Text.TitleMenu300 color="White">{buttonLabel}</Text.TitleMenu300>
                 </Button.Confirm>
             </Block.AbsoluteBox>
