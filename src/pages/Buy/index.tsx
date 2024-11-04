@@ -12,6 +12,7 @@ export default function Buy() {
   const [isProductInfoExpanded, setIsProductInfoExpanded] = useState(true);
   const [isShippingInfoExpanded, setIsShippingInfoExpanded] = useState(true);
   const [inputValue, setInputValue] = useState("0");
+  const [isConfirmDisabled, setIsConfirmDisabled] = useState(true);
 
   if (!product) {
     return <div>상품 정보가 없습니다.</div>;
@@ -42,6 +43,7 @@ export default function Buy() {
         <DeliveryInfo
           isShippingInfoExpanded={isShippingInfoExpanded}
           toggleShippingInfo={toggleShippingInfo}
+          onConfirmDisabledChange={setIsConfirmDisabled} // 추가된 부분
         />
         <Divider />
         <PointInfo inputValue={inputValue} setInputValue={setInputValue} />
@@ -50,14 +52,14 @@ export default function Buy() {
           productTotalPrice={productTotalPrice}
           pointsToDeduct={pointsToDeduct}
           finalPrice={finalPrice}
-        />{" "}
+        />
         <Block.AbsoluteBox
           bottom="1%"
           left="0%"
           zIndex="3"
           style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
-          <Button.Confirm cursor="pointer" isDisabled={false}>
+          <Button.Confirm cursor="pointer" isDisabled={isConfirmDisabled}>
             <Text.TitleMenu200 color="White">결제하기</Text.TitleMenu200>
           </Button.Confirm>
         </Block.AbsoluteBox>

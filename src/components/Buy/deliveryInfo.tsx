@@ -1,36 +1,41 @@
 import { useEffect, useState } from "react";
-import { Block, Text, Input, Button, Section } from "../../style/ui";
+import { Block, Text, Button, Input, Section } from "../../style/ui";
 import styled from "styled-components";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
-import { userAPI } from "../../api/resourses/users"; // 수정된 부분: userAPI 임포트
+import { userAPI } from "../../api/resourses/users";
+import { useUserId } from "../../hooks/useUserId";
 import { User } from "../../interfaces/info";
-import { useUserId } from "../../hooks/useUserId"; // useUserId 훅 임포트
 
 ReactModal.setAppElement("#root");
 
 interface DeliveryInfoProps {
   isShippingInfoExpanded: boolean;
   toggleShippingInfo: () => void;
+  onConfirmDisabledChange: (isDisabled: boolean) => void; // 추가된 prop
 }
 
 export default function DeliveryInfo({
   isShippingInfoExpanded,
   toggleShippingInfo,
+  onConfirmDisabledChange,
 }: DeliveryInfoProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [, setUser] = useState<User | null>(null);
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const userId = useUserId(); // 수정된 부분: userId 가져오기
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const userId = useUserId();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (userId) {
-          const response = await userAPI.getUser(userId); // 수정된 부분: userAPI 사용
-          console.log(response.data);
+          const response = await userAPI.getUser(userId);
           setUser(response.data);
+          setUsername(response.data.username || "");
+          setPhoneNumber(response.data.phone_number || "");
           setAddress(response.data.address || "");
           setAddressDetail(response.data.address_detail || "");
         }
@@ -42,19 +47,25 @@ export default function DeliveryInfo({
     fetchUserData();
   }, [userId]);
 
+  useEffect(() => {
+    // 입력 필드 중 하나라도 빈 값이 있으면 버튼 비활성화
+    const isDisabled =
+      !username.trim() || !phoneNumber.trim() || !address.trim();
+    onConfirmDisabledChange(isDisabled);
+  }, [username, phoneNumber, address, onConfirmDisabledChange]);
+
   const onToggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
 
   const handleComplete = (data: { address: string }) => {
     setAddress(data.address);
-    setAddressDetail(""); // 상세 주소는 빈칸으로 설정
+    setAddressDetail("");
     onToggleModal();
   };
 
   return (
     <>
-      {/* 배송 정보 */}
       <Block.FlexBox padding="20px" justifyContent="space-between">
         <Text.TitleMenu300>배송 정보</Text.TitleMenu300>
         <Button.ToggleButton onClick={toggleShippingInfo}>
@@ -68,14 +79,20 @@ export default function DeliveryInfo({
             <Text.Menu style={{ color: "#A6A9B8", marginBottom: "10px" }}>
               이름 (필수)
             </Text.Menu>
-            <StyledInput defaultValue={user?.username || ""} />
+            <StyledInput
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </Section>
 
           <Section>
             <Text.Menu style={{ color: "#A6A9B8", marginBottom: "10px" }}>
               휴대폰 번호 (필수)
             </Text.Menu>
-            <StyledInput defaultValue={user?.phone_number || ""} />
+            <StyledInput
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
           </Section>
 
           <Section>
@@ -104,7 +121,6 @@ export default function DeliveryInfo({
         </Block.FlexBox>
       )}
 
-      {/* 주소 검색 모달 */}
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={onToggleModal}
