@@ -9,12 +9,15 @@ import styled from "styled-components";
 import { Checked, Unchecked, Warning } from "../../../assets/svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ForcatModal from "../../../components/Modal/ForcatModal"; // ForcatModal 컴포넌트 import
+import ForcatModal from "../../../components/Modal/ForcatModal";
+import { userAPI } from "../../../api/resourses/users"; // userAPI 임포트
+import { useUserId } from "../../../hooks/useUserId"; // useUserId 훅 가져오기
 
 export default function Unregister2() {
   const [isChecked, setIsChecked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const navigate = useNavigate();
+  const userId = useUserId(); // 유저 ID 가져오기
 
   // 토글 함수
   const toggleCheck = () => {
@@ -24,6 +27,22 @@ export default function Unregister2() {
   const openModal = () => {
     if (isChecked) {
       setIsModalOpen(true); // 체크된 경우 모달 열기
+    }
+  };
+
+  // 탈퇴 함수
+  const handleUnregister = async () => {
+    try {
+      if (userId) {
+        await userAPI.deleteUser(userId);
+        alert("탈퇴가 완료되었습니다.");
+        navigate("/home"); // 탈퇴 후 홈 페이지로 이동
+      } else {
+        console.error("유저 ID가 유효하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("탈퇴에 실패했습니다.", error);
+      alert("탈퇴에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -117,7 +136,7 @@ export default function Unregister2() {
             height="40px"
             style={{ marginBottom: "15px" }}
           />
-          <Text.TitleMenu300>정말 포통을 탈퇴하시겠어요?</Text.TitleMenu300>
+          <Text.TitleMenu300>정말 포동을 탈퇴하시겠어요?</Text.TitleMenu300>
           <Block.FlexBox
             width="100%"
             height="93px"
@@ -125,19 +144,13 @@ export default function Unregister2() {
             alignItems="center"
             gap="12px"
           >
-            <Button.CartButton
-              onClick={() => setIsModalOpen(false)}
-              isSoldOut={false}
-            >
-              {" "}
+            <Button.CartButton onClick={handleUnregister} isSoldOut={false}>
               포동탈퇴
             </Button.CartButton>
             <Button.BuyButton
               cursor="pointer"
               isSoldOut={false}
-              onClick={() => {
-                setIsModalOpen(false);
-              }}
+              onClick={() => setIsModalOpen(false)}
             >
               취소
             </Button.BuyButton>
