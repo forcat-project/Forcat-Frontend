@@ -15,7 +15,11 @@ import OnlySearch from "./pages/Category/onlySearch";
 import OnlyForCat from "./pages/Home/category/onlyForCat";
 import Search from "./pages/Category";
 import BestSeller from "./pages/Home/category/bestseller";
-import Buy from "./pages/Buy";
+import CheckoutPage from "./pages/Payments/PaymentComponent";
+import SuccessPage from "./pages/Payments/SuccessPage";
+import FailPage from "./pages/Payments/FailPage";
+import Detail from "./pages/Payments/PaymentsDetail";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -70,16 +74,28 @@ export const router = createBrowserRouter([
         element: <MarketDetail />,
       },
       {
-        path: "buy",
-        element: <Buy />,
-      },
-      {
         path: "cart",
         element: <Cart />,
       },
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "payments",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "success",
+        element: <SuccessPage />,
+      },
+      {
+        path: "fail",
+        element: <FailPage />,
+      },
+      {
+        path: "orders/:userId/:orderId/details",
+        element: <Detail />,
       },
     ],
   },

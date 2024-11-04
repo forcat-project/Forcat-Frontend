@@ -368,17 +368,18 @@ const ProductImageContainer = styled.div`
 `;
 
 const SoldoutBox = styled.div<{ width?: string; height?: string }>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    width: ${props => props.width || "100%"};
-    height: ${props => props.height || "100%"};
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "100%"};
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 `;
+
