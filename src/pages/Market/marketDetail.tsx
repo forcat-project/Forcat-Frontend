@@ -25,6 +25,7 @@ export default function MarketDetail() {
   const navigate = useNavigate();
 
   const isSoldOut = productDetail?.remain_count === 0;
+
   const handleCartModalOpen = () => {
     if (!isSoldOut) {
       setCartCount(1);
