@@ -37,3 +37,11 @@ export const validateDay = (day: string, month?: string, year?: string) => {
 
     return true;
 };
+
+export const validateWeightWhole = (whole: string) => {
+    return /^\d{0,3}$/.test(whole);
+};
+
+export const validateWeightDecimal = (decimal: string) => {
+    return /^\d{0,2}$/.test(decimal);
+};
