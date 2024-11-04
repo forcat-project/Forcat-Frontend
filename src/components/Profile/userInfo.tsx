@@ -76,13 +76,11 @@ export default function UserInfo({ onReload }: UserInfoProps) {
         alignItems="center"
         style={{ marginLeft: "10px" }}
       >
-        {" "}
-        <Fish width="50px" height="50px" />{" "}
+        <Fish width="50px" height="50px" />
         <Text.Mini color="Gray" style={{ marginRight: "10px" }}>
           모은 생선 포인트
         </Text.Mini>
-        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>{" "}
-        {/* 포인트 표시 */}
+        <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>
       </Block.FlexBox>
       <Modal
         isOpen={isEditModalOpen}
