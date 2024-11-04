@@ -1,32 +1,41 @@
 import { useEffect, useState } from "react";
-import { Block, Text, Button, Input, Section } from "../../style/ui";
+import { Block, Text, Input, Button, Section } from "../../style/ui";
 import styled from "styled-components";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import { userAPI } from "../../api/resourses/users";
 import { useUserId } from "../../hooks/useUserId";
-import { User } from "../../interfaces/info";
 
 ReactModal.setAppElement("#root");
 
 interface DeliveryInfoProps {
   isShippingInfoExpanded: boolean;
   toggleShippingInfo: () => void;
-  onConfirmDisabledChange: (isDisabled: boolean) => void; // 추가된 prop
+  onConfirmDisabledChange: (isDisabled: boolean) => void;
+  setUserName: (name: string) => void;
+  setPhoneNumber: (number: string) => void;
+  setShippingAddress: (address: string) => void;
+  setShippingAddressDetail: (detail: string) => void;
+  setShippingMemo: (memo: string) => void;
 }
 
 export default function DeliveryInfo({
   isShippingInfoExpanded,
   toggleShippingInfo,
   onConfirmDisabledChange,
+  setUserName,
+  setPhoneNumber,
+  setShippingAddress,
+  setShippingAddressDetail,
+  setShippingMemo,
 }: DeliveryInfoProps) {
-  const [, setUser] = useState<User | null>(null);
+  const userId = useUserId();
+  const [user, setUser] = useState(null);
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const userId = useUserId();
+  const [phoneNumber, setPhoneNumberState] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,7 +44,7 @@ export default function DeliveryInfo({
           const response = await userAPI.getUser(userId);
           setUser(response.data);
           setUsername(response.data.username || "");
-          setPhoneNumber(response.data.phone_number || "");
+          setPhoneNumberState(response.data.phone_number || "");
           setAddress(response.data.address || "");
           setAddressDetail(response.data.address_detail || "");
         }
@@ -43,16 +52,34 @@ export default function DeliveryInfo({
         console.error("사용자 정보를 가져오는데 실패했습니다:", error);
       }
     };
-
     fetchUserData();
   }, [userId]);
 
   useEffect(() => {
-    // 입력 필드 중 하나라도 빈 값이 있으면 버튼 비활성화
+    setUserName(username);
+    setPhoneNumber(phoneNumber);
+    setShippingAddress(address);
+    setShippingAddressDetail(addressDetail);
+  }, [
+    username,
+    phoneNumber,
+    address,
+    addressDetail,
+    setUserName,
+    setPhoneNumber,
+    setShippingAddress,
+    setShippingAddressDetail,
+  ]);
+
+  useEffect(() => {
     const isDisabled =
       !username.trim() || !phoneNumber.trim() || !address.trim();
     onConfirmDisabledChange(isDisabled);
   }, [username, phoneNumber, address, onConfirmDisabledChange]);
+
+  const handleMemoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShippingMemo(e.target.value);
+  };
 
   const onToggleModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -91,7 +118,7 @@ export default function DeliveryInfo({
             </Text.Menu>
             <StyledInput
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => setPhoneNumberState(e.target.value)}
             />
           </Section>
 
@@ -116,19 +143,19 @@ export default function DeliveryInfo({
             <Text.Menu style={{ color: "#A6A9B8", marginBottom: "10px" }}>
               배송요청사항
             </Text.Menu>
-            <StyledInput placeholder="예) 안전 배송 부탁드려요" />
+            <StyledInput
+              placeholder="예) 안전 배송 부탁드려요"
+              onChange={handleMemoChange}
+            />
           </Section>
         </Block.FlexBox>
       )}
-
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={onToggleModal}
         contentLabel="주소 검색"
         style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          },
+          overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
           content: {
             top: "50%",
             left: "50%",
