@@ -19,6 +19,7 @@ export default function InputCatBreed() {
     const [catBreeds, setCatBreeds] = useState<CatBreed[]>([]);
     const [catInfo, setCatInfo] = useRecoilState(catState);
     const [, setInputData] = useRecoilState(inputState);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const handleWantChoiceButtonClick = () => {
         setIsModalOpen(true);
@@ -27,7 +28,6 @@ export default function InputCatBreed() {
                 try {
                     const response = await axiosInstance.get(`/cat-breed`);
                     console.log(response);
-
                     setCatBreeds(response.data);
                 } catch (error) {
                     console.log("동물 정보 가져오기 실패");
@@ -49,6 +49,10 @@ export default function InputCatBreed() {
         }));
         setIsModalOpen(false);
     };
+
+    const filteredCatBreeds = catBreeds.filter(breed =>
+        breed.breed_type.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <>
@@ -72,11 +76,15 @@ export default function InputCatBreed() {
                         bgColor="#F8F8F8"
                     >
                         <Search width={21} height={21} />
-                        <Input.Search placeholder="검색어를 입력해주세요" style={{ backgroundColor: "#F8F8F8" }} />
+                        <Input.Search
+                            placeholder="검색어를 입력해주세요"
+                            style={{ backgroundColor: "#F8F8F8" }}
+                            onChange={e => setSearchTerm(e.target.value)}
+                        />
                     </Block.FlexBox>
 
                     <ScrollableFlexBox direction="column" padding="20px">
-                        {catBreeds.map((breed, index) => (
+                        {filteredCatBreeds.map((breed, index) => (
                             <HoverableFlexBox key={index} onClick={() => handleSelectBreedClick(breed)}>
                                 <Text.Menu>{breed.breed_type}</Text.Menu>
                             </HoverableFlexBox>
