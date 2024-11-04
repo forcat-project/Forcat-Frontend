@@ -7,6 +7,7 @@ import AccountManage from "../../components/Profile/accountManage";
 import { PageWrapper } from "../../style/ui";
 
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+import HiddenImage from "../../components/Home/randomPoint";
 
 export default function Profile() {
   const [reload, setReload] = useState(false);
@@ -20,6 +21,7 @@ export default function Profile() {
   return (
     <PageWrapper>
       <ChannelTalk />
+      <HiddenImage />
       <Block.FlexBox
         direction="column"
         padding="20px 0"
