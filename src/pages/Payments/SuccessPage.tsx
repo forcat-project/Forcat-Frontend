@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import {
   BoxSection,
   Image,
@@ -22,26 +23,36 @@ const SuccessPage: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    // 조건에 따라 paymentData 설정
-    const data: PaymentData = {
+    // URL 파라미터에서 결제 정보 설정
+    setPaymentData({
       paymentKey: urlParams.get("paymentKey"),
       orderId: urlParams.get("orderId"),
       amount: urlParams.get("amount"),
-    };
-    setPaymentData(data);
+    });
 
     const confirmPayment = async () => {
       try {
-        const response = await axios.post(
-          "/payments/confirm",
-          data // paymentData 객체 사용
+        const requestData = {
+          paymentKey: urlParams.get("paymentKey"),
+          orderId: urlParams.get("orderId"),
+          amount: urlParams.get("amount"),
+        };
+
+        const response = await axiosInstance.post(
+          '/payments/confirm',
+          requestData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        setResponseData(response.data);
+
+        setResponseData(response.data); // API 응답 데이터를 설정
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          navigate(
-            `/fail?message=${error.response.data.message}&code=${error.response.data.code}`
-          );
+          const { message, code } = error.response.data;
+          navigate(`/fail?message=${message}&code=${code}`);
         } else {
           console.error("결제 승인 요청 중 오류 발생:", error);
         }
@@ -104,6 +115,14 @@ const SuccessPage: React.FC = () => {
           </Button>
         </div>
       </BoxSection>
+
+      {/* 디버깅을 위한 응답 데이터 표시 (필요시 활성화) */}
+      {/* <BoxSection>
+        <b>응답 데이터:</b>
+        <div>
+          <pre>{JSON.stringify(responseData, null, 4)}</pre>
+        </div>
+      </BoxSection> */}
     </MarketContainer>
   );
 };
