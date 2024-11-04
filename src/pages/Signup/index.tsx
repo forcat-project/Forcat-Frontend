@@ -69,10 +69,13 @@ export default function Signup() {
             };
 
             const res = await catAPI.createCat(userId, catData);
+            console.log(res);
             alert("고양이 정보 등록에 성공했습니다.");
             navigate("/home");
         } catch (error) {
             console.log(error);
+            console.log(catInfo.cat_breed);
+
             alert("고양이 정보 등록에 실패했습니다. 다시 시도해 주세요.");
         }
     };

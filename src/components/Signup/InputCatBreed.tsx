@@ -3,13 +3,14 @@ import useFocus from "../../hooks/useFocus";
 import { Block, Input, Text } from "../../style/ui";
 import ForcatModal from "../Modal/ForcatModal";
 import { Search } from "../../assets/svg";
-import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { catState, inputState } from "../../recoil";
+import axiosInstance from "../../api/axiosInstance";
 
 interface CatBreed {
     breed_type: string;
+    category_id: number;
 }
 
 export default function InputCatBreed() {
@@ -25,6 +26,8 @@ export default function InputCatBreed() {
             const fetchData = async () => {
                 try {
                     const response = await axiosInstance.get(`/cat-breed`);
+                    console.log(response);
+
                     setCatBreeds(response.data);
                 } catch (error) {
                     console.log("동물 정보 가져오기 실패");
@@ -34,14 +37,15 @@ export default function InputCatBreed() {
         }
     };
 
-    const handleSelectBreedClick = (breedType: string) => {
+    const handleSelectBreedClick = (breed: CatBreed) => {
         setCatInfo(prev => ({
             ...prev,
-            cat_breed_name: breedType,
+            cat_breed_name: breed.breed_type,
+            cat_breed: breed.category_id,
         }));
         setInputData(prev => ({
             ...prev,
-            catBreed: breedType,
+            catBreed: breed.category_id,
         }));
         setIsModalOpen(false);
     };
@@ -73,7 +77,7 @@ export default function InputCatBreed() {
 
                     <ScrollableFlexBox direction="column" padding="20px">
                         {catBreeds.map((breed, index) => (
-                            <HoverableFlexBox key={index} onClick={() => handleSelectBreedClick(breed.breed_type)}>
+                            <HoverableFlexBox key={index} onClick={() => handleSelectBreedClick(breed)}>
                                 <Text.Menu>{breed.breed_type}</Text.Menu>
                             </HoverableFlexBox>
                         ))}

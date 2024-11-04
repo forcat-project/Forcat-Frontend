@@ -42,11 +42,11 @@ export interface IUser {
 
 export interface ICat {
     name: string;
-    cat_breed: number;
+    cat_breed: null;
     cat_breed_name?: string;
     birth_date: string;
-    gender: number;
-    is_neutered: number;
+    gender: number | null;
+    is_neutered: number | null;
     weight: string;
     profile_image?: string;
     days_since_birth?: string;
