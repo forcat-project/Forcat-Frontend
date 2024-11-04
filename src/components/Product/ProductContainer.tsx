@@ -4,8 +4,11 @@ export const MarketContainer = styled.div`
   flex: 1;
   margin-top: 103px;
   margin-bottom: 93px;
-  overflow-y: scroll;
   padding: 20px;
+  overflow-y: auto; // 스크롤 가능하게 설정
+  height: calc(
+    100vh - 103px - 93px
+  ); // 전체 화면 높이에서 header와 navigator 높이를 뺀 값
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -115,4 +118,3 @@ export const EndOfListMessage = styled.div`
   font-size: 16px;
   margin-top: 20px;
 `;
-

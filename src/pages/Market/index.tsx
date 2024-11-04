@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { AxiosError } from "axios";
 import { IProducts } from "../../interfaces/product";
 import { useNavigate } from "react-router-dom";
@@ -16,50 +16,75 @@ import {
   DiscountRate,
   DiscountedPrice,
   SoldoutBox,
-} from "../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
-import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+} from "../../components/Product/ProductContainer";
+import ChannelTalk from "../../components/Home/channelTalk";
 import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function Market() {
   const [products, setProducts] = useState<IProducts[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
-  const [cursor, setCursor] = useState<string | null>(null); // 다음 API 요청을 위한 cursor 상태
-  const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 중인지 상태
-  const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const navigate = useNavigate();
+
+  // MarketContainer에 대한 참조 생성
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // 스크롤 이벤트 처리 함수
   const handleScroll = useCallback(() => {
-    if (isFetching || !hasMore) return;
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 5) {
-      // 페이지 하단에 도달하면 추가 데이터를 요청
+    if (isFetching || !hasMore || !containerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    // 스크롤 정보를 콘솔에 출력
+    console.log("scrollTop:", scrollTop);
+    console.log("clientHeight:", clientHeight);
+    console.log("scrollHeight:", scrollHeight);
+
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      console.log("스크롤이 하단에 도달했습니다. 추가 데이터를 요청합니다.");
       setIsFetching(true);
+
+      if (cursor) {
+        fetchProducts(cursor); // originalCursor 값으로 API 호출
+      } else {
+        console.log(
+          "originalCursor 값이 null이어서 더 이상 데이터를 요청하지 않습니다."
+        );
+      }
     }
   }, [isFetching, hasMore]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      console.log("스크롤 이벤트가 추가되었습니다.");
+
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+        console.log("스크롤 이벤트가 제거되었습니다.");
+      };
+    }
   }, [handleScroll]);
 
   // API 요청 함수
   const fetchProducts = (cursor: string | undefined = undefined) => {
-    if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
-    setIsFetching(true); // 데이터 요청 상태 설정
-    
+    if (isFetching || !hasMore) return;
+    setIsFetching(true);
+
     const params: ProductQueryParams = {};
     if (cursor) {
-      params.cursor = decodeURIComponent(cursor)
+      params.cursor = decodeURIComponent(cursor);
     }
-    
-    productAPI.getProducts(params)
+
+    productAPI
+      .getProducts(params)
       .then((response) => {
         const { results, next } = response.data;
-        console.log("받은 results:", results); // 받은 results 값 출력
-        // 기존 상품에 새로운 상품 추가
         setProducts((prevProducts) => [...prevProducts, ...results]);
-        // 다음 cursor 값을 설정 (URL 쿼리 파라미터에서 추출)
+
         const nextCursor = next
           ? new URL(next).search
               .slice(1)
@@ -67,41 +92,35 @@ export default function Market() {
               .find((param) => param.startsWith("cursor="))
           : null;
         const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
-        setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
-        console.log("받은 원본 cursor:", originalCursor); // 저장된 cursor 출력
-        setHasMore(Boolean(next)); // 더 이상 데이터가 없으면 false로 설정
-        setIsFetching(false); // 데이터 요청 완료
+        setCursor(originalCursor);
+        console.log("받은 원본 cursor:", originalCursor);
+
+        setHasMore(Boolean(next));
+        setIsFetching(false);
       })
       .catch((error: AxiosError) => {
         setError(error);
         setIsFetching(false);
-        console.error("통신 실패:", error.message);
       });
   };
 
-  // 컴포넌트가 마운트되었을 때 처음 API 호출
   useEffect(() => {
     if (!isFetching && products.length === 0) {
-      fetchProducts(); // 처음 로딩 시 API 호출
+      fetchProducts();
     }
-  }, []); // 빈 배열로 설정하여 컴포넌트가 처음 마운트될 때만 실행
+  }, [isFetching, products.length]);
 
-  // cursor 값이 변경될 때마다 추가 데이터 요청
-  useEffect(() => {
-    if (cursor && !isFetching) {
-      fetchProducts(cursor); // 저장된 cursor 값으로 추가 API 호출
-    }
-  }, [cursor]);
-
-  // 데이터가 로드 중이거나 없을 때
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+  // `MarketContainer`에 명시적으로 `height`와 `overflow-y` 설정
   return (
-    <MarketContainer>
+    <MarketContainer
+      ref={containerRef}
+      style={{ height: "80vh", overflowY: "auto" }}
+    >
       <ChannelTalk />
-
       <ProductGrid>
         {products.map((product) => (
           <ProductCard
