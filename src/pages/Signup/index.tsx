@@ -18,7 +18,6 @@ import { ICat, IInputData, IUser } from "../../interfaces/product";
 import { catAPI } from "../../api/resourses/cats";
 import { useUserId } from "../../hooks/useUserId";
 import styled from "styled-components";
-import ButtonMUI from "@mui/material/Button";
 
 export default function Signup() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
