@@ -21,3 +21,23 @@ export interface Cat {
   profile_image: string;
   birth_date?: string;
 }
+
+export interface ProductInfoProps {
+  products: {
+    product_id: string;
+    thumbnail_url: string;
+    name: string;
+    company: string;
+    discounted_price: number;
+    discount_rate: number;
+    count: number; // 상품 수량
+    product_status: null;
+  }[];
+  isProductInfoExpanded: boolean;
+  toggleProductInfo: () => void;
+}
+
+export interface PointInfoProps {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+}

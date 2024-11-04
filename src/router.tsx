@@ -15,6 +15,11 @@ import OnlySearch from "./pages/Category/onlySearch";
 import OnlyForCat from "./pages/Home/category/onlyForCat";
 import Search from "./pages/Category";
 import BestSeller from "./pages/Home/category/bestseller";
+import Buy from "./pages/Buy";
+import TermsOfUse from "./pages/Profile/termsofUse";
+import PrivacyPolicy from "./pages/Profile/privacyPolicy";
+import Unregister1 from "./pages/Profile/unregister/unregister1";
+import Unregister2 from "./pages/Profile/unregister/unregister2";
 import CheckoutPage from "./pages/Payments/PaymentComponent";
 import SuccessPage from "./pages/Payments/SuccessPage";
 import FailPage from "./pages/Payments/FailPage";
@@ -82,6 +87,23 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
+        path: "termsofuse",
+        element: <TermsOfUse />,
+      },
+
+      {
+        path: "privacypolicy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "unregister1",
+        element: <Unregister1 />,
+      },
+      {
+        path: "unregister2",
+        element: <Unregister2 />,
+      },
+      {
         path: "payments",
         element: <CheckoutPage />,
       },
@@ -96,6 +118,10 @@ export const router = createBrowserRouter([
       {
         path: "orders/:userId/:orderId/details",
         element: <Detail />,
+      },
+      {
+        path: "buy",
+        element: <Buy />,
       },
     ],
   },
