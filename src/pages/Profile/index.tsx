@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Block } from "../../style/ui";
+import { Block, Divider } from "../../style/ui";
 import UserInfo from "../../components/Profile/userInfo";
 import Cats from "../../components/Profile/cats";
 import Purchase from "../../components/Profile/purchase";
@@ -28,32 +28,11 @@ export default function Profile() {
         key={reload.toString()} // `key`에 문자열로 변경
       >
         <UserInfo onReload={handleReload} />
-        <div
-          style={{
-            width: "100%",
-            height: "10px",
-            backgroundColor: "#f0f0f0", // 연한 회색
-            margin: "20px 0", // 위아래 여백
-          }}
-        />
+        <Divider />
         <Cats />
-        <div
-          style={{
-            width: "100%",
-            height: "10px",
-            backgroundColor: "#f0f0f0", // 연한 회색
-            margin: "20px 0", // 위아래 여백
-          }}
-        />
+        <Divider />
         <Purchase />
-        <div
-          style={{
-            width: "100%",
-            height: "10px",
-            backgroundColor: "#f0f0f0", // 연한 회색
-            margin: "20px 0", // 위아래 여백
-          }}
-        />
+        <Divider />
         <AccountManage />
       </Block.FlexBox>
     </PageWrapper>

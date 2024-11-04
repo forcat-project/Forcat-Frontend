@@ -6,17 +6,25 @@ import {
   ContentWrapper,
 } from "../../../style/ui";
 import styled from "styled-components";
-import { Checked, Unchecked } from "../../../assets/svg";
+import { Checked, Unchecked, Warning } from "../../../assets/svg";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 훅 import
+import { useNavigate } from "react-router-dom";
+import ForcatModal from "../../../components/Modal/ForcatModal"; // ForcatModal 컴포넌트 import
 
 export default function Unregister2() {
   const [isChecked, setIsChecked] = useState(false);
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const navigate = useNavigate();
 
   // 토글 함수
   const toggleCheck = () => {
     setIsChecked((prev) => !prev);
+  };
+
+  const openModal = () => {
+    if (isChecked) {
+      setIsModalOpen(true); // 체크된 경우 모달 열기
+    }
   };
 
   return (
@@ -81,7 +89,7 @@ export default function Unregister2() {
           alignItems="center"
           gap="12px"
         >
-          <Button.CartButton onClick={() => {}} isSoldOut={!isChecked}>
+          <Button.CartButton onClick={openModal} isSoldOut={!isChecked}>
             탈퇴 동의
           </Button.CartButton>
           <Button.BuyButton
@@ -93,6 +101,49 @@ export default function Unregister2() {
           </Button.BuyButton>
         </Block.FlexBox>
       </Block.AbsoluteBox>
+
+      {/* ForcatModal */}
+      <ForcatModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        title=""
+        width="599px"
+        height="200px"
+      >
+        {/* 모달 내용 */}
+        <Block.FlexBox direction="column" alignItems="center">
+          <Warning
+            width="40px"
+            height="40px"
+            style={{ marginBottom: "15px" }}
+          />
+          <Text.TitleMenu300>정말 포통을 탈퇴하시겠어요?</Text.TitleMenu300>
+          <Block.FlexBox
+            width="100%"
+            height="93px"
+            justifyContent="center"
+            alignItems="center"
+            gap="12px"
+          >
+            <Button.CartButton
+              onClick={() => setIsModalOpen(false)}
+              isSoldOut={false}
+            >
+              {" "}
+              포동탈퇴
+            </Button.CartButton>
+            <Button.BuyButton
+              cursor="pointer"
+              isSoldOut={false}
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+            >
+              취소
+            </Button.BuyButton>
+          </Block.FlexBox>
+        </Block.FlexBox>
+      </ForcatModal>
     </PageWrapper>
   );
 }
@@ -113,7 +164,7 @@ const InfoList = styled.ul`
 
 const AgreementBox = styled.div`
   position: fixed;
-  bottom: 100px; /* 하단에서의 거리 조정 */
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   width: 28%;
@@ -121,5 +172,5 @@ const AgreementBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer; /* 클릭 가능하도록 설정 */
+  cursor: pointer;
 `;

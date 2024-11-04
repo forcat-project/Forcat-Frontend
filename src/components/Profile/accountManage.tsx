@@ -62,7 +62,7 @@ export default function AccountManage() {
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         title=""
-        width="28%"
+        width="599px"
         height="200px"
       >
         {/* 모달 내용 */}
