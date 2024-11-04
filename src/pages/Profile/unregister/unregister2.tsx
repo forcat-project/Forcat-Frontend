@@ -82,7 +82,7 @@ export default function Unregister2() {
           gap="12px"
         >
           <Button.CartButton onClick={() => {}} isSoldOut={!isChecked}>
-            확인
+            탈퇴 동의
           </Button.CartButton>
           <Button.BuyButton
             cursor="pointer"
