@@ -5,23 +5,45 @@ import ForcatModal from "../Modal/ForcatModal";
 import { Search } from "../../assets/svg";
 import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { catState, inputState } from "../../recoil";
+
+interface CatBreed {
+    breed_type: string;
+}
 
 export default function InputCatBreed() {
     const { isFocused, handleFocus, handleBlur } = useFocus();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [catBreeds, setCatBreeds] = useState([]);
+    const [catBreeds, setCatBreeds] = useState<CatBreed[]>([]);
+    const [catInfo, setCatInfo] = useRecoilState(catState);
+    const [, setInputData] = useRecoilState(inputState);
 
-    const handleBreedSelectButtonClick = () => {
+    const handleWantChoiceButtonClick = () => {
         setIsModalOpen(true);
-        const fetchData = async () => {
-            try {
-                const response = await axiosInstance.get(`/cat-breed`);
-                setCatBreeds(response.data);
-            } catch (error) {
-                console.log("동물 정보 가져오기 실패");
-            }
-        };
-        fetchData();
+        if (catBreeds.length === 0) {
+            const fetchData = async () => {
+                try {
+                    const response = await axiosInstance.get(`/cat-breed`);
+                    setCatBreeds(response.data);
+                } catch (error) {
+                    console.log("동물 정보 가져오기 실패");
+                }
+            };
+            fetchData();
+        }
+    };
+
+    const handleSelectBreedClick = (breedType: string) => {
+        setCatInfo(prev => ({
+            ...prev,
+            cat_breed_name: breedType,
+        }));
+        setInputData(prev => ({
+            ...prev,
+            catBreed: breedType,
+        }));
+        setIsModalOpen(false);
     };
 
     return (
@@ -51,7 +73,7 @@ export default function InputCatBreed() {
 
                     <ScrollableFlexBox direction="column" padding="20px">
                         {catBreeds.map((breed, index) => (
-                            <HoverableFlexBox key={index}>
+                            <HoverableFlexBox key={index} onClick={() => handleSelectBreedClick(breed.breed_type)}>
                                 <Text.Menu>{breed.breed_type}</Text.Menu>
                             </HoverableFlexBox>
                         ))}
@@ -65,7 +87,10 @@ export default function InputCatBreed() {
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     placeholder="선택해주세요"
-                    onClick={handleBreedSelectButtonClick}
+                    value={catInfo.cat_breed_name || ""}
+                    readOnly
+                    onClick={handleWantChoiceButtonClick}
+                    pointer
                 />
             </Block.FlexBox>
         </>
@@ -74,7 +99,7 @@ export default function InputCatBreed() {
 
 const HoverableFlexBox = styled(Block.FlexBox)`
     width: 555px;
-    height: 100px;
+    height: 40px;
     align-items: center;
     padding: 15px;
     border-radius: 10px;
@@ -82,9 +107,6 @@ const HoverableFlexBox = styled(Block.FlexBox)`
 
     &:hover {
         background-color: #e8e8e8;
-        width: 555px;
-        height: 100px;
-        padding: 15px;
     }
 `;
 
@@ -92,4 +114,7 @@ const ScrollableFlexBox = styled(Block.FlexBox)`
     overflow-y: auto;
     scrollbar-width: none;
     max-height: 453px;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
