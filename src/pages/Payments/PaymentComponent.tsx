@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import axios from "axios";
 import { IOrderProduct, ICreateOrderRequest } from "../../interfaces/product";
@@ -38,39 +39,22 @@ type PaymentWidgetInstance = {
 export default function CheckoutPage() {
   const [ready, setReady] = useState<boolean>(false);
   const [widgets, setWidgets] = useState<PaymentWidgetInstance | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const products: IOrderProduct[] = [
-    {
-      product_id: 11,
-      product_name: "네코이찌 발톱깍이",
-      price: 18500,
-      quantity: 1,
-      discount_rate: 0,
-      product_company: "템테이션",
-      product_image:
-        "https://neko.co.kr/web/product/big/202103/e0c9f9908e722d0c6350d4e8c229d88f.jpg",
-      product_status: "",
-    },
-    {
-      product_id: 26,
-      product_name:
-        "위스카스 포켓 캣 고양이 헤어볼닭고기 참치 오션피쉬 사료 1.1kg/3kg/7kg",
-      price: 10500,
-      quantity: 2,
-      discount_rate: 0,
-      product_company: "힐링타임",
-      product_image:
-        "https://neko.co.kr/web/product/big/202103/9fd529767482ef5ea23eb40195bf6bf5.png",
-      product_status: "",
-    },
-  ];
-
-  const pointUsed = 1000;
-  const originalAmount = products.reduce(
-    (sum, product) => sum + product.price * product.quantity,
-    0
-  );
-  const totalAmount = originalAmount - pointUsed;
+  // Buy 페이지에서 전달한 상태 값 가져오기
+  const {
+    userId,
+    userName,
+    phoneNumber,
+    shippingAddress,
+    shippingAddressDetail,
+    shippingMemo,
+    pointsUsed,
+    originalAmount,
+    totalAmount,
+    products,
+  } = location.state || {};
 
   useEffect(() => {
     async function fetchPaymentWidgets() {
@@ -114,14 +98,14 @@ export default function CheckoutPage() {
         orderId,
         amount: totalAmount,
         originalAmount,
-        userId: 1,
-        userName: "김토스",
-        phoneNumber: "01012341234",
-        shippingAddress: "서울시 강남구...",
-        shippingAddressDetail: "Apt 101호",
+        userId,
+        userName,
+        phoneNumber,
+        shippingAddress,
+        shippingAddressDetail,
         paymentMethod: "card",
-        shippingMemo: "부재시 문 앞에 놔둬주세요!",
-        pointsUsed: pointUsed,
+        shippingMemo,
+        pointsUsed,
         products,
       };
 
@@ -137,8 +121,8 @@ export default function CheckoutPage() {
           }/fail?code=payment_failed&message=${encodeURIComponent(
             "결제에 실패했습니다."
           )}`,
-          customerName: "김토스",
-          customerMobilePhone: "01012341234",
+          customerName: userName,
+          customerMobilePhone: phoneNumber,
         });
       } else {
         alert(
@@ -153,13 +137,9 @@ export default function CheckoutPage() {
 
   async function createOrder(order: ICreateOrderRequest) {
     try {
-      const response = await axios.post(
-        "/paymnets/orders",
-        order,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.post("/payments/orders", order, {
+        headers: { "Content-Type": "application/json" },
+      });
 
       return response.data;
     } catch (error) {
