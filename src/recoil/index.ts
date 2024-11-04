@@ -57,6 +57,7 @@ export const inputState = atom<IInputData>({
     key: "inputState",
     default: {
         name: "",
+        phoneNumber: "",
         address: "",
         address_detail: "",
         nickname: "",

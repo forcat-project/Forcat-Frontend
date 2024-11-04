@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { inputState, userState } from "../../recoil";
+import { catState, inputState, userState } from "../../recoil";
 import { useCallback, useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
 import { Block, Button, Text } from "../../style/ui";
@@ -13,11 +13,14 @@ import InputCatGender from "../../components/Signup/InputCatGender";
 import InputCatIsNeutered from "../../components/Signup/InputCatIsNeutered";
 import InputCatWeight from "../../components/Signup/InputCatWeight";
 import InputPhoneNumber from "../../components/Signup/InputPhoneNumber";
-import { UserDataParams, userAPI } from "../../api/resourses/users";
-import { IInputData } from "../../interfaces/product";
+import { userAPI } from "../../api/resourses/users";
+import { ICat, IInputData, IUser } from "../../interfaces/product";
+import { catAPI } from "../../api/resourses/cats";
+import { useUserId } from "../../hooks/useUserId";
 
 export default function Signup() {
-    const [, setUserInfo] = useRecoilState(userState);
+    const [userInfo, setUserInfo] = useRecoilState(userState);
+    const catInfo = useRecoilValue(catState);
     const inputData = useRecoilValue(inputState);
     const location = useLocation();
     const navigate = useNavigate();
@@ -27,12 +30,11 @@ export default function Signup() {
     };
 
     const [step, setStep] = useState(1);
-
-    const userInfo = useRecoilValue(userState);
+    const userId = useUserId();
 
     const handleSubmitUserInfo = async () => {
         try {
-            const userData: UserDataParams = {
+            const userData: IUser = {
                 username: userInfo.username,
                 nickname: userInfo.nickname,
                 profile_picture: userInfo.profile_picture,
@@ -51,6 +53,27 @@ export default function Signup() {
         } catch (error) {
             console.log(error);
             alert("사용자 정보 등록에 실패했습니다. 다시 시도해 주세요.");
+        }
+    };
+
+    const handleSubmitCatInfo = async () => {
+        try {
+            const catData: ICat = {
+                name: catInfo.name,
+                cat_breed: catInfo.cat_breed,
+                cat_breed_name: catInfo.cat_breed_name,
+                birth_date: catInfo.birth_date,
+                gender: catInfo.gender,
+                is_neutered: catInfo.is_neutered,
+                weight: catInfo.weight,
+            };
+
+            const res = await catAPI.createCat(userId, catData);
+            alert("고양이 정보 등록에 성공했습니다.");
+            navigate("/home");
+        } catch (error) {
+            console.log(error);
+            alert("고양이 정보 등록에 실패했습니다. 다시 시도해 주세요.");
         }
     };
 
@@ -177,9 +200,7 @@ export default function Signup() {
             ],
             requiredFields: ["catWeight", "isNeutered", "catGender", "birthDate", "catBreed", "catName"],
             buttonLabel: "확인",
-            onButtonClick: () => {
-                setStep(step + 1);
-            },
+            onButtonClick: handleSubmitCatInfo,
         },
     ];
 

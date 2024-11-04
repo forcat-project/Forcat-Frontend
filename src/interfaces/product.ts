@@ -54,6 +54,7 @@ export interface ICat {
 
 export interface IInputData {
     name: string;
+    phoneNumber: string;
     address: string;
     address_detail: string;
     nickname: string;
