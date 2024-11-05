@@ -1,30 +1,10 @@
-import { Block, Button } from "../../style/ui";
+import { Block } from "../../style/ui";
 import Footer from "../../components/Home/Footer";
 import CategoryBox from "../../components/Home/CategoryBox";
-import BannerSlider from "../../components/Home/banner"; // BannerSlider import
+import BannerSlider from "../../components/Home/Banner"; // BannerSlider import
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
-import axiosInstance from "../../api/axiosInstance";
-import { useUserId } from "../../hooks/useUserId";
 
 export default function Home() {
-    const userId = useUserId();
-    console.log("home ::::::::::::::::::::", userId);
-
-    const deleteUser = () => {
-        if (userId) {
-            console.log("Deleting user with ID:", userId);
-            axiosInstance
-                .delete(`/users/1`)
-                .then(response => {
-                    console.log("User deleted successfully:", response.data);
-                })
-                .catch(error => {
-                    console.error("Error deleting user:", error);
-                });
-        } else {
-            console.log("User ID is null, cannot delete user.");
-        }
-    };
     return (
         <>
             <ChannelTalk /> {/* ChannelTalk 컴포넌트 추가 */}
@@ -66,9 +46,6 @@ export default function Home() {
                 {/* 푸터 컴포넌트 */}
                 <Footer />
             </Block.FlexBox>
-            <Block.AbsoluteBox style={{ left: "90%" }} onClick={deleteUser}>
-                <Button.Select width="20px">유저 삭제 (임시버튼)</Button.Select>
-            </Block.AbsoluteBox>
         </>
     );
 }

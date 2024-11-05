@@ -42,11 +42,11 @@ export const catState = atom<ICat>({
     key: "catState",
     default: {
         name: "",
-        cat_breed: 0, // 고양이 품종 숫자
+        cat_breed: null, // 고양이 품종 숫자
         cat_breed_name: "", // 고양이 품종 이름
         birth_date: "",
-        gender: 0,
-        is_neutered: 0, // 중성화 여부
+        gender: null,
+        is_neutered: null, // 중성화 여부
         weight: "",
         profile_image: "",
         days_since_birth: "",
@@ -57,14 +57,15 @@ export const inputState = atom<IInputData>({
     key: "inputState",
     default: {
         name: "",
+        phoneNumber: "",
         address: "",
         address_detail: "",
         nickname: "",
         catName: "",
-        catBreed: "",
+        catBreed: null,
         birthDate: "",
-        catGender: "",
-        isNeutered: "",
+        catGender: null,
+        isNeutered: null,
         catWeight: "",
     },
 });

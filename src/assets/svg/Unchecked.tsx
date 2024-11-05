@@ -1,33 +1,26 @@
+import * as React from "react";
 import type { SVGProps } from "react";
 const SvgUnchecked = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" {...props}>
-    <path
-      d="M0 0h30v30H0zm0 0"
-      style={{
-        stroke: "none",
-        fillRule: "nonzero",
-        fill: "#fefefe",
-        fillOpacity: 1,
-      }}
-    />
-    <path
-      d="M20.238 5.79c.723.44 1.305.948 1.907 1.577.164.168.324.336.496.508 1.785 2.008 2.644 4.348 2.73 7.156-.121 3.317-1.387 5.64-3.48 7.914-1.91 1.79-4.133 2.551-6.621 2.43-2.727-.402-5.075-1.953-6.817-4.281-1.578-2.496-1.785-5.242-1.547-8.2.496-2.703 1.957-4.925 3.985-6.503.996-.625 2.066-1.012 3.156-1.391 2.09-.77 4.215-.11 6.191.79m0 0"
-      style={{
-        stroke: "none",
-        fillRule: "nonzero",
-        fill: "#e8ebe8",
-        fillOpacity: 1,
-      }}
-    />
-    <path
-      d="M19.047 11.05c.562.11.918.24 1.383.61.285.445.285.445.254.914-.293.82-.758 1.313-1.309 1.95a40 40 0 0 0-2.578 3.367c-.5.722-1.027 1.414-1.559 2.109a5.4 5.4 0 0 1-1.722-1.309q-.205-.223-.414-.453c-.141-.156-.278-.312-.422-.476a52 52 0 0 1-.844-.93q-.187-.204-.375-.414c-.27-.367-.27-.367-.27-.89q.579-.676 1.192-1.317c.77.379 1.336.855 1.96 1.48.169.164.337.332.512.504l.383.383q.078-.206.157-.418c.44-.875 1.023-1.594 1.613-2.344 1.055-1.351 1.055-1.351 2.039-2.765m0 0"
-      style={{
-        stroke: "none",
-        fillRule: "nonzero",
-        fill: "#c3c4c3",
-        fillOpacity: 1,
-      }}
-    />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 21 21"
+    {...props}
+  >
+    <g clipPath="url(#unchecked_svg__a)">
+      <path fill="#C2C2C2" d="M17.294 4.323H3.088v12.971h14.206z" />
+      <path
+        fill="#E7EBE8"
+        fillRule="evenodd"
+        d="M10.5 21C16.299 21 21 16.299 21 10.5S16.299 0 10.5 0 0 4.701 0 10.5 4.701 21 10.5 21m-.27-6.253 5.833-7-1.793-1.494-5.015 6.019-2.597-2.597-1.65 1.65 3.5 3.5.904.903z"
+        clipRule="evenodd"
+      />
+    </g>
+    <defs>
+      <clipPath id="unchecked_svg__a">
+        <path fill="#fff" d="M0 0h21v21H0z" />
+      </clipPath>
+    </defs>
   </svg>
 );
 export default SvgUnchecked;
