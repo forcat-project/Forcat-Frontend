@@ -207,7 +207,8 @@ export const Block = {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 10;
+    pointer-events: none;
   `,
 };
 
