@@ -32,6 +32,7 @@ export default function Signup() {
 
     const [step, setStep] = useState(1);
     const userId = useUserId();
+    console.log("??", userId);
 
     const handleSubmitUserInfo = async () => {
         try {
@@ -69,7 +70,7 @@ export default function Signup() {
                 weight: catInfo.weight,
             };
 
-            const res = await catAPI.createCat(userId, catData);
+            const res = await catAPI.createCat(userId!, catData);
             console.log(res);
             alert("고양이 정보 등록에 성공했습니다.");
             navigate("/home");
