@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import axios from "axios";
-import { IOrderProduct, ICreateOrderRequest } from "../../interfaces/product";
+import { ICreateOrderRequest } from "../../interfaces/product";
 import {
   Wrapper,
   MaxWidthContainer,
   ButtonWrapper,
   Button,
 } from "../../../src/style/CheckoutPage.styles";
+import axiosInstance from "../../api/axiosInstance";
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_ID;
 
@@ -58,11 +59,15 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     async function fetchPaymentWidgets() {
-      const tossPayments: TossPaymentsInstance = await loadTossPayments(
-        clientKey
-      );
-      const paymentWidgets = tossPayments.widgets({ customerKey: ANONYMOUS });
-      setWidgets(paymentWidgets);
+      try {
+        const tossPayments: TossPaymentsInstance = await loadTossPayments(
+          clientKey
+        );
+        const paymentWidgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+        setWidgets(paymentWidgets);
+      } catch (error) {
+        console.error("결제 위젯 로드 중 오류 발생:", error);
+      }
     }
 
     fetchPaymentWidgets();
@@ -72,20 +77,23 @@ export default function CheckoutPage() {
     async function renderPaymentWidgets() {
       if (!widgets) return;
 
-      await widgets.setAmount({ currency: "KRW", value: totalAmount });
+      try {
+        await widgets.setAmount({ currency: "KRW", value: totalAmount });
+        await Promise.all([
+          widgets.renderPaymentMethods({
+            selector: "#payment-method",
+            variantKey: "DEFAULT",
+          }),
+          widgets.renderAgreement({
+            selector: "#agreement",
+            variantKey: "AGREEMENT",
+          }),
+        ]);
 
-      await Promise.all([
-        widgets.renderPaymentMethods({
-          selector: "#payment-method",
-          variantKey: "DEFAULT",
-        }),
-        widgets.renderAgreement({
-          selector: "#agreement",
-          variantKey: "AGREEMENT",
-        }),
-      ]);
-
-      setReady(true);
+        setReady(true);
+      } catch (error) {
+        console.error("결제 위젯 렌더링 중 오류 발생:", error);
+      }
     }
 
     renderPaymentWidgets();
@@ -94,7 +102,7 @@ export default function CheckoutPage() {
   const handlePayment = async () => {
     try {
       const orderId = generateNumericString();
-      const orderParams: ICreateOrderRequest = {
+      const createOrderResponse = await createOrder({
         orderId,
         amount: totalAmount,
         originalAmount,
@@ -106,15 +114,29 @@ export default function CheckoutPage() {
         paymentMethod: "card",
         shippingMemo,
         pointsUsed,
-        products,
-      };
-
-      const createOrderResponse = await createOrder(orderParams);
+        products: products.map((product: {
+          product_id: number;
+          name: string;
+          count: number;
+          discounted_price: number;
+          discount_rate: number;
+          company: string;
+          thumbnail_url: string;
+        }) => ({
+          product_id: product.product_id,
+          quantity: product.count,
+          product_name: product.name,
+          price: product.discounted_price,
+          discount_rate: product.discount_rate,
+          product_company: product.company,
+          product_image: product.thumbnail_url,
+        })),
+      });
 
       if (createOrderResponse.status === "주문이 생성되었습니다") {
         await widgets?.requestPayment({
           orderId: createOrderResponse.orderId,
-          orderName: "여러 상품 결제",
+          orderName: "상품 결제",
           successUrl: `${window.location.origin}/success`,
           failUrl: `${
             window.location.origin
@@ -137,17 +159,14 @@ export default function CheckoutPage() {
 
   async function createOrder(order: ICreateOrderRequest) {
     try {
-      const response = await axios.post("/payments/orders", order, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      return response.data;
+      const res = await axiosInstance.post(`users/${order.userId}/orders/`,
+        order);
+      return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorData = error.response.data;
-        throw new Error(errorData.error || "서버 오류가 발생했습니다.");
+        throw new Error(error.response.data.error || "서버 오류가 발생했습니다.");
       } else {
-        throw new Error("주문 생성 요청 중 알 수 없는 오류가 발생했습니다.");
+        throw new Error("알 수 없는 오류가 발생했습니다.");
       }
     }
   }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import {
   BoxSection,
   Grid,
@@ -9,6 +8,7 @@ import {
 } from "../../../src/style/SuccessPage.styles"; // 스타일 파일 import
 import { MarketContainer } from "../../components/Product/ProductContainer";
 
+// ErrorData 인터페이스 정의
 interface ErrorData {
   code: string | null;
   message: string | null;
@@ -21,6 +21,7 @@ const FailPage: React.FC = () => {
     message: null,
   });
 
+  // URL 파라미터에서 에러 정보를 가져와 설정
   useEffect(() => {
     const fetchErrorData = async () => {
       try {
@@ -51,13 +52,13 @@ const FailPage: React.FC = () => {
           <div>
             <b>에러 메시지</b>
           </div>
-          <div>{errorData.message}</div>
+          <div>{errorData.message || "알 수 없는 오류가 발생했습니다."}</div>
         </Grid>
         <Grid>
           <div>
             <b>에러 코드</b>
           </div>
-          <div>{errorData.code}</div>
+          <div>{errorData.code || "N/A"}</div>
         </Grid>
         <div
           style={{
