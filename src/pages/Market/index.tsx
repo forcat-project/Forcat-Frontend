@@ -39,8 +39,10 @@ export default function Market() {
   const cursorListKey = "cursorList";
   const scrollPositionKey = "scrollPosition";
 
+  // useLayoutEffect to load data based on saved cursors and scroll position
   useLayoutEffect(() => {
     console.log("useLayoutEffect 실행");
+    // sessionStorage.clear();
 
     const savedScrollPosition = sessionStorage.getItem(scrollPositionKey);
     const savedCursors = JSON.parse(
@@ -53,9 +55,12 @@ export default function Market() {
       containerRef.current
     ) {
       const loadAllData = async () => {
+        setIsFetching(true); // Ensure fetching flag is set to prevent duplicate calls
         for (const savedCursor of savedCursors) {
-          await fetchProducts(savedCursor); // 모든 cursor를 사용하여 데이터 로드
+          await fetchProducts(savedCursor); // All cursor data loaded sequentially
         }
+        setIsFetching(false);
+
         const scrollPosition = parseFloat(savedScrollPosition);
         if (containerRef.current) {
           containerRef.current.scrollTop = scrollPosition;
@@ -113,12 +118,14 @@ export default function Market() {
     }
   };
 
+  // Initial load if there are no products
   useEffect(() => {
     if (!isFetching && products.length === 0) {
       fetchProducts();
     }
   }, [isFetching, products.length]);
 
+  // Throttled scroll handler to control API calls during scrolling
   const handleScroll = useCallback(() => {
     if (isFetching || !hasMore || !containerRef.current) return;
 
@@ -130,6 +137,7 @@ export default function Market() {
     }
   }, [isFetching, hasMore, cursor]);
 
+  // Attach scroll event listener
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
@@ -151,9 +159,9 @@ export default function Market() {
     >
       <ChannelTalk />
       <ProductGrid>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <ProductCard
-            key={product.product_id}
+            key={`${product.product_id}-${index}`} // Unique key
             onClick={() => handleClick(product.product_id.toString())}
           >
             <ProductImageContainer>
