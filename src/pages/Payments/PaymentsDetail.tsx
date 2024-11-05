@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance"; // axiosInstance를 import
+import { orderAPI } from "../../api/resourses/orders"; // orderAPI import
 import { BoxSection, Grid } from "../../style/SuccessPage.styles";
 import { MarketContainer } from "../../components/Product/ProductContainer";
 import { IResponseData } from "../../interfaces/product";
@@ -14,8 +14,8 @@ const PaymentsDetail: React.FC = () => {
       if (!orderId || !userId) return;
 
       try {
-        // axiosInstance를 사용하여 API 요청
-        const response = await axiosInstance.get(`users/${userId}/orders/${orderId}`);
+        // orderAPI의 getOrder 메서드를 사용하여 API 요청
+        const response = await orderAPI.getOrder(Number(userId), orderId);
         setResponseData(response.data); // 서버에서 응답한 주문 상세 데이터를 설정
       } catch (error) {
         console.error("주문 상세 정보 요청 중 오류 발생:", error);
@@ -24,6 +24,11 @@ const PaymentsDetail: React.FC = () => {
 
     fetchOrderDetails();
   }, [orderId, userId]);
+
+  const formatPhoneNumber = (phoneNumber: string | undefined) => {
+    if (!phoneNumber) return "";
+    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
 
   if (!responseData) return <div>Loading...</div>;
 
@@ -115,7 +120,7 @@ const PaymentsDetail: React.FC = () => {
           <div>
             <b>휴대폰</b>
           </div>
-          <div>{order_info.phone_number}</div>
+          <div>{formatPhoneNumber(order_info.phone_number)}</div>
         </Grid>
         <Grid>
           <div>
