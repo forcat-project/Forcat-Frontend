@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Block, Divider } from "../../style/ui";
-import UserInfo from "../../components/Profile/userInfo";
-import Cats from "../../components/Profile/cats";
-import Purchase from "../../components/Profile/purchase";
-import AccountManage from "../../components/Profile/accountManage";
+import UserInfo from "../../components/Profile/UserInfo";
+import Cats from "../../components/Profile/Cats";
+import Purchase from "../../components/Profile/Purchase";
+import AccountManage from "../../components/Profile/AccountManage";
 import { PageWrapper } from "../../style/ui";
 
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import

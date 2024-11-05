@@ -28,7 +28,7 @@ export default function Login() {
 
     const deleteUser = async () => {
         try {
-            const res = await userAPI.deleteUser(userId);
+            const res = await userAPI.deleteUser(userId!);
             console.log(res);
         } catch (error) {
             console.error("An error occurred:", error);
