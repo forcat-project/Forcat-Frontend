@@ -54,11 +54,11 @@ export default function Unregister2() {
                     <li>- 탈퇴 이후 데이터 삭제로 인해 고객센터 대응에 어려움이 있을 수 있어요.</li>
                     <li>- 상품 배송 전 탈퇴할 경우 구매 정보가 삭제되어 배송이 어려우니 신중히 선택해 주세요.</li>
                     <li>
-                        - 포켓 탈퇴 후 재가입 하더라도 탈퇴 전 보유하고 있던 쿠폰, 생선 포인트, 이벤트 진행 내역 등 모든
+                        - 포캣 탈퇴 후 재가입 하더라도 탈퇴 전 보유하고 있던 쿠폰, 생선 포인트, 이벤트 진행 내역 등 모든
                         정보는 삭제되어 복구가 불가능해요.
                     </li>
                     <li>
-                        - 포켓 서비스 이용에 불편이 있어 탈퇴를 결정하셨다면, 포켓 채널톡으로 불편사항을 말씀해 주세요.
+                        - 포캣 서비스 이용에 불편이 있어 탈퇴를 결정하셨다면, 포캣 채널톡으로 불편사항을 말씀해 주세요.
                     </li>
                 </InfoList>
 
@@ -94,10 +94,10 @@ export default function Unregister2() {
                 {/* 모달 내용 */}
                 <Block.FlexBox direction="column" alignItems="center">
                     <Warning width="40px" height="40px" style={{ marginBottom: "15px" }} />
-                    <Text.TitleMenu300>정말 포동을 탈퇴하시겠어요?</Text.TitleMenu300>
+                    <Text.TitleMenu300>정말 포캣을 탈퇴하시겠어요?</Text.TitleMenu300>
                     <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
                         <Button.CartButton onClick={handleUnregister} isSoldOut={false}>
-                            포동탈퇴
+                            포캣 탈퇴
                         </Button.CartButton>
                         <Button.BuyButton cursor="pointer" isSoldOut={false} onClick={() => setIsModalOpen(false)}>
                             취소
