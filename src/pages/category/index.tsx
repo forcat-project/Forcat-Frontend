@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Block, Input } from "../../style/ui";
 import { Search as SearchIcon } from "../../assets/svg";
-import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+import ChannelTalk from "../../components/Home/ChannelTalk"; // ChannelTalk import
 import { categoryAPI } from "../../api/resourses/categories";
 // import HiddenImage from "../../components/Home/randomPoint";
 

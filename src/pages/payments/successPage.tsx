@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { orderAPI } from "../../../src/api/resourses/orders";
+import { orderAPI } from "../../api/resourses/orders";
 import styled from "styled-components";
 import axios from "axios";
 import { MarketContainer } from "../../components/Product/ProductContainer";

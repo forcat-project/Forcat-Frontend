@@ -2,7 +2,7 @@ import { Block } from "../../style/ui";
 import Footer from "../../components/Home/Footer";
 import CategoryBox from "../../components/Home/CategoryBox";
 import BannerSlider from "../../components/Home/Banner"; // BannerSlider import
-import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+import ChannelTalk from "../../components/Home/ChannelTalk"; // ChannelTalk import
 
 export default function Home() {
     return (

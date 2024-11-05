@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import styled from "styled-components";
-import { orderAPI } from "../../../src/api/resourses/orders";
+import { orderAPI } from "../../api/resourses/orders";
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_ID;
 

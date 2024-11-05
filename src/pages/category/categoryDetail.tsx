@@ -55,13 +55,14 @@ export default function CategoryDetail() {
 
     const fetchProducts = (cursor: string | null = null) => {
         if (isFetching || !hasMore) return;
-        
+
         const params: ProductQueryParams = {};
         if (cursor) {
-            params.cursor = decodeURIComponent(cursor)
+            params.cursor = decodeURIComponent(cursor);
         }
         setIsFetching(true);
-        productAPI.getProducts(params)
+        productAPI
+            .getProducts(params)
             .then(response => {
                 const { results, next } = response.data;
                 setProducts(prevProducts => [...prevProducts, ...results]);

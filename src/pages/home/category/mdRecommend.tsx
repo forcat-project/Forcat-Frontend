@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import styled from "styled-components";
-import { Block, Text } from "../../style/ui";
-import { IProducts } from "../../interfaces/product";
-import { ProductQueryParams, productAPI } from "../../api/resourses/products";
+import { useNavigate } from "react-router-dom";
+import { IProducts } from "../../../interfaces/product";
 import {
+    MarketContainer,
     ProductGrid,
     ProductCard,
     ProductImageContainer,
@@ -18,52 +16,40 @@ import {
     DiscountRate,
     DiscountedPrice,
     SoldoutBox,
-} from "../Product/ProductContainer";
+} from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
+import { ProductQueryParams, productAPI } from "../../../api/resourses/products";
 
-type CategoryBlockProps = {
-    categoryId: number | null;
-    categoryName: string;
-    morePagePath: string;
-    ordering?: string;
-};
-
-export default function CategoryBox({ categoryId, categoryName, morePagePath, ordering }: CategoryBlockProps) {
+export default function MdRecommend() {
     const [products, setProducts] = useState<IProducts[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const params: ProductQueryParams = {
-            ordering: ordering,
+            categories: 68,
         };
-
-        if (categoryId) {
-            params.categories = categoryId;
-        }
-
         productAPI
             .getProducts(params)
             .then(response => {
-                setProducts(response.data.results.slice(0, 3));
+                setProducts(response.data.results);
             })
             .catch((error: AxiosError) => {
                 setError(error);
             });
-    }, [categoryId, ordering]);
+    }, []);
 
     if (error) {
         return <div>Error: {error.message}</div>;
     }
 
     return (
-        <Block.FlexBox direction="column" width="100%" padding="0 15px">
-            <Block.FlexBox justifyContent="space-between" alignItems="center">
-                <Text.TitleMenu200>{categoryName}</Text.TitleMenu200>
-                <MoreButton onClick={() => navigate(morePagePath)}>더보기</MoreButton>
-            </Block.FlexBox>
+        <MarketContainer>
             <ProductGrid>
                 {products.map(product => (
-                    <ProductCard key={product.product_id} onClick={() => navigate(`/market/${product.product_id}`)}>
+                    <ProductCard
+                        key={product.product_id}
+                        onClick={() => navigate(`/market/${product.product_id}`)} // 상품 클릭 시 상세 페이지로 이동
+                    >
                         <ProductImageContainer>
                             <ProductImage src={product.thumbnail_url} alt={product.name} />
                             {product.remain_count === 0 && (
@@ -80,7 +66,9 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
                                     <>
                                         <OriginalPrice>{Math.round(product.price).toLocaleString()}원</OriginalPrice>
                                         <br />
-                                        <DiscountRate>{Math.round(Number(product.discount_rate))}%</DiscountRate>
+                                        <DiscountRate>
+                                            {Math.round(Number(product.discount_rate)).toLocaleString()}%
+                                        </DiscountRate>
                                         <DiscountedPrice>
                                             {Math.round(product.discounted_price).toLocaleString()}원
                                         </DiscountedPrice>
@@ -93,14 +81,6 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
                     </ProductCard>
                 ))}
             </ProductGrid>
-        </Block.FlexBox>
+        </MarketContainer>
     );
 }
-
-const MoreButton = styled.button`
-    background-color: transparent;
-    border: none;
-    color: #939292;
-    cursor: pointer;
-    font-size: 14px;
-`;

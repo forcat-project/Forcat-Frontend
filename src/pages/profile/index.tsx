@@ -5,8 +5,9 @@ import Cats from "../../components/Profile/Cats";
 import Purchase from "../../components/Profile/Purchase";
 import AccountManage from "../../components/Profile/AccountManage";
 import { PageWrapper } from "../../style/ui";
+import ChannelTalk from "../../components/Home/ChannelTalk";
 
-import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
+// ChannelTalk import
 // import HiddenImage from "../../components/Home/randomPoint";
 
 export default function Profile() {
