@@ -1,19 +1,23 @@
 import { useRecoilState } from "recoil";
 import { Block, Button, Text } from "../../style/ui";
-import { catState } from "../../recoil";
+import { catState, inputState } from "../../recoil";
 import { useState } from "react";
 
 export default function InputCatIsNeutered() {
     const [, setCatInfo] = useRecoilState(catState);
     const [isNeutered, setIsNeutered] = useState(true);
-
+    const [, setInputData] = useRecoilState(inputState);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleIsNeuteredClick = (isNeutered: boolean) => {
         setIsNeutered(isNeutered);
         setCatInfo(prev => ({
             ...prev,
-            is_neutered: isNeutered ? 1 : 0,
+            is_neutered: isNeutered ? 0 : 1,
+        }));
+        setInputData(prev => ({
+            ...prev,
+            isNeutered: isNeutered ? 0 : 1,
         }));
         setIsFocused(true);
     };
