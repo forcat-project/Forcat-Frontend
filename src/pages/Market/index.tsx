@@ -25,6 +25,7 @@ import {
 } from "../../components/Product/ProductContainer";
 import ChannelTalk from "../../components/Home/channelTalk";
 import { ProductQueryParams, productAPI } from "../../api/resourses/products";
+import HiddenImage from "../../components/Home/randomPoint";
 
 export default function Market() {
   console.log("Market 컴포넌트 렌더링됨");
@@ -68,10 +69,9 @@ export default function Market() {
 
   // API 요청 함수
   const fetchProducts = (cursor: string | undefined = undefined) => {
-    if (isFetching || !hasMore) return;
-    console.log("fetchProducts 실행 - cursor:", cursor);
+    if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
+    setIsFetching(true); // 데이터 요청 상태 설정
 
-    setIsFetching(true);
     const params: ProductQueryParams = {};
     if (cursor) {
       params.cursor = decodeURIComponent(cursor);
@@ -174,6 +174,7 @@ export default function Market() {
       style={{ height: "80vh", overflowY: "auto" }}
     >
       <ChannelTalk />
+      <HiddenImage />
       <ProductGrid>
         {products.map((product) => (
           <ProductCard

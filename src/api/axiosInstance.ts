@@ -44,12 +44,6 @@ export const oauthAPI = {
   getKakaoAuth: () => axiosInstance.get("/oauth/kakao"),
 };
 
-// Points API
-export const pointAPI = {
-  createPoint: (pointData: any) => axiosInstance.post("/points", pointData),
-  getRandomPoint: () => axiosInstance.get("/points/random-point"),
-};
-
 // Upload API
 export const uploadAPI = {
   uploadFile: (fileData: any) => axiosInstance.post("/upload", fileData),
