@@ -1,4 +1,3 @@
-// Market.tsx
 import {
   useEffect,
   useState,
@@ -36,6 +35,7 @@ export default function Market() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false); // 데이터 로드 상태 추가
   const navigate = useNavigate();
 
   // MarketContainer에 대한 참조 생성
@@ -44,12 +44,12 @@ export default function Market() {
   // 페이지가 처음 로드되거나 뒤로 갔을 때 저장된 스크롤 위치를 복원
   useLayoutEffect(() => {
     console.log("useLayoutEffect 실행");
+
     if (!containerRef.current) {
       console.log("containerRef.current가 없습니다.");
       return;
     }
 
-    // 저장된 스크롤 위치 가져오기
     const savedScrollPosition = sessionStorage.getItem("scrollPosition");
     console.log("저장된 스크롤 위치 (sessionStorage):", savedScrollPosition);
 
@@ -58,12 +58,61 @@ export default function Market() {
       console.log("복원할 스크롤 위치 (숫자 변환):", scrollPosition);
 
       // 스크롤 위치 설정
-      containerRef.current.scrollTop = scrollPosition;
-      console.log("스크롤 위치 설정 완료");
+      requestAnimationFrame(() => {
+        containerRef.current!.scrollTop = scrollPosition;
+        console.log("스크롤 위치 설정 완료");
+      });
     } else {
       console.log("저장된 스크롤 위치가 없습니다.");
     }
   }, []);
+
+  // API 요청 함수
+  const fetchProducts = (cursor: string | undefined = undefined) => {
+    if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
+    setIsFetching(true); // 데이터 요청 상태 설정
+
+    const params: ProductQueryParams = {};
+    if (cursor) {
+      params.cursor = decodeURIComponent(cursor);
+    }
+
+    productAPI
+      .getProducts(params)
+      .then((response) => {
+        const { results, next } = response.data;
+        console.log("API 응답 - results:", results);
+
+        setProducts((prevProducts) => [...prevProducts, ...results]);
+        setIsDataLoaded(true); // 데이터 로드 완료 설정
+
+        const nextCursor = next
+          ? new URL(next).searchParams.get("cursor")
+          : null;
+        setCursor(nextCursor);
+        console.log("다음 cursor 설정:", nextCursor);
+
+        setHasMore(Boolean(next));
+        setIsFetching(false);
+      })
+      .catch((error: AxiosError) => {
+        setError(error);
+        setIsFetching(false);
+        console.error("API 요청 실패:", error);
+      });
+  };
+
+  // 데이터가 로드된 후 스크롤 위치 복원
+  useEffect(() => {
+    if (isDataLoaded && containerRef.current) {
+      const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+      if (savedScrollPosition) {
+        const scrollPosition = parseFloat(savedScrollPosition);
+        containerRef.current.scrollTop = scrollPosition;
+        console.log("데이터 로드 후 스크롤 위치 복원 완료:", scrollPosition);
+      }
+    }
+  }, [isDataLoaded]);
 
   // 스크롤 이벤트 처리 함수
   const handleScroll = useCallback(() => {
@@ -94,40 +143,6 @@ export default function Market() {
       };
     }
   }, [handleScroll]);
-
-  // API 요청 함수
-  const fetchProducts = (cursor: string | undefined = undefined) => {
-    if (isFetching || !hasMore) return; // 중복 요청 방지 및 데이터 끝 체크
-    setIsFetching(true); // 데이터 요청 상태 설정
-
-    const params: ProductQueryParams = {};
-    if (cursor) {
-      params.cursor = decodeURIComponent(cursor);
-    }
-
-    productAPI
-      .getProducts(params)
-      .then((response) => {
-        const { results, next } = response.data;
-        console.log("API 응답 - results:", results);
-
-        setProducts((prevProducts) => [...prevProducts, ...results]);
-
-        const nextCursor = next
-          ? new URL(next).searchParams.get("cursor")
-          : null;
-        setCursor(nextCursor);
-        console.log("다음 cursor 설정:", nextCursor);
-
-        setHasMore(Boolean(next));
-        setIsFetching(false);
-      })
-      .catch((error: AxiosError) => {
-        setError(error);
-        setIsFetching(false);
-        console.error("API 요청 실패:", error);
-      });
-  };
 
   useEffect(() => {
     if (!isFetching && products.length === 0) {
