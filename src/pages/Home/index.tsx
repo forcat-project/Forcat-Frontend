@@ -50,16 +50,16 @@ export default function Home() {
         </Block.FlexBox>
 
         {/* 각 카테고리 상품 리스트 */}
-        <Text.TitleMenu200
+        {/* <Text.TitleMenu200
           style={{ marginLeft: "20px", marginBottom: "-30px" }}
         >
           🔎 포캣 인기검색어
-        </Text.TitleMenu200>
+        </Text.TitleMenu200> */}
         <Block.FlexBox direction="column" gap="40px">
           {/* 인기 검색어 리스트 */}
           {showPopularKeywords && (
             <PopularKeywordsContainer>
-              <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
+              <PopularKeywordsTitle>🔎 포캣 인기검색어</PopularKeywordsTitle>
               <PopularKeywordsList>
                 {orderedKeywords.map((row, rowIndex) => (
                   <KeywordRow key={rowIndex}>
