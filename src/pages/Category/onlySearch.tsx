@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import { HeaderBackArrow } from "../../assets/svg";
 import { Input } from "../../style/ui";
@@ -26,6 +26,7 @@ import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function OnlySearch() {
   const navigate = useNavigate();
+  const location = useLocation(); // Access the location object
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 설정
   const [products, setProducts] = useState<IProducts[]>([]); // 검색 결과 상태
   const [loading, setLoading] = useState(false); // 로딩 상태
@@ -35,6 +36,13 @@ export default function OnlySearch() {
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
   const [popularKeywords, setPopularKeywords] = useState<string[]>([]); // 인기 검색어 상태
   const [showPopularKeywords, setShowPopularKeywords] = useState<boolean>(true); // 인기 검색어 표시 상태
+
+  useEffect(() => {
+    const keyword = location.state?.keyword;
+    if (keyword) {
+      handleKeywordClick(keyword); // Call handleKeywordClick with the keyword
+    }
+  }, [location.state]);
 
   // 인기 검색어 API 호출
   useEffect(() => {

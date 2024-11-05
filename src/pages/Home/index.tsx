@@ -6,10 +6,11 @@ import CategoryBox from "../../components/Home/CategoryBox";
 import BannerSlider from "../../components/Home/banner"; // BannerSlider import
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 import { productAPI } from "../../api/resourses/products"; // productAPI import
-import { Text } from "../../style/ui";
+import { useNavigate } from "react-router-dom"; // useNavigate import
+
 export default function Home() {
   const [popularKeywords, setPopularKeywords] = useState<string[]>([]);
-  const [showPopularKeywords] = useState<boolean>(true);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 인기 검색어 API 호출
   useEffect(() => {
@@ -33,6 +34,11 @@ export default function Home() {
     orderedKeywords.push([popularKeywords[i], popularKeywords[i + 5]]);
   }
 
+  // 인기 검색어 클릭 시 검색 페이지로 이동
+  const handleKeywordClick = (keyword: string) => {
+    navigate("/search/onlysearch", { state: { keyword } }); // 선택된 키워드를 함께 이동
+  };
+
   return (
     <>
       <ChannelTalk />
@@ -49,38 +55,30 @@ export default function Home() {
           <BannerSlider />
         </Block.FlexBox>
 
-        {/* 각 카테고리 상품 리스트 */}
-        {/* <Text.TitleMenu200
-          style={{ marginLeft: "20px", marginBottom: "-30px" }}
-        >
-          🔎 포캣 인기검색어
-        </Text.TitleMenu200> */}
         <Block.FlexBox direction="column" gap="40px">
           {/* 인기 검색어 리스트 */}
-          {showPopularKeywords && (
-            <PopularKeywordsContainer>
-              <PopularKeywordsTitle>🔎 포캣 인기검색어</PopularKeywordsTitle>
-              <PopularKeywordsList>
-                {orderedKeywords.map((row, rowIndex) => (
-                  <KeywordRow key={rowIndex}>
-                    {row.map(
-                      (keyword, colIndex) =>
-                        keyword && (
-                          <KeywordItem
-                            key={colIndex}
-                            onClick={() => {}} // 키워드 클릭 시 검색 수행
-                            style={{ cursor: "pointer" }}
-                          >
-                            <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
-                            <Keyword>{keyword}</Keyword>
-                          </KeywordItem>
-                        )
-                    )}
-                  </KeywordRow>
-                ))}
-              </PopularKeywordsList>
-            </PopularKeywordsContainer>
-          )}
+          <PopularKeywordsContainer>
+            <PopularKeywordsTitle>🔎 포캣 인기검색어</PopularKeywordsTitle>
+            <PopularKeywordsList>
+              {orderedKeywords.map((row, rowIndex) => (
+                <KeywordRow key={rowIndex}>
+                  {row.map(
+                    (keyword, colIndex) =>
+                      keyword && (
+                        <KeywordItem
+                          key={colIndex}
+                          onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 페이지로 이동
+                          style={{ cursor: "pointer" }}
+                        >
+                          <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
+                          <Keyword>{keyword}</Keyword>
+                        </KeywordItem>
+                      )
+                  )}
+                </KeywordRow>
+              ))}
+            </PopularKeywordsList>
+          </PopularKeywordsContainer>
           <CategoryBox
             categoryId={null}
             categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
@@ -93,7 +91,6 @@ export default function Home() {
             morePagePath="/home/bestseller"
             ordering="-purchase_count"
           />
-
           <CategoryBox
             categoryId={68}
             categoryName="✨ MD가 자신 있게 추천하는 특별한 상품"
