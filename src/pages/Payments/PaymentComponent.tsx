@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
-import axios from "axios";
 import styled from "styled-components";
-import { ICreateOrderRequest } from "../../interfaces/product";
-import axiosInstance from "../../api/axiosInstance";
+import { orderAPI } from "../../../src/api/resourses/orders";
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_ID;
 
@@ -32,7 +30,6 @@ export default function CheckoutPage() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Buy 페이지에서 전달한 상태 값 가져오기
     const {
         userId,
         userName,
@@ -89,7 +86,7 @@ export default function CheckoutPage() {
     const handlePayment = async () => {
         try {
             const orderId = generateNumericString();
-            const createOrderResponse = await createOrder({
+            const createOrderResponse = await orderAPI.createOrder({
                 orderId,
                 amount: totalAmount,
                 originalAmount,
@@ -122,9 +119,9 @@ export default function CheckoutPage() {
                 ),
             });
 
-            if (createOrderResponse.status === "주문이 생성되었습니다") {
+            if (createOrderResponse.data.status === "주문이 생성되었습니다" && createOrderResponse.data.orderId) {
                 await widgets?.requestPayment({
-                    orderId: createOrderResponse.orderId,
+                    orderId: createOrderResponse.data.orderId,
                     orderName: "상품 결제",
                     successUrl: `${window.location.origin}/success`,
                     failUrl: `${window.location.origin}/fail?code=payment_failed&message=${encodeURIComponent(
@@ -134,25 +131,12 @@ export default function CheckoutPage() {
                     customerMobilePhone: phoneNumber,
                 });
             } else {
-                alert("주문 생성에 실패했습니다: " + (createOrderResponse.error || "알 수 없는 오류"));
+                alert("주문 생성에 실패했습니다: " + (createOrderResponse.data.error || "알 수 없는 오류"));
             }
         } catch (error) {
             alert("주문 생성 중 오류가 발생했습니다: " + error);
         }
     };
-
-    async function createOrder(order: ICreateOrderRequest) {
-        try {
-            const res = await axiosInstance.post(`users/${order.userId}/orders/`, order);
-            return res.data;
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                throw new Error(error.response.data.error || "서버 오류가 발생했습니다.");
-            } else {
-                throw new Error("알 수 없는 오류가 발생했습니다.");
-            }
-        }
-    }
 
     function generateNumericString(length: number = 12): string {
         let result = "";
@@ -196,7 +180,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
-    padding: 11px 190px;
+    padding: 11px 22px;
     border: none;
     border-radius: 8px;
     background-color: #f2f4f6;

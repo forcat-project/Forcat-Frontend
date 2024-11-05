@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { orderAPI } from "../../../src/api/resourses/orders";
 import styled from "styled-components";
-import axiosInstance from "../../api/axiosInstance";
+import axios from "axios";
 import { MarketContainer } from "../../components/Product/ProductContainer";
 import { PaymentData, ResponseData } from "../../interfaces/product";
 
@@ -19,37 +19,40 @@ const SuccessPage: React.FC = () => {
         const urlParams = new URLSearchParams(window.location.search);
 
         // URL 파라미터에서 결제 정보 설정
-        setPaymentData({
+        const fetchedPaymentData = {
             paymentKey: urlParams.get("paymentKey"),
             orderId: urlParams.get("orderId"),
-            amount: urlParams.get("amount"),
+            amount: Number(urlParams.get("amount")),
+        };
+
+        setPaymentData({
+            ...fetchedPaymentData,
+            amount: String(fetchedPaymentData.amount),
         });
 
         const confirmPayment = async () => {
-            try {
-                const requestData = {
-                    paymentKey: urlParams.get("paymentKey"),
-                    orderId: urlParams.get("orderId"),
-                    amount: urlParams.get("amount"),
-                };
-
-                const response = await axiosInstance.post("/payments/confirm", requestData, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                setResponseData(response.data); // API 응답 데이터를 설정
-            } catch (error) {
-                if (axios.isAxiosError(error) && error.response) {
-                    const { message, code } = error.response.data;
-                    navigate(`/fail?message=${message}&code=${code}`);
-                } else {
-                    console.error("결제 승인 요청 중 오류 발생:", error);
+            if (fetchedPaymentData.paymentKey && fetchedPaymentData.orderId) {
+                try {
+                    const response = await orderAPI.confirmPayment({
+                        paymentKey: fetchedPaymentData.paymentKey,
+                        orderId: fetchedPaymentData.orderId,
+                        amount: fetchedPaymentData.amount,
+                    });
+                    setResponseData(response.data);
+                } catch (error) {
+                    if (axios.isAxiosError(error) && error.response) {
+                        const { message, code } = error.response.data;
+                        navigate(`/fail?message=${message}&code=${code}`);
+                    } else {
+                        console.error("결제 승인 요청 중 오류 발생:", error);
+                    }
                 }
+            } else {
+                console.error("필수 결제 정보가 누락되었습니다.");
             }
         };
 
+        // paymentKey, orderId, amount가 존재하는 경우에만 confirmPayment 호출
         confirmPayment();
     }, [navigate]);
 
@@ -72,13 +75,7 @@ const SuccessPage: React.FC = () => {
                     <div>
                         <b>주문번호</b>
                     </div>
-                    <div>{paymentData.orderId}</div>
-                </Grid>
-                <Grid>
-                    <div>
-                        <b>고객 아이디</b>
-                    </div>
-                    <div>{userId}</div>
+                    <div>No.{paymentData.orderId}</div>
                 </Grid>
                 <div
                     style={{
@@ -87,7 +84,10 @@ const SuccessPage: React.FC = () => {
                         justifyContent: "center",
                     }}
                 >
-                    <Button className="primary" onClick={() => navigate(`/orders/${userId}/${orderId}/details`)}>
+                    <Button
+                        className="primary"
+                        onClick={() => userId && orderId && navigate(`/orders/${userId}/${orderId}/details`)}
+                    >
                         확인
                     </Button>
                     <Button
@@ -98,14 +98,6 @@ const SuccessPage: React.FC = () => {
                     </Button>
                 </div>
             </BoxSection>
-
-            {/* 디버깅을 위한 응답 데이터 표시 (필요시 활성화) */}
-            {/* <BoxSection>
-        <b>응답 데이터:</b>
-        <div>
-          <pre>{JSON.stringify(responseData, null, 4)}</pre>
-        </div>
-      </BoxSection> */}
         </MarketContainer>
     );
 };

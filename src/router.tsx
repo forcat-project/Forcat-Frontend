@@ -1,29 +1,28 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Home from "./pages/home";
-import Market from "./pages/market";
-
-import Cart from "./pages/cart";
-import Profile from "./pages/profile";
-import CategoryDetail from "./pages/category/categoryDetail";
-import MarketDetail from "./pages/market/marketDetail";
-import MdRecommend from "./pages/home/category/mdRecommend";
-import Discount from "./pages/home/category/discount";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import OnlySearch from "./pages/category/onlySearch";
-import OnlyForCat from "./pages/home/category/onlyForCat";
-import Search from "./pages/category";
+import Home from "./pages/home";
+import MdRecommend from "./pages/home/category/mdRecommend";
 import BestSeller from "./pages/home/category/bestseller";
-import Buy from "./pages/buy";
-import TermsOfUse from "./pages/profile/termsofUse";
+import Discount from "./pages/home/category/discount";
+import OnlyForCat from "./pages/home/category/onlyForCat";
+import Market from "./pages/market";
+import Search from "./pages/category";
+import OnlySearch from "./pages/category/onlySearch";
+import CategoryDetail from "./pages/category/categoryDetail";
+import MarketDetail from "./pages/market/marketDetail";
+import Cart from "./pages/cart";
+import Profile from "./pages/profile";
+import TermsOfUse from "./pages/profile/privacyPolicy";
 import PrivacyPolicy from "./pages/profile/privacyPolicy";
-import Unregister1 from "./pages/profile/unregister/unregister1";
+import Unregister from "./pages/profile/unregister/unregister1";
 import Unregister2 from "./pages/profile/unregister/unregister2";
 import CheckoutPage from "./pages/payments/paymentComponent";
 import SuccessPage from "./pages/payments/successPage";
 import FailPage from "./pages/payments/failPage";
-import Detail from "./pages/payments/paymentsDetail";
+import Buy from "./pages/buy";
+import PaymentsDetail from "./pages/payments/paymentsDetail";
 
 export const router = createBrowserRouter([
     {
@@ -97,7 +96,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "unregister1",
-                element: <Unregister1 />,
+                element: <Unregister />,
             },
             {
                 path: "unregister2",
@@ -117,7 +116,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "orders/:userId/:orderId/details",
-                element: <Detail />,
+                element: <PaymentsDetail />,
             },
             {
                 path: "buy",
