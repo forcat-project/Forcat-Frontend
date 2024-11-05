@@ -27,7 +27,10 @@ import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 export default function OnlySearch() {
   const navigate = useNavigate();
   const location = useLocation(); // Access the location object
-  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 설정
+  const queryParams = new URLSearchParams(location.search);
+  const initialSearchTerm = queryParams.get("q") || ""; // 쿼리에서 검색어 가져오기
+
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm); // 검색어 상태 설정
   const [products, setProducts] = useState<IProducts[]>([]); // 검색 결과 상태
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
@@ -43,6 +46,12 @@ export default function OnlySearch() {
       handleKeywordClick(keyword); // Call handleKeywordClick with the keyword
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (initialSearchTerm) {
+      handleKeywordClick(initialSearchTerm);
+    }
+  }, [initialSearchTerm]);
 
   // 인기 검색어 API 호출
   useEffect(() => {
@@ -71,6 +80,7 @@ export default function OnlySearch() {
 
   const handleKeywordClick = (keyword: string) => {
     setSearchTerm(keyword); // 선택한 키워드를 검색어로 설정
+    navigate(`?q=${encodeURIComponent(keyword)}`);
     setProducts([]); // 이전 검색 결과 초기화
     setCursor(null); // cursor 초기화
     setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
@@ -87,6 +97,7 @@ export default function OnlySearch() {
   const handleSearchBarClick = () => {
     if (searchTerm.trim()) {
       setProducts([]); // 이전 검색 결과 초기화
+      navigate(`?q=${encodeURIComponent(searchTerm)}`); // 검색어를 쿼리스트링에 추가
       setCursor(null); // cursor 초기화
       setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
       setShowPopularKeywords(false); // 검색 시 인기 검색어 숨기기
