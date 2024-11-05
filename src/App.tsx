@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Block } from "./style/ui";
 import Navigator from "./components/Navigator";
-import Header from "./components/Header_temp/Header";
+import Header from "./components/Header/Header";
 import useScrollRestoration from "./hooks/useScrollRestoration"; // 커스텀 훅 import
 
 function App() {
