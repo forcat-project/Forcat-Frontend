@@ -73,6 +73,11 @@ export default function Header({
       title: "회원탈퇴",
       component: WithOnlyBackHeader,
     },
+    {
+      path: "/purchaselist",
+      title: "주문·배송",
+      component: WithOnlyBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>

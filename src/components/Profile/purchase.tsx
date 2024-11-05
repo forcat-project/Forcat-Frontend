@@ -1,6 +1,9 @@
 import { Block, Text, Img } from "../../style/ui";
+import { useNavigate } from "react-router-dom";
 
 export default function Purchase() {
+  const navigate = useNavigate();
+
   return (
     <Block.FlexBox direction="column" padding="20px">
       {/* 구매/취소내역 타이틀과 주문상세 */}
@@ -11,7 +14,11 @@ export default function Purchase() {
         padding="0 0 10px 0"
       >
         <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
-        <Text.Notice200 pointer color="Gray">
+        <Text.Notice200
+          pointer
+          color="Gray"
+          onClick={() => navigate("/purchaselist")}
+        >
           주문상세 {`>`}
         </Text.Notice200>
       </Block.FlexBox>
@@ -20,7 +27,6 @@ export default function Purchase() {
       <div
         style={{
           width: "calc(100% - 40px)", // 양옆에 20px씩 여백 추가
-          // border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
           borderRadius: "8px",
           padding: "16px",
           margin: "20px auto", // 상단 여백과 아래쪽 여백 조정

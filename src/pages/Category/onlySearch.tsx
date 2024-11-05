@@ -103,9 +103,9 @@ export default function OnlySearch() {
     setError(null);
 
     try {
-      const params: ProductQueryParams = {name: searchValue};
+      const params: ProductQueryParams = { name: searchValue };
       if (cursorValue) {
-        params.cursor = decodeURIComponent(cursorValue)
+        params.cursor = decodeURIComponent(cursorValue);
       }
 
       const response = await productAPI.getProducts(params);

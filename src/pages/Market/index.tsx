@@ -1,21 +1,27 @@
-import { useEffect, useState, useCallback, useRef, useLayoutEffect } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import { AxiosError } from "axios";
 import { IProducts } from "../../interfaces/product";
 import { useNavigate } from "react-router-dom";
 import {
-    MarketContainer,
-    ProductGrid,
-    ProductCard,
-    ProductImageContainer,
-    ProductImage,
-    ProductDetails,
-    ProductCompany,
-    ProductName,
-    ProductPrice,
-    OriginalPrice,
-    DiscountRate,
-    DiscountedPrice,
-    SoldoutBox,
+  MarketContainer,
+  ProductGrid,
+  ProductCard,
+  ProductImageContainer,
+  ProductImage,
+  ProductDetails,
+  ProductCompany,
+  ProductName,
+  ProductPrice,
+  OriginalPrice,
+  DiscountRate,
+  DiscountedPrice,
+  SoldoutBox,
 } from "../../components/Product/ProductContainer";
 import ChannelTalk from "../../components/Home/channelTalk";
 import { ProductQueryParams, productAPI } from "../../api/resourses/products";
@@ -198,5 +204,4 @@ export default function Market() {
       {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
     </MarketContainer>
   );
-
 }
