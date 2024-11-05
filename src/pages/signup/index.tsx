@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { catState, inputState, userState } from "../../recoil";
+import { catState, inputState, userState } from "../../store/atoms";
 import { useCallback, useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../styles/ui";
 import InputAddress from "../../components/Signup/InputAddress";
 import InputUserNickName from "../../components/Signup/InputUserNickName";
 import InputCatName from "../../components/Signup/InputCatName";

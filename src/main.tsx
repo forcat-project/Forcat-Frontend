@@ -2,9 +2,9 @@ import { createRoot } from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-import theme from "./style/theme";
+import theme from "./styles/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import GlobalStyle from "./style/GlobalStyle";
+import GlobalStyle from "./styles/GlobalStyle";
 import { CookiesProvider } from "react-cookie";
 
 // QueryClient 생성

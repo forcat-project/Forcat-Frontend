@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
-import { Block, Img, Text } from "../../style/ui";
+import { Block, Img, Text } from "../../styles/ui";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { userAPI } from "../../api/resourses/users";

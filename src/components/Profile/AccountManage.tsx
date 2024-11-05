@@ -1,4 +1,4 @@
-import { Block, Text, Button } from "../../style/ui";
+import { Block, Text, Button } from "../../styles/ui";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅을 import
 import { useState } from "react"; // useState 훅을 import

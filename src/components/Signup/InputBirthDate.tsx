@@ -1,9 +1,9 @@
 import useFocus from "../../hooks/useFocus";
-import { Block, Input, Text } from "../../style/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import { useState, useEffect } from "react";
-import { validateMonth, validateDay } from "../../share/validator";
+import { validateMonth, validateDay } from "../../util/validator";
 import { useRecoilState } from "recoil";
-import { catState, inputState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputBirthDate() {
     const [catBirthYear, setCatBirthYear] = useState<string>("");

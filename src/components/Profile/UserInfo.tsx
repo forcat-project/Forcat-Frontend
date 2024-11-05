@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
-import { Block, Text, Button } from "../../style/ui";
+import { Block, Text, Button } from "../../styles/ui";
 import UserEdit from "../../pages/profile/userEdit";
 import { useUserId } from "../../hooks/useUserId";
 

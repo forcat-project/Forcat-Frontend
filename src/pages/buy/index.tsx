@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Block, Text, Button, Divider, PageWrapper } from "../../style/ui";
+import { Block, Text, Button, Divider, PageWrapper } from "../../styles/ui";
 import { useState } from "react";
 import ProductInfo from "../../components/Buy/ProductInfo";
 import DeliveryInfo from "../../components/Buy/DeliveryInfo";

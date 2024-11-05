@@ -1,4 +1,4 @@
-import { PageWrapper, Text, Block, Button } from "../../../style/ui";
+import { PageWrapper, Text, Block, Button } from "../../../styles/ui";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅 import
 

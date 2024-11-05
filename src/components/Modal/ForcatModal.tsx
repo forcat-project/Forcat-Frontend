@@ -1,5 +1,5 @@
 import ReactModal from "react-modal";
-import { Block, Text } from "../../style/ui";
+import { Block, Text } from "../../styles/ui";
 import { GrayClose } from "../../assets/svg";
 
 type Props = {

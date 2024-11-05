@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { Block, Button, Img, Text } from "../../style/ui";
+import { Block, Button, Img, Text } from "../../styles/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
 import ForcatModal from "../../components/Modal/ForcatModal";

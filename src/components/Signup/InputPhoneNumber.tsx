@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Block, Input, Text } from "../../style/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import useFocus from "../../hooks/useFocus";
 import { useRecoilState } from "recoil";
-import { inputState, userState } from "../../recoil";
-import { validatePhoneNumber } from "../../share/validator";
+import { inputState, userState } from "../../store/atoms";
+import { validatePhoneNumber } from "../../util/validator";
 
 export default function InputPhoneNumber() {
     const [phone, setPhone] = useState("");

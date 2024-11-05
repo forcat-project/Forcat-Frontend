@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../styles/ui";
 import { useState } from "react";
-import { catState, inputState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputCatGender() {
     const [, setCatInfo] = useRecoilState(catState);
