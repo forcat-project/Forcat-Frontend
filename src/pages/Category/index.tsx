@@ -6,6 +6,7 @@ import { Block, Input } from "../../style/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
 import { categoryAPI } from "../../api/resourses/categories";
+import HiddenImage from "../../components/Home/randomPoint";
 
 interface Category {
   category_id: number;
@@ -47,6 +48,7 @@ export default function Search() {
     <Container>
       {/* 검색 바 */}
       <ChannelTalk />
+      <HiddenImage />
       <SearchBar>
         <Block.FlexBox
           width="100%"

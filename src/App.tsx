@@ -18,10 +18,9 @@ function App() {
   const isUnregister2Page = location.pathname.startsWith("/unregister2");
   const isCartPage = location.pathname.startsWith("/cart");
 
-  useScrollRestoration(); // 페이지 전환 시 스크롤 복원
-
   const handleBackButtonClick = () => {
     navigate(-1);
+    useScrollRestoration();
   };
 
   const handleProfileClick = () => {

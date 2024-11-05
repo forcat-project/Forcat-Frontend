@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance"; // axiosInstance를 import
 import { BoxSection, Grid } from "../../style/SuccessPage.styles";
 import { MarketContainer } from "../../components/Product/ProductContainer";
 import { IResponseData } from "../../interfaces/product";
@@ -14,17 +14,9 @@ const PaymentsDetail: React.FC = () => {
       if (!orderId || !userId) return;
 
       try {
-        // params 객체로 요청 파라미터 구성
-        const params = {
-          userId,
-          orderId,
-        };
-
-        const response = await axios.get(
-          "/orders/{userId}/{orderId}/details",
-          { params }
-        );
-        setResponseData(response.data); // 응답 데이터 설정
+        // axiosInstance를 사용하여 API 요청
+        const response = await axiosInstance.get(`users/${userId}/orders/${orderId}`);
+        setResponseData(response.data); // 서버에서 응답한 주문 상세 데이터를 설정
       } catch (error) {
         console.error("주문 상세 정보 요청 중 오류 발생:", error);
       }

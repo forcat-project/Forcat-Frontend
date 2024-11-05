@@ -5,6 +5,7 @@ import CatEdit from "../../pages/Profile/catEdit";
 import { Cat } from "../../interfaces/info";
 import { useUserId } from "../../hooks/useUserId";
 import { catAPI } from "../../api/resourses/cats";
+import ReactModal from "react-modal";
 
 export default function Cats() {
   const [cats, setCats] = useState<Cat[]>([]);
@@ -13,11 +14,13 @@ export default function Cats() {
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
   const userId = useUserId();
 
+  ReactModal.setAppElement("#root");
+
   useEffect(() => {
     if (userId) {
       fetchCats();
     }
-  }, [userId]); // Add userId as a dependency
+  }, [userId]);
 
   const fetchCats = () => {
     catAPI
@@ -149,14 +152,37 @@ export default function Cats() {
         </Block.FlexBox>
       ))}
 
-      {isEditModalOpen && selectedCat && (
-        <CatEdit
-          cat={selectedCat}
-          onClose={closeEditModal}
-          onReload={fetchCats} // 프로필 페이지 reload
-          onSave={handleSave}
-        />
-      )}
+      <ReactModal
+        isOpen={isEditModalOpen}
+        onRequestClose={closeEditModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          content: {
+            border: "none",
+            background: "transparent",
+            padding: 0,
+            inset: "auto",
+            maxWidth: "600px",
+            width: "90%",
+            borderRadius: "8px",
+            overflow: "visible",
+          },
+        }}
+      >
+        {selectedCat && (
+          <CatEdit
+            cat={selectedCat}
+            onClose={closeEditModal}
+            onReload={fetchCats}
+            onSave={handleSave}
+          />
+        )}
+      </ReactModal>
     </Block.FlexBox>
   );
 }

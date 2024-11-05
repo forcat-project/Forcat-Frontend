@@ -23,15 +23,16 @@ export interface Cat {
 }
 
 export interface ProductInfoProps {
-  product: {
+  products: {
+    product_id: string;
     thumbnail_url: string;
     name: string;
     company: string;
-    discount_rate: number;
     discounted_price: number;
-    price: number;
-  };
-  count: number;
+    discount_rate: number;
+    count: number; // 상품 수량
+    product_status: null;
+  }[];
   isProductInfoExpanded: boolean;
   toggleProductInfo: () => void;
 }
