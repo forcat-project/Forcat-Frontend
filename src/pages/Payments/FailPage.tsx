@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { MarketContainer } from "../../components/Product/ProductContainer";
+import styled from "styled-components";
 
-// ErrorData 인터페이스 정의
 interface ErrorData {
     code: string | null;
     message: string | null;
@@ -16,7 +15,6 @@ const FailPage: React.FC = () => {
         message: null,
     });
 
-    // URL 파라미터에서 에러 정보를 가져와 설정
     useEffect(() => {
         const fetchErrorData = async () => {
             try {
