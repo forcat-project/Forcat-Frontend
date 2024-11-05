@@ -7,36 +7,36 @@ import AccountManage from "../../components/Profile/accountManage";
 import { PageWrapper } from "../../style/ui";
 
 import ChannelTalk from "../../components/Home/channelTalk"; // ChannelTalk import
-import HiddenImage from "../../components/Home/randomPoint";
+// import HiddenImage from "../../components/Home/randomPoint";
 
 export default function Profile() {
-  const [reload, setReload] = useState(false);
+    const [reload, setReload] = useState(false);
 
-  const handleReload = () => {
-    setReload(!reload);
-  };
+    const handleReload = () => {
+        setReload(!reload);
+    };
 
-  useEffect(() => {}, []);
+    useEffect(() => {}, []);
 
-  return (
-    <PageWrapper>
-      <ChannelTalk />
-      <HiddenImage />
-      <Block.FlexBox
-        direction="column"
-        padding="20px 0"
-        maxWidth="600px"
-        margin="80px auto 100px"
-        key={reload.toString()} // `key`에 문자열로 변경
-      >
-        <UserInfo onReload={handleReload} />
-        <Divider />
-        <Cats />
-        <Divider />
-        <Purchase />
-        <Divider />
-        <AccountManage />
-      </Block.FlexBox>
-    </PageWrapper>
-  );
+    return (
+        <PageWrapper>
+            <ChannelTalk />
+            {/* <HiddenImage /> */}
+            <Block.FlexBox
+                direction="column"
+                padding="20px 0"
+                maxWidth="600px"
+                margin="80px auto 100px"
+                key={reload.toString()} // `key`에 문자열로 변경
+            >
+                <UserInfo onReload={handleReload} />
+                <Divider />
+                <Cats />
+                <Divider />
+                <Purchase />
+                <Divider />
+                <AccountManage />
+            </Block.FlexBox>
+        </PageWrapper>
+    );
 }
