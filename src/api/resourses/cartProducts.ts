@@ -4,11 +4,16 @@ export interface CartProductDataParams extends QueryParams {
   quantity: number;
 }
 
+export interface CartProductCreateParams extends QueryParams {
+  product_id: number;
+  quantity: number;
+}
+
 // CartProduct API
 export const cartProductAPI = {
   getCartProducts: (userId: number) =>
     axiosInstance.get(`/users/${userId}/cart/products`),
-  addCartProduct: (userId: number, productData: CartProductDataParams) =>
+  addCartProduct: (userId: number, productData: CartProductCreateParams) =>
     axiosInstance.post(`/users/${userId}/cart/products`, productData),
   updateCartProductPartial: (
     userId: number,

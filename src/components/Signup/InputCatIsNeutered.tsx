@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
-import { Block, Button, Text } from "../../style/ui";
-import { catState, inputState } from "../../recoil";
+import { Block, Button, Text } from "../../styles/ui";
+import { catState, inputState } from "../../store/atoms";
 import { useState } from "react";
 
 export default function InputCatIsNeutered() {

@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
-import { Block, Input, Text } from "../../style/ui";
-import { inputState, userState } from "../../recoil";
+import { Block, Input, Text } from "../../styles/ui";
+import { inputState, userState } from "../../store/atoms";
 import { useEffect } from "react";
 
 export default function InputUserNickName() {
