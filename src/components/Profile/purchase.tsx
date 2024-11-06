@@ -52,17 +52,18 @@ export default function Purchase() {
     }
   }, [userId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   if (!order) {
-    return <div>No orders found</div>;
+    return (
+      <Text.TitleMenu200
+        style={{ marginLeft: "20px", marginTop: "20px", marginBottom: "20px" }}
+      >
+        구매/취소내역
+      </Text.TitleMenu200>
+    );
   }
 
   return (
     <Block.FlexBox direction="column" padding="20px">
-      {/* Title and Order Detail Navigation */}
       <Block.FlexBox
         direction="row"
         justifyContent="space-between"

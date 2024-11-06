@@ -10,9 +10,9 @@ export default function Unregister() {
       <ContentWrapper>
         <StyledImage src="/unregister/unregister.jpg" alt="탈퇴 이미지" />
         <Text.TitleMenu300 style={{ color: "#F4B647", marginBottom: "10px" }}>
-          포켓을 탈퇴하신다니 슬퍼요...
+          포캣을 탈퇴하신다니 슬퍼요...
         </Text.TitleMenu300>
-        <Text.TitleMenu300>정말 포켓을 탈퇴하시겠습니까?</Text.TitleMenu300>
+        <Text.TitleMenu300>정말 포캣을 탈퇴하시겠습니까?</Text.TitleMenu300>
       </ContentWrapper>
       <Block.AbsoluteBox
         bottom="1%"
