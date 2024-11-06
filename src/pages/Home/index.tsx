@@ -56,6 +56,25 @@ export default function Home() {
         </Block.FlexBox>
 
         <Block.FlexBox direction="column" gap="40px">
+          <CategoryBox
+            categoryId={null}
+            categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
+            morePagePath="/home/discount"
+            ordering="-discount_rate"
+          />
+
+          <CategoryBox
+            categoryId={null}
+            categoryName="🔥 가장 많이 팔리는 베스트셀러 상품"
+            morePagePath="/home/bestseller"
+            ordering="-purchase_count"
+          />
+          <CategoryBox
+            categoryId={68}
+            categoryName="✨ MD가 자신 있게 추천하는 특별한 상품"
+            morePagePath="/home/mdrecommend"
+          />
+
           {/* 인기 검색어 리스트 */}
           <PopularKeywordsContainer>
             <PopularKeywordsTitle>🔎 포캣 인기검색어</PopularKeywordsTitle>
@@ -79,23 +98,6 @@ export default function Home() {
               ))}
             </PopularKeywordsList>
           </PopularKeywordsContainer>
-          <CategoryBox
-            categoryId={null}
-            categoryName="⏰ 지금 놓치면 안 될 최대 할인 상품"
-            morePagePath="/home/discount"
-            ordering="-discount_rate"
-          />
-          <CategoryBox
-            categoryId={null}
-            categoryName="🔥 가장 많이 팔리는 베스트셀러 상품"
-            morePagePath="/home/bestseller"
-            ordering="-purchase_count"
-          />
-          <CategoryBox
-            categoryId={68}
-            categoryName="✨ MD가 자신 있게 추천하는 특별한 상품"
-            morePagePath="/home/mdrecommend"
-          />
           <CategoryBox
             categoryId={67}
             categoryName="💛 오직 포캣에서만!"

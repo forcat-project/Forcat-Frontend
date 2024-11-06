@@ -1,25 +1,84 @@
 import { useEffect, useState } from "react";
 import { orderAPI } from "../../../api/resourses/orders";
-import { useUserId } from "../../../hooks/useUserId"; // useUserId 훅 import
+import { useUserId } from "../../../hooks/useUserId"; // useUserId hook import
 import { Block, Text, Img } from "../../../style/ui";
-import { IResponseData } from "../../../interfaces/product";
-import { Order } from "../../../interfaces/product";
 
-// 수정된 PurchaseList 컴포넌트
+// Adjust the Order interface to match the API response
+
+export interface OrderProduct {
+  product_id: number;
+  product_name: string;
+  price: number;
+  quantity: number;
+  product_company: string;
+  product_status: string;
+  product_image: string;
+  discount_rate: number;
+}
+interface Order {
+  orderId: string;
+  order_date: string;
+  original_amount: string;
+  payment: number;
+  payment_method: string;
+  phone_number: string;
+  points_used: string;
+  shipping_address: string;
+  shipping_address_detail: string;
+  shipping_memo: string;
+  shipping_status: string;
+  status: string;
+  total_amount: number;
+  user: number;
+  user_name: string;
+  items: OrderProduct[];
+}
+
 export default function PurchaseList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const userId = useUserId();
-  console.log(userId);
+
   useEffect(() => {
     if (userId) {
       orderAPI
         .getOrders(userId)
         .then((response) => {
-          // API 응답 구조에 맞게 수정
-          const data = response.data as IResponseData; // 필요 시 타입 단언 사용
-          setOrders(data.orders || []); // 적절한 경로 사용
-          console.error(data.orders);
+          console.log("전체 응답 데이터:", response.data);
+          const data = response.data;
+
+          if (Array.isArray(data)) {
+            const mappedOrders: Order[] = data.map((order: any) => ({
+              orderId: order.id,
+              order_date: order.order_date,
+              original_amount: order.original_amount,
+              payment: order.payment,
+              payment_method: order.payment_method,
+              phone_number: order.phone_number,
+              points_used: order.points_used,
+              shipping_address: order.shipping_address,
+              shipping_address_detail: order.shipping_address_detail,
+              shipping_memo: order.shipping_memo,
+              shipping_status: order.shipping_status,
+              status: order.status,
+              total_amount: Number(order.total_amount),
+              user: order.user,
+              user_name: order.user_name,
+              items: order.products.map((product: any) => ({
+                product_id: product.product_id,
+                product_name: product.product_name,
+                quantity: product.quantity,
+                price: Number(product.price),
+                product_image: product.product_image,
+                product_company: product.product_company,
+                discount_rate: Number(product.discount_rate),
+              })),
+            }));
+
+            setOrders(mappedOrders);
+          } else {
+            console.warn("API 응답이 배열이 아닙니다.");
+          }
 
           setLoading(false);
         })
@@ -38,69 +97,114 @@ export default function PurchaseList() {
     <Block.FlexBox
       direction="column"
       padding="20px"
-      style={{ overflowY: "auto", maxHeight: "80vh" }}
+      style={{
+        marginTop: "90px",
+        overflowY: "auto",
+        maxHeight: "calc(100vh - 160px)", // Adjusted height to account for header and navigator
+        scrollbarWidth: "none", // Hides scrollbar for Firefox
+        msOverflowStyle: "none", // Hides scrollbar for Internet Explorer and Edge
+      }}
     >
       {orders.map((order, index) => (
-        <div key={index} style={{ marginBottom: "20px" }}>
+        <div
+          key={index}
+          style={{
+            marginBottom: "20px",
+          }}
+        >
           <Block.FlexBox
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            padding="0 0 10px 0"
+            padding="16px"
           >
-            <Text.TitleMenu200>{order.date}</Text.TitleMenu200>
+            <Text.Notice200 style={{ fontSize: "18px" }}>
+              {new Date(order.order_date)
+                .toLocaleDateString("ko-KR", {
+                  year: "2-digit",
+                  month: "2-digit",
+                  day: "2-digit",
+                })
+                .replace(/\.$/, "")}{" "}
+              {/* Removes the trailing period */}
+            </Text.Notice200>
             <Text.Notice200 pointer color="Gray">
-              주문상세 &gt;
+              주문 상세
             </Text.Notice200>
           </Block.FlexBox>
-
-          {order.items.map((item, itemIndex) => (
-            <div
-              key={itemIndex}
-              style={{
-                width: "calc(100% - 40px)",
-                borderRadius: "8px",
-                padding: "16px",
-                margin: "10px auto",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#f8f8f8",
-              }}
-            >
-              <Text.TitleMenu100
-                color={
-                  order.status === "구매확정"
-                    ? "Green" // 테마 색상 키 문자열로 제공
-                    : "Warning" // 테마 색상 키 문자열로 제공
-                }
-              >
-                {order.status}
-              </Text.TitleMenu100>
+          <Text.Menu200
+            style={{
+              paddingLeft: "16px",
+              marginBottom: "8px",
+              color: "#666669",
+            }}
+          >
+            {order.status === "completed" ? "구매확정" : "배송준비중"}
+          </Text.Menu200>
+          <Block.FlexBox
+            direction="column"
+            alignItems="center"
+            padding="16px"
+            style={{
+              borderRadius: "8px",
+              margin: "10px 0",
+              // backgroundColor: "#f8f8f8",
+              border: "1px solid #e8e9eb",
+            }}
+          >
+            {order.items.map((item, itemIndex) => (
               <Block.FlexBox
+                key={itemIndex}
                 direction="row"
                 alignItems="center"
-                padding="10px 0"
+                padding="16px"
               >
                 <Img.AngledIcon
                   src={item.product_image}
-                  width="60px"
-                  height="60px"
+                  width="80px"
+                  height="80px"
                 />
                 <Block.FlexBox
                   direction="column"
                   margin="0 0 0 20px"
                   flexGrow="1"
                 >
-                  <Text.Menu>{item.product_name}</Text.Menu>
-                  <Text.Mini color="Gray" margin="5px 0">
+                  <Text.Notice200
+                    style={{
+                      color: "#161616",
+                      marginBottom: "5px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    {item.product_company}
+                  </Text.Notice200>{" "}
+                  {/* Product company */}
+                  <Text.Menu
+                    margin="5px 0"
+                    style={{
+                      color: "#161616",
+                      marginBottom: "5px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    {item.product_name}
+                  </Text.Menu>
+                  <Text.Menu
+                    color="Gray"
+                    style={{
+                      marginBottom: "10px",
+                      fontSize: "13px",
+                    }}
+                  >
                     {item.quantity}개
-                  </Text.Mini>
-                  <Text.TitleMenu300>
-                    {item.price.toLocaleString()}원
-                  </Text.TitleMenu300>
+                  </Text.Menu>
+                  <Text.TitleMenu200>
+                    {Number(item.price).toLocaleString()}원
+                  </Text.TitleMenu200>
                 </Block.FlexBox>
               </Block.FlexBox>
-            </div>
-          ))}
+            ))}
+          </Block.FlexBox>
         </div>
       ))}
     </Block.FlexBox>

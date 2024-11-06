@@ -119,57 +119,6 @@ export interface ICreateOrderRequest {
   products: IOrderProduct[];
 }
 
-// 주문 정보 인터페이스 PaymentsDetail.tsx 사용
-export interface IOrderInfo {
-  orderId: string;
-  status: string;
-  shipping_memo: string;
-  points_used: string;
-  shipping_status: string;
-  payment_method: string;
-  original_amount: string;
-  total_amount: string;
-  user_name: string;
-  phone_number: string;
-  shipping_address: string;
-  shipping_address_detail: string;
-  order_date: string;
-  products: IOrderProduct[];
-}
-
-export interface Order {
-  date: string;
-  status: string;
-  items: Array<{
-    product_name: string;
-    quantity: number;
-    price: number;
-    product_image: string;
-  }>;
-  company: string;
-}
-
-export interface IResponseData {
-  orders: Order[]; // 여기에 `orders` 속성을 추가
-  // 기존의 다른 속성들도 유지
-  orderId: string;
-  paymentDate: string;
-  items: Array<{
-    company: string;
-    name: string;
-    quantity: number;
-    price: number;
-    thumbnail_url: string;
-  }>;
-  shippingStatus: string;
-  recipientName: string;
-  recipientPhone: string;
-  address: string;
-  shippingMemo: string;
-  productAmount: number;
-  totalAmount: number;
-}
-
 // 결제 성공 페이지 데이터 SuccessPage.tsx 사용
 export interface ResponseData {
   status: string;
