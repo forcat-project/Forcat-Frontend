@@ -1,20 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { orderAPI } from "../../../api/resourses/orders";
 import { useUserId } from "../../../hooks/useUserId"; // useUserId hook import
 import { Block, Text, Img } from "../../../style/ui";
+import { IOrderProduct } from "../../../interfaces/product"; // Existing interface
 
-// Adjust the Order interface to match the API response
-
-export interface OrderProduct {
-  product_id: number;
-  product_name: string;
-  price: number;
-  quantity: number;
-  product_company: string;
-  product_status: string;
-  product_image: string;
-  discount_rate: number;
-}
 interface Order {
   orderId: string;
   order_date: string;
@@ -31,13 +21,14 @@ interface Order {
   total_amount: number;
   user: number;
   user_name: string;
-  items: OrderProduct[];
+  items: IOrderProduct[];
 }
 
 export default function PurchaseList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const userId = useUserId();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId) {
@@ -89,6 +80,10 @@ export default function PurchaseList() {
     }
   }, [userId]);
 
+  const handleOrderDetailClick = (orderId: string) => {
+    navigate(`/orders/${userId}/${orderId}/details`);
+  };
+
   if (loading) {
     return <div>로딩 중...</div>;
   }
@@ -125,10 +120,14 @@ export default function PurchaseList() {
                   month: "2-digit",
                   day: "2-digit",
                 })
-                .replace(/\.$/, "")}{" "}
-              {/* Removes the trailing period */}
+                .replace(/\.$/, "")}
             </Text.Notice200>
-            <Text.Notice200 pointer color="Gray">
+            <Text.Notice200
+              pointer
+              color="Gray"
+              onClick={() => handleOrderDetailClick(order.orderId)}
+              style={{ cursor: "pointer" }}
+            >
               주문 상세
             </Text.Notice200>
           </Block.FlexBox>
@@ -148,7 +147,6 @@ export default function PurchaseList() {
             style={{
               borderRadius: "8px",
               margin: "10px 0",
-              // backgroundColor: "#f8f8f8",
               border: "1px solid #e8e9eb",
             }}
           >
@@ -177,8 +175,7 @@ export default function PurchaseList() {
                     }}
                   >
                     {item.product_company}
-                  </Text.Notice200>{" "}
-                  {/* Product company */}
+                  </Text.Notice200>
                   <Text.Menu
                     margin="5px 0"
                     style={{
