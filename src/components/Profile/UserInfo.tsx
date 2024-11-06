@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../styles/ui";
