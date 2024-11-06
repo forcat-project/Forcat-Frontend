@@ -90,13 +90,18 @@ export default function MarketDetail() {
     };
 
     const handleBuyConfirmButtonClick = () => {
-        setIsBuyModalOpen(false);
-        navigate("/buy", {
-            state: {
-                product: productDetail,
-                count: buyCount,
-            },
-        });
+        if (userId !== null) {
+            setIsBuyModalOpen(false);
+            navigate("/buy", {
+                state: {
+                    product: productDetail,
+                    count: buyCount,
+                },
+            });
+        } else{
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+        }
     };
 
     const handlePlusBuyClick = () => {
