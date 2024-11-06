@@ -57,11 +57,16 @@ export default function MarketDetail() {
     const handleCartConfirmButtonClick = async () => {
         if (userId !== null) {
             try {
-                const productData = { quantity: cartCount };
-                const response = await cartProductAPI.addCartProduct(userId, productData);
-                console.log(response);
-                setIsCartModalOpen(false);
-                setIsChoiceModalOpen(true);
+              const productData = {
+                product_id: Number(productId),
+                quantity: cartCount,
+              };
+                await cartProductAPI.addCartProduct(
+                userId,
+                productData
+              );
+              setIsCartModalOpen(false);
+              setIsChoiceModalOpen(true);
             } catch (error) {
                 alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
             }
