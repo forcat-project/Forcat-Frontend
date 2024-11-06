@@ -29,6 +29,7 @@ axiosInstance.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       } else {
         // 로그인 페이지로 리다이렉트
+        alert("로그인이 필요합니다.")
         window.location.href = "/login";
       }
     }
