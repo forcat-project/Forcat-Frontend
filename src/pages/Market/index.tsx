@@ -33,7 +33,7 @@ export default function Market() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
+  const [, setIsDataLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
