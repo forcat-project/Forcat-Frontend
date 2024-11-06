@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { catState, inputState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms"
 import { useState } from "react";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../styles/ui";
 import InputCatName from "../../components/Signup/InputCatName";
 import InputCatBreed from "../../components/Signup/InputCatBreed";
 import InputCatGender from "../../components/Signup/InputCatGender";

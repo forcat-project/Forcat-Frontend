@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Block, Divider } from "../../styles/ui";
 import UserInfo from "../../components/Profile/UserInfo";
 import Cats from "../../components/Profile/Cats";
-import Purchase from "../../components/Profile/Purchase";
+import Purchase from "../../components/Profile/Purchase_1";
 import AccountManage from "../../components/Profile/AccountManage";
 import { PageWrapper } from "../../styles/ui";
 import ChannelTalk from "../../components/Home/ChannelTalk";

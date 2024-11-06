@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { orderAPI } from "../../api/resourses/orders";
 import { useUserId } from "../../hooks/useUserId";
-import { Block, Text, Img } from "../../style/ui";
+import { Block, Text, Img } from "../../styles/ui";
 import { IOrderProduct } from "../../interfaces/product"; // Existing interface
 
 interface Order {
