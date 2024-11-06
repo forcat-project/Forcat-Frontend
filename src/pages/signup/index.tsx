@@ -227,10 +227,14 @@ export default function Signup() {
         const userName = searchParams.get("username") || "";
         const userProfileInfo = searchParams.get("profile_image") || "";
         const kakaoId = searchParams.get("kakao_id") || "";
+        const googleId = searchParams.get("google_id") || "";
+        const naverId = searchParams.get("naver_id") || "";
         const userProfileImage = userProfileInfo.startsWith("$") ? userProfileInfo.substring(1) : userProfileInfo;
         setUserInfo(prev => ({
             ...prev,
             kakao_id: kakaoId,
+            google_id: googleId,
+            naver_id: naverId,
             username: userName,
             profile_picture: userProfileImage,
         }));
