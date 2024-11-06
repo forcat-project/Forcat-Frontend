@@ -15,7 +15,7 @@ interface Order {
 
 export default function Purchase() {
   const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const userId = useUserId();
   const navigate = useNavigate();
 
