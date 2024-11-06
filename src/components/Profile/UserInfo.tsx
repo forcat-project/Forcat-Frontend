@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../styles/ui";
@@ -7,33 +8,41 @@ import { useUserId } from "../../hooks/useUserId";
 
 import { User } from "../../interfaces/info";
 import { userAPI } from "../../api/resourses/users";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
 interface UserInfoProps {
     onReload: () => void;
 }
-
 export default function UserInfo({ onReload }: UserInfoProps) {
     const [user, setUser] = useState<User | null>(null);
     const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
-
+    const navigate = useNavigate();
     const userId = useUserId();
 
     useEffect(() => {
         const fetchUserData = async () => {
+            // userId가 null인 경우 로그인 페이지로 리다이렉트
+            if (userId === null) {
+                alert("로그인이 필요합니다.");
+                navigate("/login");
+                return;
+            }
+
             try {
-                if (userId) {
-                    const response = await userAPI.getUser(Number(userId));
-                    setUser(response.data);
-                }
+                const response = await userAPI.getUser(Number(userId));
+                setUser(response.data);
             } catch (error) {
                 console.error("사용자 정보를 가져오는데 실패했습니다:", error);
             }
         };
 
         fetchUserData();
-    }, [userId]);
+    }, [userId, navigate]);
+
+    // userId가 null이면 아무것도 렌더링하지 않음
+    if (userId === null) return null;
 
     const toggleEditModal = () => {
         setEditModalOpen(!isEditModalOpen);

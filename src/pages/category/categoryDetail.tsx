@@ -1,4 +1,3 @@
-// CategoryDetail.tsx
 import { useEffect, useState, useCallback } from "react";
 import { AxiosError } from "axios";
 import styled from "styled-components";
@@ -56,16 +55,18 @@ export default function CategoryDetail() {
     const fetchProducts = (cursor: string | null = null) => {
         if (isFetching || !hasMore) return;
 
-        const params: ProductQueryParams = {};
+        const params: ProductQueryParams = { categories: Number(category_id) };
         if (cursor) {
             params.cursor = decodeURIComponent(cursor);
         }
+
         setIsFetching(true);
         productAPI
             .getProducts(params)
             .then(response => {
                 const { results, next } = response.data;
                 setProducts(prevProducts => [...prevProducts, ...results]);
+
                 const nextCursor = next
                     ? new URL(next).search
                           .slice(1)
@@ -101,8 +102,9 @@ export default function CategoryDetail() {
 
     return (
         <PageContainer>
-            <WithBackAndIconHeader title={categoryName} handleBackButtonClick={handleBackButtonClick} />
-
+            <HeaderContainer>
+                <WithBackAndIconHeader title={categoryName} handleBackButtonClick={handleBackButtonClick} />
+            </HeaderContainer>
             <MarketContainer>
                 <ProductGrid>
                     {products.length > 0 ? (
@@ -165,4 +167,20 @@ const PageContainer = styled.div`
     min-height: 100vh;
     overflow: hidden;
     background-color: #ffffff;
+`;
+
+const HeaderContainer = styled.div`
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 89px;
+    max-width: 600px;
+    background-color: #ffffff;
+    z-index: 10;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;

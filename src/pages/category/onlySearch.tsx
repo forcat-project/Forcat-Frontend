@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { AxiosError } from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import { HeaderBackArrow } from "../../assets/svg";
-import { Block, Input } from "../../styles/ui";
+import { Input } from "../../styles/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import {
     MarketContainer,
@@ -26,7 +26,11 @@ import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 
 export default function OnlySearch() {
     const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 설정
+    const location = useLocation(); // Access the location object
+    const queryParams = new URLSearchParams(location.search);
+    const initialSearchTerm = queryParams.get("q") || ""; // 쿼리에서 검색어 가져오기
+
+    const [searchTerm, setSearchTerm] = useState(initialSearchTerm); // 검색어 상태 설정
     const [products, setProducts] = useState<IProducts[]>([]); // 검색 결과 상태
     const [loading, setLoading] = useState(false); // 로딩 상태
     const [error, setError] = useState<string | null>(null); // 에러 상태
@@ -35,6 +39,19 @@ export default function OnlySearch() {
     const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터가 있는지 여부
     const [popularKeywords, setPopularKeywords] = useState<string[]>([]); // 인기 검색어 상태
     const [showPopularKeywords, setShowPopularKeywords] = useState<boolean>(true); // 인기 검색어 표시 상태
+
+    useEffect(() => {
+        const keyword = location.state?.keyword;
+        if (keyword) {
+            handleKeywordClick(keyword); // Call handleKeywordClick with the keyword
+        }
+    }, [location.state]);
+
+    useEffect(() => {
+        if (initialSearchTerm) {
+            handleKeywordClick(initialSearchTerm);
+        }
+    }, [initialSearchTerm]);
 
     // 인기 검색어 API 호출
     useEffect(() => {
@@ -61,6 +78,7 @@ export default function OnlySearch() {
 
     const handleKeywordClick = (keyword: string) => {
         setSearchTerm(keyword); // 선택한 키워드를 검색어로 설정
+        navigate(`?q=${encodeURIComponent(keyword)}`);
         setProducts([]); // 이전 검색 결과 초기화
         setCursor(null); // cursor 초기화
         setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
@@ -77,6 +95,7 @@ export default function OnlySearch() {
     const handleSearchBarClick = () => {
         if (searchTerm.trim()) {
             setProducts([]); // 이전 검색 결과 초기화
+            navigate(`?q=${encodeURIComponent(searchTerm)}`); // 검색어를 쿼리스트링에 추가
             setCursor(null); // cursor 초기화
             setHasMore(true); // 검색을 새로 시작할 때 더 많은 데이터가 있음을 가정
             setShowPopularKeywords(false); // 검색 시 인기 검색어 숨기기
@@ -165,33 +184,32 @@ export default function OnlySearch() {
                     />
                 </SearchBar>
             </SearchHeader>
-            <Block.FlexBox width="100%">
-                {/* 인기 검색어 리스트 */}
-                {showPopularKeywords && (
-                    <PopularKeywordsContainer>
-                        <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
-                        <PopularKeywordsList>
-                            {orderedKeywords.map((row, rowIndex) => (
-                                <KeywordRow key={rowIndex}>
-                                    {row.map(
-                                        (keyword, colIndex) =>
-                                            keyword && (
-                                                <KeywordItem
-                                                    key={colIndex}
-                                                    onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
-                                                    style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
-                                                >
-                                                    <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
-                                                    <Keyword>{keyword}</Keyword>
-                                                </KeywordItem>
-                                            )
-                                    )}
-                                </KeywordRow>
-                            ))}
-                        </PopularKeywordsList>
-                    </PopularKeywordsContainer>
-                )}
-            </Block.FlexBox>
+
+            {/* 인기 검색어 리스트 */}
+            {showPopularKeywords && (
+                <PopularKeywordsContainer>
+                    <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
+                    <PopularKeywordsList>
+                        {orderedKeywords.map((row, rowIndex) => (
+                            <KeywordRow key={rowIndex}>
+                                {row.map(
+                                    (keyword, colIndex) =>
+                                        keyword && (
+                                            <KeywordItem
+                                                key={colIndex}
+                                                onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
+                                                style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
+                                            >
+                                                <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
+                                                <Keyword>{keyword}</Keyword>
+                                            </KeywordItem>
+                                        )
+                                )}
+                            </KeywordRow>
+                        ))}
+                    </PopularKeywordsList>
+                </PopularKeywordsContainer>
+            )}
 
             <MarketContainer style={{ marginTop: "-10px" }}>
                 {loading && products.length === 0 ? (
@@ -257,7 +275,7 @@ const Container = styled.div`
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 80px;
+    /* padding-top: 80px; */
     /* border: 1px solid red; */
 `;
 

@@ -20,23 +20,28 @@ import {
 import ChannelTalk from "../../components/Home/ChannelTalk";
 import { ProductQueryParams, productAPI } from "../../api/resourses/products";
 // import HiddenImage from "../../components/Home/randomPoint";
+
 export default function Market() {
     const [products, setProducts] = useState<IProducts[]>([]);
     const [error, setError] = useState<AxiosError | null>(null);
     const [cursor, setCursor] = useState<string | null>(null);
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
-    const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
+    const [, setIsDataLoaded] = useState<boolean>(false);
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement | null>(null);
+
     const cursorListKey = "cursorList";
     const scrollPositionKey = "scrollPosition";
+
     // useLayoutEffect to load data based on saved cursors and scroll position
     useLayoutEffect(() => {
         console.log("useLayoutEffect 실행");
         // sessionStorage.clear();
+
         const savedScrollPosition = sessionStorage.getItem(scrollPositionKey);
         const savedCursors = JSON.parse(sessionStorage.getItem(cursorListKey) || "[]");
+
         if (savedCursors.length > 0 && savedScrollPosition && containerRef.current) {
             const loadAllData = async () => {
                 setIsFetching(true); // Ensure fetching flag is set to prevent duplicate calls
@@ -44,6 +49,7 @@ export default function Market() {
                     await fetchProducts(savedCursor); // All cursor data loaded sequentially
                 }
                 setIsFetching(false);
+
                 const scrollPosition = parseFloat(savedScrollPosition);
                 if (containerRef.current) {
                     containerRef.current.scrollTop = scrollPosition;
@@ -53,6 +59,7 @@ export default function Market() {
             loadAllData();
         }
     }, []);
+
     const handleClick = (productId: string) => {
         if (containerRef.current) {
             const currentScrollPosition = containerRef.current.scrollTop;
@@ -60,27 +67,33 @@ export default function Market() {
         }
         navigate(`/market/${productId}`);
     };
+
     const fetchProducts = async (cursor: string | undefined = undefined) => {
         if (isFetching || !hasMore) return;
         setIsFetching(true);
+
         const params: ProductQueryParams = {};
         if (cursor) {
             params.cursor = decodeURIComponent(cursor);
         }
+
         try {
             const response = await productAPI.getProducts(params);
             const { results, next } = response.data;
             setProducts(prevProducts => [...prevProducts, ...results]);
             setIsDataLoaded(true);
+
             const nextCursor = next ? new URL(next).searchParams.get("cursor") : null;
             if (nextCursor) {
                 setCursor(nextCursor);
+
                 const savedCursors = JSON.parse(sessionStorage.getItem(cursorListKey) || "[]");
                 if (!savedCursors.includes(nextCursor)) {
                     savedCursors.push(nextCursor);
                     sessionStorage.setItem(cursorListKey, JSON.stringify(savedCursors));
                 }
             }
+
             setHasMore(Boolean(next));
         } catch (error) {
             setError(error as AxiosError);
@@ -88,15 +101,18 @@ export default function Market() {
             setIsFetching(false);
         }
     };
+
     // Initial load if there are no products
     useEffect(() => {
         if (!isFetching && products.length === 0) {
             fetchProducts();
         }
     }, [isFetching, products.length]);
+
     // Throttled scroll handler to control API calls during scrolling
     const handleScroll = useCallback(() => {
         if (isFetching || !hasMore || !containerRef.current) return;
+
         const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
         if (scrollTop + clientHeight >= scrollHeight - 10) {
             if (cursor) {
@@ -104,6 +120,7 @@ export default function Market() {
             }
         }
     }, [isFetching, hasMore, cursor]);
+
     // Attach scroll event listener
     useEffect(() => {
         const container = containerRef.current;
@@ -114,11 +131,13 @@ export default function Market() {
             };
         }
     }, [handleScroll]);
+
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
     return (
-        <MarketContainer ref={containerRef}>
+        <MarketContainer ref={containerRef} style={{ height: "80vh", overflowY: "auto" }}>
             <ChannelTalk />
             <ProductGrid>
                 {products.map((product, index) => (

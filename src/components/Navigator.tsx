@@ -14,27 +14,29 @@ import {
 import { Block, HeaderContainer, NavContainer, Text } from "../styles/ui";
 
 type Props = {
-    isLoginPage: boolean;
-    isSignupPage: boolean;
-    isMarketDetailPage: boolean;
-    isBuyPage: boolean;
-    isPrivacyPolicyPage: boolean;
-    isTermsOfUsePage: boolean;
-    isUnregister1Page: boolean;
-    isUnregister2Page: boolean;
-    isCartPage: boolean;
+  isLoginPage: boolean;
+  isSignupPage: boolean;
+  isMarketDetailPage: boolean;
+  isBuyPage: boolean;
+  isPrivacyPolicyPage: boolean;
+  isTermsOfUsePage: boolean;
+  isUnregister1Page: boolean;
+  isUnregister2Page: boolean;
+  isCartPage: boolean;
+  isCatAddPage: boolean;
 };
 
 export default function Navigator({
-    isLoginPage,
-    isSignupPage,
-    isMarketDetailPage,
-    isBuyPage,
-    isPrivacyPolicyPage,
-    isTermsOfUsePage,
-    isUnregister1Page,
-    isUnregister2Page,
-    isCartPage,
+  isLoginPage,
+  isSignupPage,
+  isMarketDetailPage,
+  isBuyPage,
+  isPrivacyPolicyPage,
+  isTermsOfUsePage,
+  isUnregister1Page,
+  isUnregister2Page,
+  isCartPage,
+  isCatAddPage,
 }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -66,22 +68,30 @@ export default function Navigator({
             path: "/profile",
         },
     ];
-
-    return (
-        <>
-            {!isLoginPage &&
-                !isSignupPage &&
-                !isMarketDetailPage &&
-                !isBuyPage &&
-                !isPrivacyPolicyPage &&
-                !isTermsOfUsePage &&
-                !isUnregister1Page &&
-                !isUnregister2Page &&
-                !isCartPage && (
-                    <NavContainer>
-                        <Block.FlexBox>
-                            {navItems.map((item, index) => {
-                                const isActive = location.pathname.startsWith(item.path);
+ 
+  return (
+    <>
+      {!isLoginPage &&
+        !isSignupPage &&
+        !isMarketDetailPage &&
+        !isBuyPage &&
+        !isPrivacyPolicyPage &&
+        !isTermsOfUsePage &&
+        !isUnregister1Page &&
+        !isUnregister2Page &&
+        !isCartPage &&
+        !isCatAddPage && (
+          <Block.AbsoluteBox
+            width="599px"
+            height="93px"
+            bottom="0"
+            bgColor="white"
+            style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
+          >
+            <Block.FlexBox>
+              {navItems.map((item, index) => {
+                const isActive = location.pathname.startsWith(item.path);
+ 
 
                                 return (
                                     <Block.FlexBox
