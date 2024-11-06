@@ -1,5 +1,5 @@
 import { HeaderBackArrow } from "../../assets/svg";
-import { Block, Text } from "../../style/ui";
+import { Block, Text } from "../../styles/ui";
 
 type Props = {
     title: string;

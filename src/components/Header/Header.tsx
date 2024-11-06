@@ -1,26 +1,21 @@
 import { useLocation, matchPath } from "react-router-dom";
 import HomeHeader from "./HomeHeader";
-import { Block } from "../../style/ui";
+import { Block } from "../../styles/ui";
 import MarketHeader from "./MarketHeader";
 import ProfileHeader from "./ProfileHeader";
 import WithOnlyBackHeader from "./WithOnlyBackHeader";
 import WithBackAndIconHeader from "./WithBackAndIconHeader";
 
 type Props = {
-  isLoginPage: boolean;
-  isSignupPage: boolean;
-  handleBackButtonClick: () => void;
-  handleProfileClick: () => void;
+    isLoginPage: boolean;
+    isSignupPage: boolean;
+    handleBackButtonClick: () => void;
+    handleProfileClick: () => void;
 };
 
-export default function Header({
-  isLoginPage,
-  isSignupPage,
-  handleBackButtonClick,
-  handleProfileClick,
-}: Props) {
-  const location = useLocation();
-  const currentPath = location.pathname;
+export default function Header({ isLoginPage, isSignupPage, handleBackButtonClick, handleProfileClick }: Props) {
+    const location = useLocation();
+    const currentPath = location.pathname;
 
   const pageData = [
     { path: "/home", title: "홈", component: HomeHeader },
@@ -85,25 +80,23 @@ export default function Header({
     },
   ];
 
-  const currentPage = pageData.find((page) =>
-    matchPath(page.path, currentPath)
-  );
+    const currentPage = pageData.find(page => matchPath(page.path, currentPath));
 
-  if (isLoginPage || isSignupPage || !currentPage) {
-    return null;
-  }
+    if (isLoginPage || isSignupPage || !currentPage) {
+        return null;
+    }
 
-  const { component: HeaderComponent, title } = currentPage;
+    const { component: HeaderComponent, title } = currentPage;
 
-  return (
-    <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
-      <Block.FlexBox padding="31px 25px" justifyContent="space-between">
-        <HeaderComponent
-          title={title}
-          handleBackButtonClick={handleBackButtonClick}
-          handleProfileClick={handleProfileClick}
-        />
-      </Block.FlexBox>
-    </Block.AbsoluteBox>
-  );
+    return (
+        <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
+            <Block.FlexBox padding="31px 25px" justifyContent="space-between">
+                <HeaderComponent
+                    title={title}
+                    handleBackButtonClick={handleBackButtonClick}
+                    handleProfileClick={handleProfileClick}
+                />
+            </Block.FlexBox>
+        </Block.AbsoluteBox>
+    );
 }

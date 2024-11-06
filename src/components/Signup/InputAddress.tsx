@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
-import { Block, Button, Input, Text } from "../../style/ui";
+import { Block, Button, Input, Text } from "../../styles/ui";
 import { useRecoilState } from "recoil";
-import { inputState, userState } from "../../recoil";
+import { inputState, userState } from "../../store/atoms";
 import useFocus from "../../hooks/useFocus";
 
 ReactModal.setAppElement("#root");

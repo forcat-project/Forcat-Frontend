@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
-import { Block, Input, Text } from "../../style/ui";
-import { catState, inputState } from "../../recoil";
+import { Block, Input, Text } from "../../styles/ui";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputCatName() {
     const [catInfo, setCatInfo] = useRecoilState(catState);
