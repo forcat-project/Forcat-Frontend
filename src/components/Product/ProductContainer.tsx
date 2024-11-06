@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MarketContainer = styled.div`
     width: 100%;
     height: 100vh;
-    margin: 20px 10px 0 10px;
+    margin: 50px 10px 0 10px;
     overflow-y: auto; // 스크롤 가능하게 설정
     height: calc(100vh - 103px - 93px); // 전체 화면 높이에서 header와 navigator 높이를 뺀 값
     scrollbar-width: none;

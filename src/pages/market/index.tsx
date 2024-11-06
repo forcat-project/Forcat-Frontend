@@ -137,7 +137,7 @@ export default function Market() {
     }
 
     return (
-        <MarketContainer ref={containerRef} style={{ height: "80vh", overflowY: "auto" }}>
+        <MarketContainer ref={containerRef} style={{ height: "89vh", overflowY: "auto" }}>
             <ChannelTalk />
             <ProductGrid>
                 {products.map((product, index) => (
