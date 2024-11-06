@@ -24,6 +24,7 @@ import FailPage from "./pages/Payments/FailPage";
 import Buy from "./pages/Buy";
 import PaymentsDetail from "./pages/Payments/PaymentsDetail";
 import PurchaseList from "./pages/Profile/purchase/purchaseList";
+import CatAdd from "./pages/Signup/catAdd";
 
 export const router = createBrowserRouter([
   {
@@ -127,6 +128,10 @@ export const router = createBrowserRouter([
       {
         path: "purchaselist",
         element: <PurchaseList />,
+      },
+      {
+        path: "catAdd",
+        element: <CatAdd />,
       },
     ],
   },

@@ -23,6 +23,7 @@ type Props = {
   isUnregister1Page: boolean;
   isUnregister2Page: boolean;
   isCartPage: boolean;
+  isCatAddPage: boolean;
 };
 
 export default function Navigator({
@@ -35,6 +36,7 @@ export default function Navigator({
   isUnregister1Page,
   isUnregister2Page,
   isCartPage,
+  isCatAddPage,
 }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -98,7 +100,8 @@ export default function Navigator({
         !isTermsOfUsePage &&
         !isUnregister1Page &&
         !isUnregister2Page &&
-        !isCartPage && (
+        !isCartPage &&
+        !isCatAddPage && (
           <Block.AbsoluteBox
             width="599px"
             height="93px"

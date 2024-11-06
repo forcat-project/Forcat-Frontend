@@ -6,6 +6,7 @@ import { Cat } from "../../interfaces/info";
 import { useUserId } from "../../hooks/useUserId";
 import { catAPI } from "../../api/resourses/cats";
 import ReactModal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 export default function Cats() {
   const [cats, setCats] = useState<Cat[]>([]);
@@ -13,6 +14,7 @@ export default function Cats() {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
   const userId = useUserId();
+  const navigate = useNavigate();
 
   ReactModal.setAppElement("#root");
 
@@ -68,7 +70,11 @@ export default function Cats() {
     <Block.FlexBox padding="20px" direction="column">
       <Block.FlexBox justifyContent="space-between" alignItems="center">
         <Text.TitleMenu200>우리집 냐옹이들</Text.TitleMenu200>
-        <Text.Notice200 color="Gray" pointer>
+        <Text.Notice200
+          color="Gray"
+          pointer
+          onClick={() => navigate("/catadd")}
+        >
           추가
         </Text.Notice200>
       </Block.FlexBox>

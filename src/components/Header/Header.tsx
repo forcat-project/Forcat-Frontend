@@ -78,6 +78,11 @@ export default function Header({
       title: "주문·배송",
       component: WithOnlyBackHeader,
     },
+    {
+      path: "/catadd",
+      title: "고양이 정보 추가",
+      component: WithOnlyBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>
