@@ -59,13 +59,16 @@ export default function InputCatBreed() {
             <ForcatModal
                 isOpen={isModalOpen}
                 setIsOpen={setIsModalOpen}
-                width="599px"
+                width="100%"
                 height="700px"
                 title="묘종을 검색해주세요"
             >
-                <Block.AbsoluteBox style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Block.AbsoluteBox
+                    padding="0 20px"
+                    style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+                >
                     <Block.FlexBox
-                        width="560px"
+                        width="100%"
                         height="43px"
                         borderRadius="19px"
                         padding="0 0 0 20px"
@@ -83,7 +86,7 @@ export default function InputCatBreed() {
                         />
                     </Block.FlexBox>
 
-                    <ScrollableFlexBox direction="column" padding="20px">
+                    <ScrollableFlexBox direction="column" padding="20px 0">
                         {filteredCatBreeds.map((breed, index) => (
                             <HoverableFlexBox key={index} onClick={() => handleSelectBreedClick(breed)}>
                                 <Text.Menu>{breed.breed_type}</Text.Menu>
@@ -110,7 +113,7 @@ export default function InputCatBreed() {
 }
 
 const HoverableFlexBox = styled(Block.FlexBox)`
-    width: 555px;
+    width: 100%;
     height: 40px;
     align-items: center;
     padding: 15px;

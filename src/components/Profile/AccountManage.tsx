@@ -44,12 +44,12 @@ export default function AccountManage() {
             </Block.FlexBox>
 
             {/* 로그아웃 모달 */}
-            <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="" width="599px" height="200px">
+            <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="" width="100%" height="195px">
                 {/* 모달 내용 */}
-                <Block.FlexBox direction="column" alignItems="center">
-                    <Warning width="40px" height="40px" style={{ marginBottom: "15px" }}></Warning>
+                <Block.FlexBox width="100%" height="100%" direction="column" alignItems="center" gap="16px">
+                    <Warning width="24px" height="24px" />
                     <Text.TitleMenu300>로그아웃 하시겠어요?</Text.TitleMenu300>
-                    <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
+                    <Block.FlexBox width="100%" justifyContent="center" alignItems="center" gap="12px">
                         <Button.CartButton onClick={() => setIsModalOpen(false)} isSoldOut={false}>
                             취소
                         </Button.CartButton>

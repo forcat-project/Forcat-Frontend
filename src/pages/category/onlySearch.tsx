@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import { HeaderBackArrow } from "../../assets/svg";
-import { Input } from "../../styles/ui";
+import { Block, Input } from "../../styles/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import {
     MarketContainer,
@@ -165,32 +165,33 @@ export default function OnlySearch() {
                     />
                 </SearchBar>
             </SearchHeader>
-
-            {/* 인기 검색어 리스트 */}
-            {showPopularKeywords && (
-                <PopularKeywordsContainer>
-                    <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
-                    <PopularKeywordsList>
-                        {orderedKeywords.map((row, rowIndex) => (
-                            <KeywordRow key={rowIndex}>
-                                {row.map(
-                                    (keyword, colIndex) =>
-                                        keyword && (
-                                            <KeywordItem
-                                                key={colIndex}
-                                                onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
-                                                style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
-                                            >
-                                                <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
-                                                <Keyword>{keyword}</Keyword>
-                                            </KeywordItem>
-                                        )
-                                )}
-                            </KeywordRow>
-                        ))}
-                    </PopularKeywordsList>
-                </PopularKeywordsContainer>
-            )}
+            <Block.FlexBox width="100%">
+                {/* 인기 검색어 리스트 */}
+                {showPopularKeywords && (
+                    <PopularKeywordsContainer>
+                        <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
+                        <PopularKeywordsList>
+                            {orderedKeywords.map((row, rowIndex) => (
+                                <KeywordRow key={rowIndex}>
+                                    {row.map(
+                                        (keyword, colIndex) =>
+                                            keyword && (
+                                                <KeywordItem
+                                                    key={colIndex}
+                                                    onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
+                                                    style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
+                                                >
+                                                    <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
+                                                    <Keyword>{keyword}</Keyword>
+                                                </KeywordItem>
+                                            )
+                                    )}
+                                </KeywordRow>
+                            ))}
+                        </PopularKeywordsList>
+                    </PopularKeywordsContainer>
+                )}
+            </Block.FlexBox>
 
             <MarketContainer style={{ marginTop: "-10px" }}>
                 {loading && products.length === 0 ? (
@@ -256,17 +257,21 @@ const Container = styled.div`
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 20px;
+    padding-top: 80px;
+    /* border: 1px solid red; */
 `;
 
 const SearchHeader = styled.div`
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 16px;
     background-color: #ffffff;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    position: sticky;
+    top: 0; // 스크롤 시에도 상단에 고정
+    z-index: 10;
 `;
 
 const SearchBar = styled.div`
@@ -281,6 +286,7 @@ const SearchBar = styled.div`
 `;
 
 const PopularKeywordsContainer = styled.div`
+    width: 100%;
     padding: 20px;
     background-color: #f8f8f8;
     border-radius: 8px;

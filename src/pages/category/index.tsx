@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Block, Input } from "../../styles/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import ChannelTalk from "../../components/Home/ChannelTalk"; // ChannelTalk import
 import { categoryAPI } from "../../api/resourses/categories";
@@ -76,7 +76,7 @@ export default function Search() {
                             onClick={() => setSelectedCategory(category.category_id)}
                             selected={category.category_id === selectedCategory}
                         >
-                            {category.name}
+                            <Text.Menu color="Gray500"> {category.name}</Text.Menu>
                         </CategoryItem>
                     ))}
                 </CategoryList>
@@ -98,7 +98,7 @@ export default function Search() {
                                         });
                                     }}
                                 >
-                                    {subcategory.name}
+                                    <Text.Menu color="Gray600"> {subcategory.name}</Text.Menu>
                                 </SubcategoryItem>
                             ))}
                 </SubcategoryList>
@@ -118,7 +118,7 @@ const Container = styled.div`
 `;
 
 const SearchBar = styled.div`
-    padding: 10px 16px;
+    padding: 20px 16px;
     background-color: #ffffff;
     /* box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1); // 약간의 그림자 추가 */
     position: sticky;
@@ -128,39 +128,47 @@ const SearchBar = styled.div`
 
 const ContentWrapper = styled.div`
     display: flex;
-    margin-top: 20px;
+    margin-top: 60px;
 `;
 
 const CategoryList = styled.ul`
     list-style-type: none;
-    padding: 0;
     width: 200px;
     background-color: #f8f8f8;
     height: 100vh; // 전체 화면 높이 설정
     overflow-y: auto;
+    scrollbar-width: none;
     color: #7e7e7e;
 `;
 
 const CategoryItem = styled.li<{ selected: boolean }>`
     padding: 15px;
+    transition: 1s;
     cursor: pointer;
     background-color: ${props => (props.selected ? "#e0e0e0" : "transparent")};
     &:hover {
-        background-color: #e0e0e0;
+        transition: 1s;
+        background-color: #f0f0f0;
     }
 `;
 
 const SubcategoryList = styled.ul`
     list-style-type: none;
-    padding: 0 20px;
     flex: 1;
     overflow-y: auto;
+    scrollbar-width: none;
 `;
 
 const SubcategoryItem = styled.li`
-    padding: 10px;
+    padding: 15px 20px;
+    margin: 0 20px;
     cursor: pointer;
+
     &:hover {
-        background-color: #f0f0f0;
+        border-radius: 5px;
+        margin: 0 20px;
+        transition: 1s;
+        background-color: #e0e0e0;
+        font-weight: 400;
     }
 `;

@@ -27,17 +27,29 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    font-family: 'Pretendard-Regular';
-    overflow: hidden;
-    scroll-behavior: smooth;
-    background-color: #e8e8e8;
-}
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Pretendard-Regular';
+      overflow: hidden;
+      /* overflow-y: scroll; */
+      scroll-behavior: smooth;
+      background-color: #e8e8e8;
+      max-width: 100vw;
+      height: 100vh;
+  }
+
+  #root {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      min-width: 375px;
+      height: 100%;
+  }
 ol, ul {
 	list-style: none;
 }
@@ -56,11 +68,6 @@ table {
 *{
   box-sizing: border-box;
   font-family: "Pretendard";
-}
-body{
-	width:100vw;
-	height:100vh;
-  overflow-x: hidden;
 }
 a{
   text-decoration:none;

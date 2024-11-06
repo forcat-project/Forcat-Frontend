@@ -57,8 +57,8 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
 
     return (
         <Block.FlexBox direction="column" width="100%" padding="0 15px">
-            <Block.FlexBox justifyContent="space-between" alignItems="center">
-                <Text.TitleMenu200>{categoryName}</Text.TitleMenu200>
+            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="20px 0">
+                <Text.TitleMenu300>{categoryName}</Text.TitleMenu300>
                 <MoreButton onClick={() => navigate(morePagePath)}>더보기</MoreButton>
             </Block.FlexBox>
             <ProductGrid>
@@ -102,5 +102,5 @@ const MoreButton = styled.button`
     border: none;
     color: #939292;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
 `;

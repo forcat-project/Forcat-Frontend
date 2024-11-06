@@ -26,7 +26,7 @@ export default function Profile() {
             <Block.FlexBox
                 direction="column"
                 padding="20px 0"
-                maxWidth="600px"
+                width="100%"
                 margin="80px auto 100px"
                 key={reload.toString()} // `key`에 문자열로 변경
             >

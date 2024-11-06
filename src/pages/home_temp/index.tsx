@@ -1,8 +1,8 @@
-import { Block } from "../../styles/ui";
 import Footer from "../../components/Home/Footer";
 import CategoryBox from "../../components/Home/CategoryBox";
 import BannerSlider from "../../components/Home/Banner"; // BannerSlider import
 import ChannelTalk from "../../components/Home/ChannelTalk"; // ChannelTalk import
+import { Block } from "../../styles/ui";
 
 export default function Home() {
     return (

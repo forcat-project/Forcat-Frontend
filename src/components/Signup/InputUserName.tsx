@@ -25,7 +25,7 @@ export default function InputUserName() {
 
     return (
         <>
-            <Block.FlexBox direction="column" gap="10px">
+            <Block.FlexBox width="100%" direction="column" gap="10px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                 <Input.InfoBox
                     value={userInfo.username}

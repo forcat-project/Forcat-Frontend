@@ -1,4 +1,5 @@
 import { HeaderLogo, Profile } from "../../assets/svg";
+import { HeaderContainer } from "../../styles/ui";
 
 type Props = {
     handleProfileClick: () => void;
@@ -7,8 +8,10 @@ type Props = {
 export default function HomeHeader({ handleProfileClick }: Props) {
     return (
         <>
-            <HeaderLogo width={52} />
-            <Profile width={31} cursor="pointer" onClick={handleProfileClick} />
+            <HeaderContainer>
+                <HeaderLogo width={52} />
+                <Profile width={31} cursor="pointer" onClick={handleProfileClick} />
+            </HeaderContainer>
         </>
     );
 }

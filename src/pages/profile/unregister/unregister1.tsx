@@ -10,22 +10,22 @@ export default function Unregister() {
             <ContentWrapper>
                 <StyledImage src="/unregister/unregister.jpg" alt="탈퇴 이미지" />
                 <Text.TitleMenu300 style={{ color: "#F4B647", marginBottom: "10px" }}>
-                    포캣을 탈퇴하신다니 슬퍼요...
+                    포캣을 탈퇴하신다니 슬퍼요
                 </Text.TitleMenu300>
                 <Text.TitleMenu300>정말 포캣을 탈퇴하시겠습니까?</Text.TitleMenu300>
             </ContentWrapper>
             <Block.AbsoluteBox
                 bottom="1%"
-                left="0%"
+                // left="0%"
                 zIndex="3"
                 style={{ width: "100%", display: "flex", justifyContent: "center" }}
             >
                 <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
                     <Button.CartButton onClick={() => navigate("/unregister2")} isSoldOut={false}>
-                        확인
+                        <Text.TitleMenu200 color="Yellow">확인</Text.TitleMenu200>
                     </Button.CartButton>
                     <Button.BuyButton cursor="pointer" isSoldOut={false} onClick={() => navigate("/home")}>
-                        계속 이용할게요
+                        <Text.TitleMenu200 color="White">계속 이용할게요</Text.TitleMenu200>
                     </Button.BuyButton>
                 </Block.FlexBox>
             </Block.AbsoluteBox>
@@ -44,7 +44,6 @@ const ContentWrapper = styled.div`
 
 const StyledImage = styled.img`
     max-width: 100%;
-    height: 300px;
-    width: 300px;
-    margin-bottom: 20px;
+    width: 100px;
+    margin-bottom: 40px;
 `;

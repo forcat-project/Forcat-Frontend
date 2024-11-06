@@ -178,7 +178,7 @@ export function CartList({ onPayment, products }: Props) {
             </Block.FlexBox>
 
             <Block.AbsoluteBox
-                width="599px"
+                width="100%"
                 height="90px"
                 bgColor="white"
                 bottom="0"

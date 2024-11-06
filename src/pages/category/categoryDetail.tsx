@@ -101,9 +101,8 @@ export default function CategoryDetail() {
 
     return (
         <PageContainer>
-            <HeaderContainer>
-                <WithBackAndIconHeader title={categoryName} handleBackButtonClick={handleBackButtonClick} />
-            </HeaderContainer>
+            <WithBackAndIconHeader title={categoryName} handleBackButtonClick={handleBackButtonClick} />
+
             <MarketContainer>
                 <ProductGrid>
                     {products.length > 0 ? (
@@ -160,23 +159,10 @@ export default function CategoryDetail() {
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
     min-height: 100vh;
     overflow: hidden;
     background-color: #ffffff;
-`;
-
-const HeaderContainer = styled.div`
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 89px;
-    max-width: 600px;
-    background-color: #ffffff;
-    z-index: 10;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 `;

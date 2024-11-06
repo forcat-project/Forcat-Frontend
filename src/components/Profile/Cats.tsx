@@ -139,6 +139,7 @@ export default function Cats() {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        zIndex: "999",
                     },
                     content: {
                         border: "none",

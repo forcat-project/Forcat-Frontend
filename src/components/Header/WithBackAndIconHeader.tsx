@@ -1,5 +1,5 @@
 import { Cart, HeaderBackArrow } from "../../assets/svg";
-import { Text } from "../../styles/ui";
+import { HeaderContainer, Text } from "../../styles/ui";
 
 type Props = {
     title: string;
@@ -8,9 +8,11 @@ type Props = {
 export default function WithBackAndIconHeader({ title, handleBackButtonClick }: Props) {
     return (
         <>
-            <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
-            <Text.TitleMenu300>{title}</Text.TitleMenu300>
-            <Cart width={21} />
+            <HeaderContainer>
+                <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
+                <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                <Cart width={21} />
+            </HeaderContainer>
         </>
     );
 }

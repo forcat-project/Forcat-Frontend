@@ -26,7 +26,7 @@ export default function InputCatIsNeutered() {
         <Block.FlexBox direction="column" gap="20px">
             <Text.FocusedMenu isFocused={isFocused}>중성화</Text.FocusedMenu>
 
-            <Block.FlexBox justifyContent="space-between">
+            <Block.FlexBox justifyContent="space-between" gap="10px">
                 <Button.SelectInput
                     tabIndex={0}
                     onClick={() => handleIsNeuteredClick(true)}

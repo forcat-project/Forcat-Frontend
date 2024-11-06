@@ -152,6 +152,8 @@ export const Block = {
         z-index: ${props => props.zIndex};
         width: ${props => (props.width ? props.width : "100%")};
         height: ${props => (props.width ? props.height : "auto")};
+        min-width: 375px;
+        max-width: 600px;
         margin: ${props => props.margin};
         padding: ${props => props.padding};
         border: ${props => props.border};
@@ -212,7 +214,7 @@ export const Button = {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 560px;
+        width: 100%;
         height: 53px;
         border-radius: 16px;
         color: #ffffff;
@@ -223,7 +225,7 @@ export const Button = {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 560px;
+        width: 100%;
         height: 53px;
         border-radius: 16px;
         color: #ffffff;
@@ -288,6 +290,7 @@ export const Button = {
         justify-content: center;
         align-items: center;
         width: 273px;
+        min-width: 180px;
         height: 53px;
         border-radius: 19px;
         color: ${({ isSoldOut }) => (isSoldOut ? "#939292" : "#f4b647")};
@@ -419,7 +422,7 @@ export const Input = {
     `, // 검색 아이콘은 따로 달아주어야 함
     InfoBox: styled.input<StyleInput>`
         display: block;
-        width: 560px;
+        width: 100%;
         height: 53px;
         outline: #e3e2e0;
         padding-left: 15px;
@@ -456,6 +459,7 @@ export const Input = {
     BirthBox: styled.input<StyleInput>`
         display: block;
         width: 179px;
+        min-width: 100px;
         height: 53px;
         outline: #e3e2e0;
         padding-left: 15px;
@@ -517,10 +521,7 @@ export const PageWrapper = styled.div`
 export const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
-    text-align: center;
     margin-top: 90px; /* 헤더 높이에 따라 조정 */
 `;
 
@@ -533,4 +534,37 @@ export const Divider = styled.div`
     height: 10px;
     background-color: #f0f0f0;
     margin: 20px 0;
+`;
+
+export const HeaderContainer = styled.div`
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 89px;
+    max-width: 600px;
+    background-color: #ffffff;
+    z-index: 10;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+export const NavContainer = styled.div`
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 89px;
+    max-width: 600px;
+    background-color: #ffffff;
+    z-index: 10;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 50px 0px;
 `;

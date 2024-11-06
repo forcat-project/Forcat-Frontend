@@ -87,6 +87,7 @@ export default function InputAddress() {
                         contentLabel="주소 검색"
                         style={{
                             overlay: {
+                                zIndex: "999",
                                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                             },
                             content: {

@@ -29,14 +29,17 @@ function App() {
 
     return (
         <>
-            <Block.FlexBox width="599px" height="100%" bgColor="white">
+            <Block.FlexBox bgColor="white">
                 <Header
                     isLoginPage={isLoginPage}
                     isSignupPage={isSignupPage}
                     handleBackButtonClick={handleBackButtonClick}
                     handleProfileClick={handleProfileClick}
                 />
-                <Outlet />
+                <Block.FlexBox>
+                    <Outlet />
+                </Block.FlexBox>
+
                 <Navigator
                     isLoginPage={isLoginPage}
                     isSignupPage={isSignupPage}

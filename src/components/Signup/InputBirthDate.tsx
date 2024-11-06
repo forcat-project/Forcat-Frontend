@@ -56,7 +56,7 @@ export default function InputBirthDate() {
     return (
         <Block.FlexBox direction="column" gap="20px">
             <Text.FocusedMenu isFocused={isFocused}>생년월일</Text.FocusedMenu>
-            <Block.FlexBox justifyContent="space-between">
+            <Block.FlexBox width="100%" justifyContent="space-between" gap="10px">
                 <Input.BirthBox
                     type="text"
                     value={catBirthYear}

@@ -1,6 +1,5 @@
 import { useLocation, matchPath } from "react-router-dom";
 import HomeHeader from "./HomeHeader";
-import { Block } from "../../styles/ui";
 import MarketHeader from "./MarketHeader";
 import ProfileHeader from "./ProfileHeader";
 import WithOnlyBackHeader from "./WithOnlyBackHeader";
@@ -79,14 +78,10 @@ export default function Header({ isLoginPage, isSignupPage, handleBackButtonClic
     const { component: HeaderComponent, title } = currentPage;
 
     return (
-        <Block.AbsoluteBox width="599px" height="103px" top="0" bgColor="white">
-            <Block.FlexBox padding="31px 25px" justifyContent="space-between">
-                <HeaderComponent
-                    title={title}
-                    handleBackButtonClick={handleBackButtonClick}
-                    handleProfileClick={handleProfileClick}
-                />
-            </Block.FlexBox>
-        </Block.AbsoluteBox>
+        <HeaderComponent
+            title={title}
+            handleBackButtonClick={handleBackButtonClick}
+            handleProfileClick={handleProfileClick}
+        />
     );
 }

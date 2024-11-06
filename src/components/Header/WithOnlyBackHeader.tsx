@@ -1,5 +1,5 @@
 import { HeaderBackArrow } from "../../assets/svg";
-import { Block, Text } from "../../styles/ui";
+import { Block, HeaderContainer, Text } from "../../styles/ui";
 
 type Props = {
     title: string;
@@ -8,10 +8,12 @@ type Props = {
 export default function WithOnlyBackHeader({ title, handleBackButtonClick }: Props) {
     return (
         <>
-            <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
-            <Block.FlexBox justifyContent="center">
-                <Text.TitleMenu300>{title}</Text.TitleMenu300>
-            </Block.FlexBox>
+            <HeaderContainer>
+                <HeaderBackArrow width={24} onClick={handleBackButtonClick} />
+                <Block.FlexBox justifyContent="center">
+                    <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                </Block.FlexBox>
+            </HeaderContainer>
         </>
     );
 }

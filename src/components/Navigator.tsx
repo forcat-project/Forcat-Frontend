@@ -11,7 +11,7 @@ import {
     Profile,
     ProfileDisabled,
 } from "../assets/svg";
-import { Block, Text } from "../styles/ui";
+import { Block, HeaderContainer, NavContainer, Text } from "../styles/ui";
 
 type Props = {
     isLoginPage: boolean;
@@ -78,13 +78,7 @@ export default function Navigator({
                 !isUnregister1Page &&
                 !isUnregister2Page &&
                 !isCartPage && (
-                    <Block.AbsoluteBox
-                        width="599px"
-                        height="93px"
-                        bottom="0"
-                        bgColor="white"
-                        style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px" }}
-                    >
+                    <NavContainer>
                         <Block.FlexBox>
                             {navItems.map((item, index) => {
                                 const isActive = location.pathname.startsWith(item.path);
@@ -109,7 +103,7 @@ export default function Navigator({
                                 );
                             })}
                         </Block.FlexBox>
-                    </Block.AbsoluteBox>
+                    </NavContainer>
                 )}
         </>
     );

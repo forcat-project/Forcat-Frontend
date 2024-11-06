@@ -123,13 +123,13 @@ export default function MarketDetail() {
 
     return (
         <>
-            <ForcatModal isOpen={isCartModalOpen} setIsOpen={setIsCartModalOpen} width="599px" height="300px" title="">
+            <ForcatModal isOpen={isCartModalOpen} setIsOpen={setIsCartModalOpen} width="100%" height="300px" title="">
                 <Block.FlexBox
-                    width="559px"
+                    width="100%"
                     height="240px"
                     direction="column"
                     justifyContent="space-between"
-                    padding="20px 0 0 0"
+                    padding="20px 20px 0 20px"
                 >
                     <Block.FlexBox
                         width="100%"
@@ -193,13 +193,13 @@ export default function MarketDetail() {
                     </Button.CartConfirm>
                 </Block.FlexBox>
             </ForcatModal>
-            <ForcatModal isOpen={isBuyModalOpen} setIsOpen={setIsBuyModalOpen} width="599px" height="300px" title="">
+            <ForcatModal isOpen={isBuyModalOpen} setIsOpen={setIsBuyModalOpen} width="100%" height="300px" title="">
                 <Block.FlexBox
-                    width="559px"
+                    width="100%"
                     height="240px"
                     direction="column"
                     justifyContent="space-between"
-                    padding="20px 0 0 0"
+                    padding="20px 20px 0 20px"
                 >
                     <Block.FlexBox
                         width="100%"
@@ -257,11 +257,20 @@ export default function MarketDetail() {
                     </Button.Confirm>
                 </Block.FlexBox>
             </ForcatModal>
-            <Block.FlexBox margin="89px 0" direction="column" style={{ overflow: "auto", scrollbarWidth: "none" }}>
+            <Block.FlexBox
+                padding="70px 0"
+                margin="180px 0"
+                direction="column"
+                style={{
+                    overflowY: "scroll",
+                    scrollbarWidth: "none",
+                    height: "100vh",
+                }}
+            >
                 {productDetail ? (
                     <Block.FlexBox direction="column" alignItems="center" padding="30px 21px" gap="20px">
                         <ProductImageContainer>
-                            <Img.AngledIcon width="599px" src={productDetail.thumbnail_url} alt={productDetail.name} />
+                            <Img.AngledIcon width="100%" src={productDetail.thumbnail_url} alt={productDetail.name} />
                             {productDetail.remain_count === 0 && (
                                 <SoldoutBox width="100%" height="100%">
                                     SOLD OUT
@@ -320,7 +329,20 @@ export default function MarketDetail() {
                     "로딩중"
                 )}
 
-                <Block.AbsoluteBox bottom="0" left="0" zIndex="3">
+                <Block.AbsoluteBox
+                    width="100%"
+                    height="93px"
+                    padding="0 20px"
+                    bottom="0"
+                    bgColor="white"
+                    zIndex="12"
+                    style={{
+                        boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
                     <Block.FlexBox width="100%" height="93px" justifyContent="center" alignItems="center" gap="12px">
                         <Button.CartButton onClick={handleCartModalOpen} isSoldOut={isSoldOut}>
                             장바구니

@@ -48,7 +48,7 @@ export default function InputCatWeight() {
             <Block.FlexBox direction="column" gap="20px">
                 <Text.FocusedMenu isFocused={isFocused}>몸무게(kg)</Text.FocusedMenu>
 
-                <Block.FlexBox justifyContent="space-between" alignItems="flex-end">
+                <Block.FlexBox justifyContent="space-between" gap="4px" alignItems="flex-end">
                     <Input.WeightBox
                         value={weight.whole}
                         onFocus={handleFocus}

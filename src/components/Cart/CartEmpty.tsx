@@ -9,7 +9,7 @@ export function CartEmpty({ onContinueShopping }: Props) {
         <Block.FlexBox bgColor="#F9F9F9" alignItems="center">
             <Block.FlexBox
                 width="100%"
-                height="93px"
+                height="100vh"
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
@@ -19,10 +19,12 @@ export function CartEmpty({ onContinueShopping }: Props) {
                 <Text.Notice100>상품을 추가해보세요!</Text.Notice100>
             </Block.FlexBox>
             <Block.AbsoluteBox
-                width="599px"
+                width="100%"
                 height="90px"
+                padding="0 20px"
                 bgColor="white"
                 bottom="0"
+                zIndex="20"
                 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             >
                 <Button.Confirm isDisabled={false} onClick={onContinueShopping}>

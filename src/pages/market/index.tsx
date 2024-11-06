@@ -118,7 +118,7 @@ export default function Market() {
         return <div>Error: {error.message}</div>;
     }
     return (
-        <MarketContainer ref={containerRef} style={{ height: "82.7vh", overflowY: "auto" }}>
+        <MarketContainer ref={containerRef}>
             <ChannelTalk />
             <ProductGrid>
                 {products.map((product, index) => (
