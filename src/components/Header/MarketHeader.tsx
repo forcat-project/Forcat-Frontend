@@ -1,5 +1,5 @@
 import { Search } from "../../assets/svg";
-import { Text } from "../../style/ui";
+import { Text } from "../../styles/ui";
 
 type Props = {
     title: string;

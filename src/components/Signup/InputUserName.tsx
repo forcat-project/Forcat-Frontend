@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
-import { userState, inputState } from "../../recoil";
-import { Block, Input, Text } from "../../style/ui";
+import { userState, inputState } from "../../store/atoms";
+import { Block, Input, Text } from "../../styles/ui";
 import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
 import { useEffect } from "react";

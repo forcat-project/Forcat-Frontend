@@ -1,4 +1,4 @@
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../styles/ui";
 
 type Props = {
     onContinueShopping: () => void;

@@ -1,4 +1,4 @@
-import { PageWrapper, Text, Block, Button, ContentWrapper } from "../../../style/ui";
+import { PageWrapper, Text, Block, Button, ContentWrapper } from "../../../styles/ui";
 import styled from "styled-components";
 import { Checked, Unchecked, Warning } from "../../../assets/svg";
 import { useState } from "react";

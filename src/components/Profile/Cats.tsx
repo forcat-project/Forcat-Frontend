@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import UserProfile from "../../assets/svg/UserProfile";
-import { Block, Text, Button } from "../../style/ui";
+import { Block, Text, Button } from "../../styles/ui";
 import CatEdit from "../../pages/profile/catEdit";
 import { Cat } from "../../interfaces/info";
 import { useUserId } from "../../hooks/useUserId";

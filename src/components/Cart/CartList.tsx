@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Checked, MinusGray, PlusGray, RemoveGray, Unchecked } from "../../assets/svg";
-import { Block, Button, Img, Text } from "../../style/ui";
+import { Block, Button, Img, Text } from "../../styles/ui";
 import { IProduct } from "../../interfaces/product";
 
 type Props = {

@@ -1,5 +1,5 @@
 import { FooterLogo } from "../../assets/svg";
-import { Block, Text } from "../../style/ui";
+import { Block, Text } from "../../styles/ui";
 
 export default function Footer() {
     const companyInfo = [
