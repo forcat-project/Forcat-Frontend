@@ -59,14 +59,15 @@ export default function MarketDetail() {
             try {
                 const productData = { quantity: cartCount };
                 const response = await cartProductAPI.addCartProduct(userId, productData);
-                console.log(response);
-                setIsCartModalOpen(false);
+
+                setIsCartModalOpen(false);                console.log(response);
                 setIsChoiceModalOpen(true);
             } catch (error) {
                 alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
             }
         } else {
-            setIsChoiceModalOpen(true);
+            alert("로그인이 필요합니다.");
+            navigate("/login");
         }
     };
 
