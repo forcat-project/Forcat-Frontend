@@ -10,7 +10,7 @@ export default function MarketHeader({ title }: Props) {
         <>
             <HeaderContainer>
                 <Text.TitleMenu300>{title}</Text.TitleMenu300>
-                <Search width={31} />
+                <Search width={31} cursor="pointer" />
             </HeaderContainer>
         </>
     );
