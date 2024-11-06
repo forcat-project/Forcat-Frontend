@@ -19,17 +19,17 @@ export default function AccountManage() {
                 {/* 이용약관 */}
                 <StyledButton isDisabled={false} onClick={() => navigate("/termsofuse")}>
                     <Text.Menu>이용약관</Text.Menu>
-                    <Text.TitleMenu100 pointer color="Gray">
+                    <Text.TitleMenu200 pointer color="Gray">
                         {">"}
-                    </Text.TitleMenu100>
+                    </Text.TitleMenu200>
                 </StyledButton>
 
                 {/* 개인정보처리방침 */}
                 <StyledButton isDisabled={false} onClick={() => navigate("/privacypolicy")}>
                     <Text.Menu>개인정보처리방침</Text.Menu>
-                    <Text.TitleMenu100 pointer color="Gray">
+                    <Text.TitleMenu200 pointer color="Gray">
                         {">"}
-                    </Text.TitleMenu100>
+                    </Text.TitleMenu200>
                 </StyledButton>
 
                 {/* 로그아웃 */}
@@ -44,9 +44,9 @@ export default function AccountManage() {
             </Block.FlexBox>
 
             {/* 로그아웃 모달 */}
-            <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="" width="100%" height="195px">
+            <ForcatModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="" width="100%" height="215px">
                 {/* 모달 내용 */}
-                <Block.FlexBox width="100%" height="100%" direction="column" alignItems="center" gap="16px">
+                <Block.FlexBox width="100%" height="100%" direction="column" alignItems="center" gap="26px">
                     <Warning width="24px" height="24px" />
                     <Text.TitleMenu300>로그아웃 하시겠어요?</Text.TitleMenu300>
                     <Block.FlexBox width="100%" justifyContent="center" alignItems="center" gap="12px">
@@ -79,8 +79,9 @@ const StyledButton = styled(Button.Confirm)`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 0;
+    padding: 30px 10px 10px 10px;
     border: none;
     background: none;
     cursor: pointer;
+    height: 40px;
 `;
