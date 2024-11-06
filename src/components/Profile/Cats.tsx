@@ -151,6 +151,7 @@ export default function Cats() {
             <Button.EditButton
               style={{ marginTop: "15px" }}
               onClick={() => openEditModal(cat)}
+
             >
               <Text.Mini>편집</Text.Mini>
             </Button.EditButton>

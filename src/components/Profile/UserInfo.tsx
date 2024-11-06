@@ -91,6 +91,7 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        zIndex: "999",
                     },
                     content: {
                         border: "none",

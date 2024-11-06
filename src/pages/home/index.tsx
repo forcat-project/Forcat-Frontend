@@ -10,11 +10,11 @@ export default function Home() {
             <ChannelTalk /> {/* ChannelTalk 컴포넌트 추가 */}
             <Block.FlexBox
                 width="100%"
-                margin="89px 0 93px 0"
+                margin="280px 0 78px 0"
                 direction="column"
                 justifyContent="space-between"
                 gap="40px"
-                style={{ overflow: "scroll", scrollbarWidth: "none" }}
+                style={{ overflowY: "auto", scrollbarWidth: "none", maxHeight: "100vh" }}
             >
                 {/* 배너 슬라이더 컴포넌트 */}
                 <Block.FlexBox width="100%">

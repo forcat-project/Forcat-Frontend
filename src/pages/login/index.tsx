@@ -45,7 +45,14 @@ export default function Login() {
                 임시 유저 삭제 버튼
             </Block.AbsoluteBox>
             {/*  */}
-            <Block.FlexBox direction="column" alignItems="center" justifyContent="center" gap="34px">
+            <Block.FlexBox
+                width="100%"
+                height="100vh"
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                gap="34px"
+            >
                 <Text.TitleMenu100>반려인 필수!</Text.TitleMenu100>
                 <Text.TitleMenu300>고양이 커머스 1등 앱</Text.TitleMenu300>
                 <LoginLogo width={108} height={59} />

@@ -27,7 +27,7 @@ export default function InputCatGender() {
         <Block.FlexBox direction="column" gap="20px">
             <Text.FocusedMenu isFocused={isFocused}>성별</Text.FocusedMenu>
 
-            <Block.FlexBox justifyContent="space-between">
+            <Block.FlexBox justifyContent="space-between" gap="10px">
                 <Button.SelectInput
                     tabIndex={0}
                     onClick={() => handleGenderClick(true)}

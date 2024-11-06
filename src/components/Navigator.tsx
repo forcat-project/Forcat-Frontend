@@ -11,7 +11,7 @@ import {
     Profile,
     ProfileDisabled,
 } from "../assets/svg";
-import { Block, Text } from "../styles/ui";
+import { Block, HeaderContainer, NavContainer, Text } from "../styles/ui";
 
 type Props = {
   isLoginPage: boolean;
@@ -68,7 +68,7 @@ export default function Navigator({
             path: "/profile",
         },
     ];
-
+ 
   return (
     <>
       {!isLoginPage &&
@@ -91,6 +91,7 @@ export default function Navigator({
             <Block.FlexBox>
               {navItems.map((item, index) => {
                 const isActive = location.pathname.startsWith(item.path);
+ 
 
                                 return (
                                     <Block.FlexBox
@@ -112,7 +113,7 @@ export default function Navigator({
                                 );
                             })}
                         </Block.FlexBox>
-                    </Block.AbsoluteBox>
+                    </NavContainer>
                 )}
         </>
     );

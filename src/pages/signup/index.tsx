@@ -251,8 +251,44 @@ export default function Signup() {
 
     return (
         <>
+            <Block.AbsoluteBox
+                top="0px"
+                width="100%"
+                height="150px"
+                padding="20px"
+                bgColor="white"
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    gap: "10px",
+                }}
+            >
+                {step >= 5 && (
+                    <Block.AbsoluteBox
+                        width="100px"
+                        pointer
+                        onClick={handleSkipClick}
+                        style={{ right: "20px", display: "flex", justifyContent: "flex-end", minWidth: "200px" }}
+                    >
+                        <HoverFillButton
+                            width="200px"
+                            height="35px"
+                            justifyContent="center"
+                            alignItems="center"
+                            borderRadius="50px"
+                            border="1px solid #F6ECD7"
+                        >
+                            <Text.Warning color="Yellow">고양이 정보는 나중에 등록할게요</Text.Warning>
+                        </HoverFillButton>
+                    </Block.AbsoluteBox>
+                )}
+                <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                <Text.TitleMenu300>{subtitle}</Text.TitleMenu300>
+            </Block.AbsoluteBox>
             <Block.FlexBox
                 width="100%"
+                height="100vh"
                 direction="column"
                 justifyContent="space-between"
                 padding="97px 20px 23px 20px"
@@ -261,40 +297,18 @@ export default function Signup() {
                 style={{ overflowY: "scroll", scrollbarWidth: "none" }}
             >
                 <section>
-                    <Block.FlexBox direction="column" gap="64px">
-                        <Block.AbsoluteBox top="64px" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {step >= 5 && (
-                                <Block.AbsoluteBox
-                                    width="560px"
-                                    pointer
-                                    style={{ display: "flex", justifyContent: "flex-end" }}
-                                    onClick={handleSkipClick}
-                                >
-                                    <HoverFillButton
-                                        width="200px"
-                                        height="35px"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        borderRadius="50px"
-                                        border="1px solid #F6ECD7"
-                                    >
-                                        <Text.Warning color="Yellow">고양이 정보는 나중에 등록할게요</Text.Warning>
-                                    </HoverFillButton>
-                                </Block.AbsoluteBox>
-                            )}
-                            <Text.TitleMenu300>{title}</Text.TitleMenu300>
-                            <Text.TitleMenu300>{subtitle}</Text.TitleMenu300>
-                        </Block.AbsoluteBox>
-
+                    <Block.FlexBox direction="column" gap="54px" padding="40px 0 0 0">
                         {components.map(component => component)}
                     </Block.FlexBox>
                 </section>
             </Block.FlexBox>
             <Block.AbsoluteBox
-                width="599px"
+                width="100%"
                 height="93px"
+                padding="0 20px"
                 bottom="0"
                 bgColor="white"
+                zIndex="12"
                 style={{
                     boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px",
                     display: "flex",

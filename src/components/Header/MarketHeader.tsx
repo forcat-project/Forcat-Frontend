@@ -1,5 +1,5 @@
 import { Search } from "../../assets/svg";
-import { Text } from "../../styles/ui";
+import { HeaderContainer, Text } from "../../styles/ui";
 
 type Props = {
     title: string;
@@ -8,8 +8,10 @@ type Props = {
 export default function MarketHeader({ title }: Props) {
     return (
         <>
-            <Text.TitleMenu300>{title}</Text.TitleMenu300>
-            <Search width={31} />
+            <HeaderContainer>
+                <Text.TitleMenu300>{title}</Text.TitleMenu300>
+                <Search width={31} cursor="pointer" />
+            </HeaderContainer>
         </>
     );
 }

@@ -26,32 +26,39 @@ function App() {
   const handleProfileClick = () => {
     navigate("/profile");
   };
+ 
+    const handleProfileClick = () => {
+        navigate("/profile");
+    };
 
-  return (
-    <>
-      <Block.FlexBox width="599px" height="100%" bgColor="white">
-        <Header
-          isLoginPage={isLoginPage}
-          isSignupPage={isSignupPage}
-          handleBackButtonClick={handleBackButtonClick}
-          handleProfileClick={handleProfileClick}
-        />
-        <Outlet />
-        <Navigator
-          isLoginPage={isLoginPage}
-          isSignupPage={isSignupPage}
-          isMarketDetailPage={isMarketDetailPage}
-          isBuyPage={isBuyPage}
-          isPrivacyPolicyPage={isPrivacyPolicyPage}
-          isTermsOfUsePage={isTermsOfUsePage}
-          isUnregister1Page={isUnregister1Page}
-          isUnregister2Page={isUnregister2Page}
-          isCartPage={isCartPage}
-          isCatAddPage={isCatAddPage}
-        />
-      </Block.FlexBox>
-    </>
-  );
+    return (
+        <>
+            <Block.FlexBox bgColor="white">
+                <Header
+                    isLoginPage={isLoginPage}
+                    isSignupPage={isSignupPage}
+                    handleBackButtonClick={handleBackButtonClick}
+                    handleProfileClick={handleProfileClick}
+                />
+                <Block.FlexBox>
+                    <Outlet />
+                </Block.FlexBox>
+
+                <Navigator
+                    isLoginPage={isLoginPage}
+                    isSignupPage={isSignupPage}
+                    isMarketDetailPage={isMarketDetailPage}
+                    isBuyPage={isBuyPage}
+                    isPrivacyPolicyPage={isPrivacyPolicyPage}
+                    isTermsOfUsePage={isTermsOfUsePage}
+                    isUnregister1Page={isUnregister1Page}
+                    isUnregister2Page={isUnregister2Page}
+                    isCartPage={isCartPage}
+                />
+            </Block.FlexBox>
+        </>
+    );
+ 
 }
 
 export default App;

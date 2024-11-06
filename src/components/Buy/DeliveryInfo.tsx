@@ -137,7 +137,7 @@ export default function DeliveryInfo({
                 onRequestClose={onToggleModal}
                 contentLabel="주소 검색"
                 style={{
-                    overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+                    overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: "999" },
                     content: {
                         top: "50%",
                         left: "50%",
