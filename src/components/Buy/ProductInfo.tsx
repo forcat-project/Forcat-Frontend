@@ -1,4 +1,4 @@
-import { Block, Text, Button, Img } from "../../style/ui";
+import { Block, Text, Button, Img } from "../../styles/ui";
 import styled from "styled-components";
 import { ProductCompany, OriginalPrice, DiscountRate, DiscountedPrice } from "../Product/ProductContainer";
 import { ProductInfoProps } from "../../interfaces/info";

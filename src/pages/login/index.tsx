@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { KAKAO_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
-import { Block, Img, Text } from "../../style/ui";
+import { Block, Img, Text } from "../../styles/ui";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { userAPI } from "../../api/resourses/users";
@@ -18,12 +18,15 @@ export default function Login() {
     const userId = useUserId();
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const accessToken = queryParams.get("access_token");
-        if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
-            navigate("/");
-        }
+      const queryParams = new URLSearchParams(location.search);
+      const accessToken = queryParams.get("access_token");
+      const refreshToken = queryParams.get("refresh_token");
+  
+      if (accessToken && refreshToken) {
+        sessionStorage.setItem("access_token", accessToken);
+        sessionStorage.setItem("refresh_token", refreshToken);
+        navigate("/");
+      }
     }, [location.search]);
 
     const deleteUser = async () => {

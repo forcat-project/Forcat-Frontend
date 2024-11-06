@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { catState, inputState, userState } from "../../recoil";
+import { catState, inputState, userState } from "../../store/atoms";
 import { useCallback, useEffect, useState } from "react";
 import InputUserName from "../../components/Signup/InputUserName";
-import { Block, Button, Text } from "../../style/ui";
+import { Block, Button, Text } from "../../styles/ui";
 import InputAddress from "../../components/Signup/InputAddress";
 import InputUserNickName from "../../components/Signup/InputUserNickName";
 import InputCatName from "../../components/Signup/InputCatName";
@@ -51,10 +51,21 @@ export default function Signup() {
             const res = await userAPI.signup(userData);
             alert("사용자 정보 등록에 성공했습니다.");
             sessionStorage.setItem("access_token", res.data["access_token"]);
+            sessionStorage.setItem("refresh_token", res.data["refresh_token"])
             setStep(step + 1);
         } catch (error) {
-            console.log(error);
-            alert("사용자 정보 등록에 실패했습니다. 다시 시도해 주세요.");
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+
+                if (errorData.nickname) {
+                    alert("이미 사용 중인 닉네임입니다.");
+                } else {
+                    alert("사용자 정보 등록에 실패했습니다. 다시 시도해 주세요.");
+                }
+            } else {
+                console.log(error);
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            }
         }
     };
 
@@ -63,7 +74,7 @@ export default function Signup() {
             const catData: ICat = {
                 name: catInfo.name,
                 cat_breed: catInfo.cat_breed,
-                cat_breed_name: catInfo.cat_breed_name,
+                // cat_breed_name: catInfo.cat_breed_name,
                 birth_date: catInfo.birth_date,
                 gender: catInfo.gender,
                 is_neutered: catInfo.is_neutered,

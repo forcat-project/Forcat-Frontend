@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { Block, Button, Img, Text } from "../../style/ui";
+import { Block, Button, Img, Text } from "../../styles/ui";
 import { IProduct } from "../../interfaces/product";
 import styled from "styled-components";
 import ForcatModal from "../../components/Modal/ForcatModal";
@@ -57,11 +57,18 @@ export default function MarketDetail() {
     const handleCartConfirmButtonClick = async () => {
         if (userId !== null) {
             try {
-                const productData = { quantity: cartCount };
-                const response = await cartProductAPI.addCartProduct(userId, productData);
-
-                setIsCartModalOpen(false);                console.log(response);
-                setIsChoiceModalOpen(true);
+ 
+              const productData = {
+                product_id: Number(productId),
+                quantity: cartCount,
+              };
+                await cartProductAPI.addCartProduct(
+                userId,
+                productData
+              );
+              setIsCartModalOpen(false);
+              setIsChoiceModalOpen(true);
+ 
             } catch (error) {
                 alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
             }

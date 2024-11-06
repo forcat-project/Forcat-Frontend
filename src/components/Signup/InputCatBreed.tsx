@@ -1,11 +1,11 @@
 import { useState } from "react";
 import useFocus from "../../hooks/useFocus";
-import { Block, Input, Text } from "../../style/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import ForcatModal from "../Modal/ForcatModal";
 import { Search } from "../../assets/svg";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { catState, inputState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms";
 import axiosInstance from "../../api/axiosInstance";
 
 interface CatBreed {

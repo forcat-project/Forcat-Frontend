@@ -1,9 +1,9 @@
 import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
-import { validateWeightDecimal, validateWeightWhole } from "../../share/validator";
-import { Block, Input, Text } from "../../style/ui";
+import { validateWeightDecimal, validateWeightWhole } from "../../util/validator";
+import { Block, Input, Text } from "../../styles/ui";
 import { useEffect, useState } from "react";
-import { catState, inputState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputCatWeight() {
     const [weight, setWeight] = useState({ whole: "", decimal: "", unit: "kg" });
