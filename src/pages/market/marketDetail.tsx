@@ -57,6 +57,7 @@ export default function MarketDetail() {
     const handleCartConfirmButtonClick = async () => {
         if (userId !== null) {
             try {
+ 
               const productData = {
                 product_id: Number(productId),
                 quantity: cartCount,
@@ -67,11 +68,13 @@ export default function MarketDetail() {
               );
               setIsCartModalOpen(false);
               setIsChoiceModalOpen(true);
+ 
             } catch (error) {
                 alert("장바구니에 담기지 않았어요, 다시 시도해 주세요.");
             }
         } else {
-            setIsChoiceModalOpen(true);
+            alert("로그인이 필요합니다.");
+            navigate("/login");
         }
     };
 
@@ -94,13 +97,18 @@ export default function MarketDetail() {
     };
 
     const handleBuyConfirmButtonClick = () => {
-        setIsBuyModalOpen(false);
-        navigate("/buy", {
-            state: {
-                product: productDetail,
-                count: buyCount,
-            },
-        });
+        if (userId !== null) {
+            setIsBuyModalOpen(false);
+            navigate("/buy", {
+                state: {
+                    product: productDetail,
+                    count: buyCount,
+                },
+            });
+        } else{
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+        }
     };
 
     const handlePlusBuyClick = () => {
