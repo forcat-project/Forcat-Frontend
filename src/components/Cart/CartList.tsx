@@ -4,12 +4,11 @@ import { Block, Button, Img, Text } from "../../styles/ui";
 import { IProduct } from "../../interfaces/product";
 import { cartProductAPI } from "../../api/resourses/cartProducts";
 import { useUserId } from "../../hooks/useUserId";
+import { useNavigate } from "react-router-dom";
 
-type Props = {
-    onPayment: () => void;
-};
 
-export function CartList({ onPayment }: Props) {
+export function CartList() {
+    const navigate = useNavigate();
     const userId = useUserId();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,6 +17,33 @@ export function CartList({ onPayment }: Props) {
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
     const [quantity, setQuantity] = useState<{ [key: number]: number }>({});
 
+
+    const handlePayment = () => {
+        // 선택된 상품들의 정보를 구성
+        const selectedItems = products
+            .filter(item => selectedProducts.includes(item.product.product_id))
+            .map(item => ({
+                product: {
+                    product_id: item.product.product_id,
+                    
+                    name: item.product.name,
+                    thumbnail_url: item.product.thumbnail_url,
+                    price: item.product.price,
+                    discounted_price: item.product.discounted_price,
+                    discount_rate: item.product.discount_rate,
+                    company: item.product.company
+                },
+                count: quantity[item.product.product_id] || item.quantity,
+            }));
+
+        // state를 통해 /buy 페이지로 이동
+        navigate('/buy', {
+            state: {
+                products: selectedItems,
+            }
+        });
+    };
+    
 // 초기 데이터 로드를 위한 useEffect
 useEffect(() => {
     const fetchCartProducts = async () => {
@@ -282,7 +308,7 @@ useEffect(() => {
                 bottom="0"
                 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             >
-                <Button.Confirm isDisabled={selectedProducts.length === 0} onClick={onPayment}>
+                <Button.Confirm isDisabled={selectedProducts.length === 0} onClick={handlePayment}>
                     <Text.TitleMenu200 color="White">
                         {totalPrice.toLocaleString()}원 결제하기 ({selectedProducts.length}개)
 
