@@ -70,8 +70,8 @@ export default function Login() {
                 <Text.Notice100 color="Gray">SNS 계정으로 빠르게 시작해보세요!</Text.Notice100>
                 <Block.FlexBox justifyContent="center" gap="45px">
                     <BtnKakao onClick={handleKakaoLoginClick} width={46} cursor="pointer" />
-                    <BtnGoogle onClick={handleGoogleLoginClick} width={46} />
-                    <BtnNaver onClick={handleNaverLoginClick} width={46} />
+                    <BtnGoogle onClick={handleGoogleLoginClick} width={46} cursor="pointer" />
+                    <BtnNaver onClick={handleNaverLoginClick} width={46} cursor="pointer" />
                 </Block.FlexBox>
             </Block.FlexBox>
         </>
