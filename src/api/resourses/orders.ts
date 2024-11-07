@@ -11,10 +11,11 @@ export interface CreateOrderRequest {
   originalAmount: number;
   paymentMethod: string;
   shippingAddress: string;
-  shippingAddressDetail: string;
+  shippingAddressDetail?: string;
   phoneNumber: string;
   shippingMemo?: string;
   pointsUsed?: number;
+  cancellationDate?: Date;
   products: Array<{
     product_id: number;
     quantity: number;
@@ -46,6 +47,20 @@ export const orderAPI = {
     orderId: string
   ): Promise<AxiosResponse<IResponseData>> =>
     axiosInstance.get(`/users/${userId}/orders/${orderId}`),
+
+  // 주문 내역 삭제
+  deleteOrder: (
+    userId: number,
+    orderId: string
+  ): Promise<AxiosResponse<IResponseData>> =>
+    axiosInstance.delete(`/users/${userId}/orders/${orderId}`),
+
+  // 주문 취소
+  updateOrder: (
+    userId: number,
+    orderId: string
+  ): Promise<AxiosResponse<IResponseData>> =>
+    axiosInstance.patch(`/users/${userId}/orders/${orderId}`),
 
   // 주문 목록 조회
   getOrders: (userId: number): Promise<AxiosResponse<IResponseData>> =>

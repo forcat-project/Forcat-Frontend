@@ -24,6 +24,9 @@ export default function Buy() {
   const [shippingAddressDetail, setShippingAddressDetail] = useState("");
   const [shippingMemo, setShippingMemo] = useState("");
 
+  // 주문 취소 상태
+  const [cancellationDate, setCancellationDate] = useState("");
+
   if (!product) {
     return <div>상품 정보가 없습니다.</div>;
   }
@@ -68,6 +71,7 @@ export default function Buy() {
       pointsUsed,
       originalAmount: productTotalPrice,
       totalAmount: finalPrice,
+      cancellationDate: cancellationDate,
       products,
     };
 
