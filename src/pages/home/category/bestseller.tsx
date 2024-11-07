@@ -27,7 +27,7 @@ import { Block } from "../../../styles/ui";
 export default function BestSeller() {
   const [products, setProducts] = useState<IProducts[]>([]);
   const [error, setError] = useState<AxiosError | null>(null);
-  const [cursor, setCursor] = useState<string | null>(null); // cursor 상태 관리
+  const [cursor] = useState<string | null>(null); // cursor 상태 관리
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 요청 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 많은 데이터 여부 확인
   const navigate = useNavigate();
@@ -64,13 +64,13 @@ export default function BestSeller() {
       .then((response) => {
         const { results, next } = response.data;
         setProducts((prevProducts) => [...prevProducts, ...results]); // 기존 제품에 새로운 제품 추가
-        const nextCursor = next
-          ? new URL(next).search
-              .slice(1)
-              .split("&")
-              .find((param) => param.startsWith("cursor="))
-          : null;
-        const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
+        // const nextCursor = next
+        //   ? new URL(next).search
+        //       .slice(1)
+        //       .split("&")
+        //       .find((param) => param.startsWith("cursor="))
+        //   : null;
+        // const originalCursor = nextCursor ? nextCursor.split("=")[1] : null;
         // setCursor(originalCursor); // 다음 API 요청을 위한 cursor 저장
         setHasMore(Boolean(next)); // 더 이상 데이터가 없으면 false로 설정
         setIsFetching(false); // 데이터 요청 완료

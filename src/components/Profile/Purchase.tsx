@@ -19,7 +19,6 @@ export default function Purchase() {
   const userId = useUserId();
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollPositionKey = "purchaseListScrollPosition";
 
   useEffect(() => {
     setLoading(true); // 로딩 시작
@@ -72,17 +71,6 @@ export default function Purchase() {
       </Block.FlexBox>
     );
   }
-
-  const handleClick = (productId: number) => {
-    if (containerRef.current) {
-      const currentScrollPosition = containerRef.current.scrollTop;
-      sessionStorage.setItem(
-        scrollPositionKey,
-        currentScrollPosition.toString()
-      );
-    }
-    navigate(`/market/${productId}`);
-  };
 
   return (
     <Block.FlexBox direction="column" padding="20px" ref={containerRef}>
