@@ -1,89 +1,94 @@
-// import { useEffect } from "react";
-// import "../../App.css";
-// import { PointParams, pointAPI } from "../../api/resourses/points";
-// import { useUserId } from "../../hooks/useUserId";
+import { useEffect } from "react";
+import { PointParams, pointAPI } from "../../api/resourses/points";
+import { useUserId } from "../../hooks/useUserId";
+import "../../styles/random.css";
 
-// const RandomPoint = () => {
-//   const userId = useUserId(); // useUserId hook
+const RandomPoint = () => {
+    const userId = useUserId();
 
-//   useEffect(() => {
-//     let responseData: { [key: string]: any } = {}; // To store `res.data`
+    useEffect(() => {
+        let responseData: { [key: string]: any } = {};
 
-//     const initializeImage = async () => {
-//       const res = await pointAPI.getRandomPoint();
-//       if (Object.keys(res.data).length !== 0) {
-//         responseData = res.data; // Store `res.data`
-//         const img = document.createElement("img");
-//         img.src =
-//           "https://image.kmib.co.kr/online_image/2023/0103/2023010219180554560_1672654685_0924280903.jpg";
-//         img.className = "hidden-image";
+        const initializeImage = async () => {
+            const res = await pointAPI.getRandomPoint();
+            if (Object.keys(res.data).length !== 0) {
+                responseData = res.data;
 
-//         // Set random position
-//         img.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
-//         img.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+                // 이미지와 배경을 감쌀 div 생성
+                const container = document.createElement("div");
+                container.className = "hidden-image-container";
 
-//         // Add click event, pass `responseData` to `handleImageClick`
-//         img.addEventListener("click", (event) =>
-//           handleImageClick(event, responseData)
-//         );
+                // Click Me 텍스트
+                const clickText = document.createElement("span");
+                clickText.className = "click-text";
+                clickText.textContent = "Click Me!";
 
-//         document.body.appendChild(img);
-//       }
-//     };
+                // 이미지 요소 생성
+                const img = document.createElement("img");
+                img.src = "fish_point.PNG";
+                img.className = "hidden-image";
 
-//     const handleImageClick = async (
-//       event: MouseEvent,
-//       data: { [key: string]: any }
-//     ) => {
-//       // Use `data` to get `key` and `value`
-//       const message = document.getElementById("message");
+                // 이미지 및 텍스트를 컨테이너에 추가
+                container.appendChild(img);
+                container.appendChild(clickText);
 
-//       const key: string = Object.keys(data)[0];
-//       const value: number = Object.values(data)[0];
+                // 랜덤 위치 설정
+                container.style.left = `${20 + Math.random() * 60}%`; // 가로 위치: 20% ~ 80%
+                container.style.top = `${20 + Math.random() * 60}%`; // 세로 위치: 20% ~ 80%
 
-//       const pointParams: PointParams = {
-//         user_id: userId.toString(),
-//         point_id: key, // Use `data.key` for `point_id`
-//         point: value, // Use `data.value` for `point`
-//       };
+                // 클릭 이벤트 추가
+                container.addEventListener("click", event => handleImageClick(event, responseData));
 
-//       // Call the API to create a point
-//       await pointAPI.createPoint(pointParams);
+                document.body.appendChild(container);
+            }
+        };
 
-//       if (message) {
-//         message.textContent = `${value}포인트가 적립되었습니다!`;
-//         message.style.display = "block";
+        const handleImageClick = async (event: MouseEvent, data: { [key: string]: any }) => {
+            const message = document.getElementById("message");
 
-//         setTimeout(() => {
-//           message.style.display = "none";
-//         }, 3000);
-//       }
+            if (!message) {
+                console.error("message 요소를 찾을 수 없습니다.");
+                return;
+            }
 
-//       // Hide the message after 3 seconds
+            const key: string = Object.keys(data)[0];
+            const value: number = Object.values(data)[0];
 
-//       // Remove the image
-//       (event.target as HTMLElement).remove();
-//     };
+            const pointParams: PointParams = {
+                user_id: userId.toString(),
+                point_id: key,
+                point: value,
+            };
 
-//     // Initialize image on load
-//     if (userId) {
-//       initializeImage();
-//     }
+            await pointAPI.createPoint(pointParams);
 
-//     // Clean up image on component unmount
-//     return () => {
-//       const existingImage = document.querySelector(".hidden-image");
-//       if (existingImage) {
-//         existingImage.remove();
-//       }
-//     };
-//   }, [userId]);
+            message.textContent = `${value}포인트가 적립되었습니다!`;
+            message.style.display = "block";
 
-//   return (
-//     <>
-//       <div id="message" className="message"></div>
-//     </>
-//   );
-// };
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 3000);
 
-// export default RandomPoint;
+            (event.target as HTMLElement).closest(".hidden-image-container")?.remove();
+        };
+
+        if (userId) {
+            initializeImage();
+        }
+
+        return () => {
+            const existingContainer = document.querySelector(".hidden-image-container");
+            if (existingContainer) {
+                existingContainer.remove();
+            }
+        };
+    }, [userId]);
+
+    return (
+        <>
+            <div id="message" className="message"></div>
+        </>
+    );
+};
+
+export default RandomPoint;
