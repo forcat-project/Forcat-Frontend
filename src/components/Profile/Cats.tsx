@@ -44,11 +44,32 @@ export default function Cats() {
   if (loading) {
     return <div>Loading...</div>;
   }
-  const getMonthsFromDays = (days: number) => {
+  // const getMonthsFromDays = (days: number) => {
+  //   if (days === undefined || days < 0) {
+  //     return "정보 없음";
+  //   }
+  //   return `${Math.max(1, Math.floor(days / 30))}개월`;
+  // };
+  const getYearsAndMonthsFromDays = (days: number) => {
     if (days === undefined || days < 0) {
       return "정보 없음";
     }
-    return `${Math.max(1, Math.floor(days / 30))}개월`;
+
+    const daysPerMonth = 30.44; // 한 달의 평균 일 수
+    // const daysPerYear = 365.25; // 윤년을 고려한 연 평균 일 수
+
+    const totalMonths = Math.floor(days / daysPerMonth);
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+
+    let result = "";
+    if (years > 0) {
+      result += `${years}년 `;
+    }
+    if (months > 0) {
+      result += `${months}개월`;
+    }
+    return result || "0개월";
   };
 
   const openEditModal = (cat: Cat) => {
@@ -131,7 +152,7 @@ export default function Cats() {
                   나이
                 </Text.Notice200>
                 <Text.Notice200>
-                  {getMonthsFromDays(cat.days_since_birth || 0)}
+                  {getYearsAndMonthsFromDays(cat.days_since_birth || 0)}{" "}
                 </Text.Notice200>
               </Block.FlexBox>
               <Block.FlexBox margin="5px 0">
