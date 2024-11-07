@@ -101,9 +101,13 @@ export default function MarketDetail() {
             setIsBuyModalOpen(false);
             navigate("/buy", {
                 state: {
-                    product: productDetail,
-                    count: buyCount,
-                },
+                    products :[
+                        {
+                            product: productDetail,
+                            count: buyCount,
+                        }
+                    ]}
+                ,
             });
         } else{
             alert("로그인이 필요합니다.");

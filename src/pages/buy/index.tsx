@@ -5,13 +5,13 @@ import ProductInfo from "../../components/Buy/productInfo";
 import DeliveryInfo from "../../components/Buy/deliveryInfo";
 import PointInfo from "../../components/Buy/pointInfo";
 import Total from "../../components/Buy/total";
-import { useUserId } from "../../hooks/useUserId"; // useUserId 훅 가져오기
+import { useUserId } from "../../hooks/useUserId";
 
 export default function Buy() {
   const location = useLocation();
   const navigate = useNavigate();
-  const userId = useUserId(); // userId 가져오기
-  const { product, count } = location.state || {};
+  const userId = useUserId();
+  const { products = [] } = location.state || { products: [] };
   const [isProductInfoExpanded, setIsProductInfoExpanded] = useState(true);
   const [isShippingInfoExpanded, setIsShippingInfoExpanded] = useState(true);
   const [inputValue, setInputValue] = useState("0");
@@ -27,7 +27,7 @@ export default function Buy() {
   // 주문 취소 상태
   const [cancellationDate, setCancellationDate] = useState("");
 
-  if (!product) {
+  if (!products.length) {
     return <div>상품 정보가 없습니다.</div>;
   }
 
@@ -39,25 +39,26 @@ export default function Buy() {
     setIsShippingInfoExpanded((prev) => !prev);
   };
 
-  const productTotalPrice = Math.round(product.discounted_price) * count;
-  const pointsUsed = Number(inputValue); // 사용한 포인트
+  // 모든 상품의 총 가격 계산
+  const productTotalPrice = products.reduce((total, item) => {
+    return total + Math.round(item.product.discounted_price) * item.count;
+  }, 0);
+
+  const pointsUsed = Number(inputValue);
   const finalPrice = Math.max(productTotalPrice - pointsUsed, 0);
 
-  // ProductInfo에서 기대하는 형식에 맞게 변환
-  const products = [
-    {
-      product_id: product.product_id,
-      thumbnail_url: product.thumbnail_url,
-      name: product.name,
-      company: product.company,
-      discounted_price: product.discounted_price,
-      discount_rate: product.discount_rate,
-      count: count,
-      product_status: null,
-    },
-  ];
+  // ProductInfo 컴포넌트에 전달할 형식으로 변환
+  const formattedProducts = products.map(({ product, count }) => ({
+    product_id: product.product_id,
+    thumbnail_url: product.thumbnail_url,
+    name: product.name,
+    company: product.company,
+    discounted_price: product.discounted_price,
+    discount_rate: product.discount_rate,
+    count: count,
+    product_status: null,
+  }));
 
-  // 결제하기 버튼 클릭 시 /payments 페이지로 이동 및 데이터 전달
   const handlePayment = () => {
     console.log("handlePayment 함수가 호출되었습니다");
 
@@ -72,13 +73,10 @@ export default function Buy() {
       originalAmount: productTotalPrice,
       totalAmount: finalPrice,
       cancellationDate: cancellationDate,
-      products,
+      products: formattedProducts,
     };
 
-    // JSON 데이터를 콘솔에 출력
     console.log("결제 정보:", jsonData);
-
-    // /payments 페이지로 이동하며 jsonData를 전달
     navigate("/payments", { state: jsonData });
   };
 
@@ -86,7 +84,7 @@ export default function Buy() {
     <PageWrapper style={{ maxHeight: "calc(100vh - 90px)" }}>
       <Block.FlexBox direction="column" style={{ marginTop: "90px" }}>
         <ProductInfo
-          products={products}
+          products={formattedProducts}
           isProductInfoExpanded={isProductInfoExpanded}
           toggleProductInfo={toggleProductInfo}
         />
