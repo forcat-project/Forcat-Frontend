@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IProducts } from "../../interfaces/product";
 import { HeaderBackArrow } from "../../assets/svg";
-import { Input } from "../../styles/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import { Search as SearchIcon } from "../../assets/svg";
 import {
     MarketContainer,
@@ -188,7 +188,8 @@ export default function OnlySearch() {
             {/* 인기 검색어 리스트 */}
             {showPopularKeywords && (
                 <PopularKeywordsContainer>
-                    <PopularKeywordsTitle>인기 검색어</PopularKeywordsTitle>
+                    <Text.TitleMenu200>인기 검색어</Text.TitleMenu200>
+
                     <PopularKeywordsList>
                         {orderedKeywords.map((row, rowIndex) => (
                             <KeywordRow key={rowIndex}>
@@ -200,8 +201,13 @@ export default function OnlySearch() {
                                                 onClick={() => handleKeywordClick(keyword)} // 키워드 클릭 시 검색 수행
                                                 style={{ cursor: "pointer" }} // 클릭 가능하게 커서 스타일 추가
                                             >
-                                                <Rank>{rowIndex + 1 + colIndex * 5}</Rank>
-                                                <Keyword>{keyword}</Keyword>
+                                                {" "}
+                                                <Block.FlexBox width="10px" justifyContent="center">
+                                                    <Text.Menu200 color="Yellow">
+                                                        {rowIndex + 1 + colIndex * 5}{" "}
+                                                    </Text.Menu200>
+                                                </Block.FlexBox>
+                                                <Text.Menu200 color="Gray600">{keyword}</Text.Menu200>
                                             </KeywordItem>
                                         )
                                 )}
@@ -273,10 +279,9 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    /* padding-top: 80px; */
-    /* border: 1px solid red; */
+    height: 100vh;
+    padding-top: 20px;
+    margin-bottom: 20px;
 `;
 
 const SearchHeader = styled.div`
@@ -285,7 +290,6 @@ const SearchHeader = styled.div`
     padding: 20px 16px;
     background-color: #ffffff;
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
     position: sticky;
     top: 0; // 스크롤 시에도 상단에 고정
@@ -306,20 +310,15 @@ const SearchBar = styled.div`
 
 const PopularKeywordsContainer = styled.div`
     width: 100%;
-    padding: 20px;
+    padding: 40px;
     background-color: #f8f8f8;
-    border-radius: 8px;
-    margin: 10px 20px;
 `;
 
-const PopularKeywordsTitle = styled.h3`
-    margin-bottom: 25px;
-    font-weight: bold;
-`;
 const PopularKeywordsList = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    margin-top: 30px;
 `;
 
 const KeywordRow = styled.div`
@@ -328,21 +327,16 @@ const KeywordRow = styled.div`
 `;
 
 const KeywordItem = styled.div`
+    width: 250px;
+    height: 35px;
     display: flex;
     align-items: center;
-    width: 45%; // 각 열의 너비 설정
-`;
+    gap: 20px;
+    padding-left: 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s; /* 부드러운 전환 효과 */
 
-const Rank = styled.span`
-    font-weight: bold;
-    color: black;
-    margin-right: 20px;
-    font-size: 12px;
-    min-width: 15px; // 일정 너비 설정으로 정렬 개선
-`;
-
-const Keyword = styled.span`
-    color: #333;
-    font-weight: normal;
-    font-size: 12px;
+    &:hover {
+        background-color: #f6ecd7;
+    }
 `;

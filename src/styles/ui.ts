@@ -530,9 +530,8 @@ export const Section = styled.div`
 `;
 
 export const Divider = styled.div`
-    width: 92%;
-    height: 1px;
-    border-radius: 50px;
+    width: 90%;
+    height: 2px;
     background-color: #f0f0f0;
     margin: 20px 0;
 `;
@@ -543,7 +542,7 @@ export const HeaderContainer = styled.div`
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    height: 89px;
+    height: 79px;
     max-width: 600px;
     background-color: #ffffff;
     z-index: 10;
@@ -559,11 +558,10 @@ export const NavContainer = styled.div`
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    height: 89px;
+    height: 99px;
     max-width: 600px;
     background-color: #ffffff;
     z-index: 10;
-    padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;

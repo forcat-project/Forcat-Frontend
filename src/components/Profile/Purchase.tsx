@@ -73,11 +73,10 @@ export default function Purchase() {
     };
 
     return (
-        <Block.FlexBox direction="column" padding="20px">
-            {/* 구매/취소내역 타이틀과 주문상세 */}
-            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="0 20px">
+        <Block.FlexBox direction="column" padding="20px" ref={containerRef}>
+            <Block.FlexBox direction="row" justifyContent="space-between" alignItems="center" padding="10px">
                 <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
-                <Text.Notice200 pointer color="Gray">
+                <Text.Notice200 pointer color="Gray" onClick={() => navigate("/purchaselist")}>
                     주문상세 {`>`}
                 </Text.Notice200>
             </Block.FlexBox>

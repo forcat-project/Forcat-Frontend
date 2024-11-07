@@ -19,6 +19,7 @@ import {
 } from "../../components/Product/ProductContainer";
 import ChannelTalk from "../../components/Home/ChannelTalk";
 import { ProductQueryParams, productAPI } from "../../api/resourses/products";
+import { Block } from "../../styles/ui";
 // import HiddenImage from "../../components/Home/randomPoint";
 
 export default function Market() {
@@ -137,43 +138,49 @@ export default function Market() {
     }
 
     return (
-        <MarketContainer ref={containerRef} style={{ height: "89vh", overflowY: "auto" }}>
+        <MarketContainer ref={containerRef} style={{ height: "100vh", overflowY: "auto" }}>
             <ChannelTalk />
-            <ProductGrid>
-                {products.map((product, index) => (
-                    <ProductCard
-                        key={`${product.product_id}-${index}`} // Unique key
-                        onClick={() => handleClick(product.product_id.toString())}
-                    >
-                        <ProductImageContainer>
-                            <ProductImage src={product.thumbnail_url} alt={product.name} />
-                            {product.remain_count === 0 && (
-                                <SoldoutBox width="100%" height="100%">
-                                    SOLD OUT
-                                </SoldoutBox>
-                            )}
-                        </ProductImageContainer>
-                        <ProductDetails>
-                            <ProductCompany>{product.company}</ProductCompany>
-                            <ProductName>{product.name}</ProductName>
-                            <ProductPrice>
-                                {product.discount_rate !== "0.00" ? (
-                                    <>
-                                        <OriginalPrice>{Math.round(product.price).toLocaleString()}원</OriginalPrice>
-                                        <br />
-                                        <DiscountRate>{Math.round(Number(product.discount_rate))}%</DiscountRate>
-                                        <DiscountedPrice>
-                                            {Math.round(product.discounted_price).toLocaleString()}원
-                                        </DiscountedPrice>
-                                    </>
-                                ) : (
-                                    <DiscountedPrice>{Math.round(product.price).toLocaleString()}원</DiscountedPrice>
+            <Block.FlexBox padding="80px 0 60px 0">
+                <ProductGrid>
+                    {products.map((product, index) => (
+                        <ProductCard
+                            key={`${product.product_id}-${index}`} // Unique key
+                            onClick={() => handleClick(product.product_id.toString())}
+                        >
+                            <ProductImageContainer>
+                                <ProductImage src={product.thumbnail_url} alt={product.name} />
+                                {product.remain_count === 0 && (
+                                    <SoldoutBox width="100%" height="100%">
+                                        SOLD OUT
+                                    </SoldoutBox>
                                 )}
-                            </ProductPrice>
-                        </ProductDetails>
-                    </ProductCard>
-                ))}
-            </ProductGrid>
+                            </ProductImageContainer>
+                            <ProductDetails>
+                                <ProductCompany>{product.company}</ProductCompany>
+                                <ProductName>{product.name}</ProductName>
+                                <ProductPrice>
+                                    {product.discount_rate !== "0.00" ? (
+                                        <>
+                                            <OriginalPrice>
+                                                {Math.round(product.price).toLocaleString()}원
+                                            </OriginalPrice>
+                                            <br />
+                                            <DiscountRate>{Math.round(Number(product.discount_rate))}%</DiscountRate>
+                                            <DiscountedPrice>
+                                                {Math.round(product.discounted_price).toLocaleString()}원
+                                            </DiscountedPrice>
+                                        </>
+                                    ) : (
+                                        <DiscountedPrice>
+                                            {Math.round(product.price).toLocaleString()}원
+                                        </DiscountedPrice>
+                                    )}
+                                </ProductPrice>
+                            </ProductDetails>
+                        </ProductCard>
+                    ))}
+                </ProductGrid>
+            </Block.FlexBox>
             {isFetching && <div>Loading more products...</div>}
             {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
         </MarketContainer>

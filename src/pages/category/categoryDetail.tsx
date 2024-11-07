@@ -166,7 +166,7 @@ const PageContainer = styled.div`
     padding: 20px;
     min-height: 100vh;
     overflow: hidden;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
 `;
 
 const HeaderContainer = styled.div`

@@ -19,7 +19,7 @@ export default function Footer() {
                 height="446px"
                 direction="column"
                 padding="44px 25px 31px 25px"
-                margin="0 0 190px 0"
+                margin="0 0 95px 0"
                 bgColor="#f3f3f6"
                 gap="40px"
             >
