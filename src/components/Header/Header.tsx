@@ -13,6 +13,8 @@ type Props = {
   handlePaymentBackButtonClick: () => void;
   handleProfileClick: () => void;
   handleLoginBackButtonClick: () => void;
+  handleProfileButtonClick: () => void;
+  handleCartButtonClick: () => void;
 };
 
 export default function Header({
@@ -22,6 +24,8 @@ export default function Header({
   handleProfileClick,
   // handlePaymentBackButtonClick,
   handleLoginBackButtonClick,
+  handleProfileButtonClick,
+  handleCartButtonClick,
 }: Props) {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -117,6 +121,8 @@ export default function Header({
       handleProfileClick={handleProfileClick}
       // handlePaymentBackButtonClick={handlePaymentBackButtonClick}
       handleLoginBackButtonClick={handleLoginBackButtonClick}
+      handleProfileButtonClick={handleProfileButtonClick}
+      handleCartButtonClick={handleCartButtonClick}
     />
   );
 }

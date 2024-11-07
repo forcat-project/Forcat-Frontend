@@ -32,7 +32,12 @@ function App() {
   const handlePaymentBackButtonClick = () => {
     navigate("/purchaselist");
   };
-
+  const handleProfileButtonClick = () => {
+    navigate("/search/onlysearch");
+  };
+  const handleCartButtonClick = () => {
+    navigate("/cart");
+  };
   return (
     <>
       <Block.FlexBox bgColor="white">
@@ -43,6 +48,8 @@ function App() {
           handleProfileClick={handleProfileClick}
           handlePaymentBackButtonClick={handlePaymentBackButtonClick}
           handleLoginBackButtonClick={handleLoginBackButtonClick}
+          handleProfileButtonClick={handleProfileButtonClick}
+          handleCartButtonClick={handleCartButtonClick}
         />
 
         <Outlet />
