@@ -1,51 +1,178 @@
+import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { orderAPI } from "../../api/resourses/orders";
+import { useUserId } from "../../hooks/useUserId";
 import { Block, Text, Img } from "../../styles/ui";
+import { IOrderProduct } from "../../interfaces/product"; // Existing interface
+
+interface Order {
+  orderId: string;
+  order_date: string;
+  status: string;
+  total_amount: number;
+  items: IOrderProduct[];
+}
 
 export default function Purchase() {
+  const [order, setOrder] = useState<Order | null>(null);
+  const [, setLoading] = useState<boolean>(true);
+  const userId = useUserId();
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollPositionKey = "purchaseListScrollPosition";
+
+  useEffect(() => {
+    if (userId) {
+      orderAPI
+        .getOrders(userId)
+        .then((response) => {
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            const firstOrder = {
+              orderId: data[0].id,
+              order_date: data[0].order_date,
+              status: data[0].status,
+              total_amount: Number(data[0].total_amount),
+              items: data[0].products.map((product: any) => ({
+                product_id: product.product_id,
+                product_name: product.product_name,
+                quantity: product.quantity,
+                price: Number(product.price),
+                product_image: product.product_image,
+                product_company: product.product_company,
+                discount_rate: Number(product.discount_rate),
+              })),
+            };
+            setOrder(firstOrder);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch order data:", error);
+          setLoading(false);
+        });
+    }
+  }, [userId]);
+
+  if (!order) {
     return (
-        <Block.FlexBox direction="column" padding="20px">
-            {/* 구매/취소내역 타이틀과 주문상세 */}
-            <Block.FlexBox direction="row" justifyContent="space-between" alignItems="center" padding="0 0 10px 0">
-                <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
-                <Text.Notice200 pointer color="Gray">
-                    주문상세 {`>`}
-                </Text.Notice200>
-            </Block.FlexBox>
-
-            {/* 구매 상태 */}
-            <div
-                style={{
-                    width: "calc(100% - 40px)", // 양옆에 20px씩 여백 추가
-                    // border: "3px solid #D3D3D3", // 더 밝은 회색으로 두껍게 설정
-                    borderRadius: "8px",
-                    padding: "16px",
-                    margin: "20px auto", // 상단 여백과 아래쪽 여백 조정
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 부드러운 그림자 추가
-                    backgroundColor: "#f8f8f8", // 배경을 흰색으로 설정
-                    marginBottom: "5px",
-                }}
-            >
-                <Text.TitleMenu100 color="Green" style={{ marginTop: "10px" }}>
-                    구매확정
-                </Text.TitleMenu100>
-                {/* 구매 내역 아이템 */}
-                <Block.FlexBox direction="row" alignItems="center" padding="10px 0">
-                    {/* 상품 이미지 */}
-                    <Img.AngledIcon
-                        src="https://contents.lotteon.com/itemimage/_v181926/LO/16/55/87/41/95/_1/65/58/74/19/6/LO1655874195_1655874196_1.jpg/dims/optimize/dims/resizemc/400x400"
-                        width="60px"
-                        height="60px"
-                    />
-
-                    {/* 상품 정보 */}
-                    <Block.FlexBox direction="column" margin="0 0 0 20px" flexGrow="1">
-                        <Text.Menu>아곤 레더 아일렛 벨트 호보 크로스 숄더백</Text.Menu>
-                        <Text.Mini color="Gray" margin="5px 0">
-                            블랙 1개
-                        </Text.Mini>
-                        <Text.TitleMenu300>13,900원</Text.TitleMenu300>
-                    </Block.FlexBox>
-                </Block.FlexBox>
-            </div>
-        </Block.FlexBox>
+      <Text.TitleMenu200
+        style={{ marginLeft: "20px", marginTop: "20px", marginBottom: "20px" }}
+      >
+        구매/취소내역
+      </Text.TitleMenu200>
     );
+  }
+
+  const handleClick = (productId: number) => {
+    if (containerRef.current) {
+      const currentScrollPosition = containerRef.current.scrollTop;
+      sessionStorage.setItem(
+        scrollPositionKey,
+        currentScrollPosition.toString()
+      );
+    }
+    navigate(`/market/${productId}`);
+  };
+
+  return (
+    <Block.FlexBox direction="column" padding="20px" ref={containerRef}>
+      <Block.FlexBox
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        padding="0 0 10px 0"
+      >
+        <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
+        <Text.Notice200
+          pointer
+          color="Gray"
+          onClick={() => navigate("/purchaselist")}
+        >
+          주문상세 {`>`}
+        </Text.Notice200>
+      </Block.FlexBox>
+
+      <div
+        style={{
+          borderRadius: "8px",
+          margin: "10px 0",
+          border: "1px solid #e8e9eb",
+        }}
+      >
+        <Text.Menu200
+          style={{
+            paddingLeft: "16px",
+            marginTop: "20px",
+            color: "#666669",
+          }}
+        >
+          {order.status === "completed" ? "구매확정" : "배송준비중"}
+        </Text.Menu200>
+        <div
+          style={{
+            height: "1px",
+            backgroundColor: "#e8e9eb",
+            margin: "10px 0",
+            marginTop: "20px",
+          }}
+        ></div>
+        <Block.FlexBox direction="column" alignItems="center" padding="16px">
+          {order.items.map((item, itemIndex) => (
+            <Block.FlexBox
+              key={itemIndex}
+              direction="row"
+              alignItems="center"
+              padding="16px"
+              onClick={() => handleClick(item.product_id)}
+              style={{ cursor: "pointer" }}
+            >
+              <Img.AngledIcon
+                src={item.product_image}
+                width="80px"
+                height="80px"
+              />
+              <Block.FlexBox
+                direction="column"
+                margin="0 0 0 20px"
+                flexGrow="1"
+              >
+                <Text.Notice200
+                  style={{
+                    color: "#161616",
+                    marginBottom: "5px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {item.product_company}
+                </Text.Notice200>
+                <Text.Menu
+                  margin="5px 0"
+                  style={{
+                    color: "#161616",
+                    marginBottom: "5px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {item.product_name}
+                </Text.Menu>
+                <Text.Menu
+                  color="Gray"
+                  style={{
+                    marginBottom: "10px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {item.quantity}개
+                </Text.Menu>
+                <Text.TitleMenu200>
+                  {Math.round(order.total_amount).toLocaleString()}원
+                </Text.TitleMenu200>
+              </Block.FlexBox>
+            </Block.FlexBox>
+          ))}
+        </Block.FlexBox>
+      </div>
+    </Block.FlexBox>
+  );
 }
