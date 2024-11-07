@@ -149,12 +149,12 @@ export default function PurchaseList() {
                     paddingLeft: "16px",
                     marginBottom: "8px",
                     // color: "#666669",
-                    color: order.status === "canceled" ? "#fa7586" : "#939292",
+                    color: order.status === "주문 취소" ? "#fa7586" : "#939292",
                   }}
                 >
                   {order.status === "completed"
                     ? "구매확정"
-                    : order.status === "canceled"
+                    : order.status === "주문 취소"
                     ? "주문취소"
                     : "결제완료"}
                 </Text.TitleMenu200>
@@ -167,7 +167,7 @@ export default function PurchaseList() {
                   }
                   style={{ cursor: "pointer" }}
                 >
-                  주문 상세
+                  주문 상세 {">"}
                 </Text.Notice200>
               </Block.FlexBox>
 
