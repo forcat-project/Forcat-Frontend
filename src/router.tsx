@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Home from "./pages/home";
@@ -25,114 +26,117 @@ import Buy from "./pages/buy";
 import PaymentsDetail from "./pages/payments/paymentsDetail";
 import PurchaseList from "./pages/profile/purchase/purchaseList";
 import CatAdd from "./pages/signup/catAdd";
+import NotFound from "./pages/notFound";
+
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "signup",
-        element: <Signup />,
-      },
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "home/mdrecommend",
-        element: <MdRecommend />,
-      },
-      {
-        path: "home/bestseller",
-        element: <BestSeller />,
-      },
-      {
-        path: "home/discount",
-        element: <Discount />,
-      },
-      {
-        path: "home/onlyforcat",
-        element: <OnlyForCat />,
-      },
-      {
-        path: "market",
-        element: <Market />,
-      },
-      {
-        path: "search",
-        element: <Search />,
-      },
-      {
-        path: "search/onlysearch", // 새로운 경로 추가
-        element: <OnlySearch />,
-      },
-      {
-        path: "search/:category_id",
-        element: <CategoryDetail />,
-      },
-      {
-        path: "market/:productId",
-        element: <MarketDetail />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "termsofuse",
-        element: <TermsOfUse />,
-      },
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            {
+                path: "login",
+                element: <Login />,
+            },
+            {
+                path: "signup",
+                element: <Signup />,
+            },
+            {
+                path: "home",
+                element: <Home />,
+            },
+            {
+                path: "home/mdrecommend",
+                element: <MdRecommend />,
+            },
+            {
+                path: "home/bestseller",
+                element: <BestSeller />,
+            },
+            {
+                path: "home/discount",
+                element: <Discount />,
+            },
+            {
+                path: "home/onlyforcat",
+                element: <OnlyForCat />,
+            },
+            {
+                path: "market",
+                element: <Market />,
+            },
+            {
+                path: "search",
+                element: <Search />,
+            },
+            {
+                path: "search/onlysearch", // 새로운 경로 추가
+                element: <OnlySearch />,
+            },
+            {
+                path: "search/:category_id",
+                element: <CategoryDetail />,
+            },
+            {
+                path: "market/:productId",
+                element: <MarketDetail />,
+            },
+            {
+                path: "cart",
+                element: <Cart />,
+            },
+            {
+                path: "profile",
+                element: <Profile />,
+            },
+            {
+                path: "termsofuse",
+                element: <TermsOfUse />,
+            },
 
-      {
-        path: "privacypolicy",
-        element: <PrivacyPolicy />,
-      },
-      {
-        path: "unregister1",
-        element: <Unregister />,
-      },
-      {
-        path: "unregister2",
-        element: <Unregister2 />,
-      },
-      {
-        path: "payments",
-        element: <CheckoutPage />,
-      },
-      {
-        path: "success",
-        element: <SuccessPage />,
-      },
-      {
-        path: "fail",
-        element: <FailPage />,
-      },
-      {
-        path: "orders/:userId/:orderId/details",
-        element: <PaymentsDetail />,
-      },
-      {
-        path: "buy",
-        element: <Buy />,
-      },
+            {
+                path: "privacypolicy",
+                element: <PrivacyPolicy />,
+            },
+            {
+                path: "unregister1",
+                element: <Unregister />,
+            },
+            {
+                path: "unregister2",
+                element: <Unregister2 />,
+            },
+            {
+                path: "payments",
+                element: <CheckoutPage />,
+            },
+            {
+                path: "success",
+                element: <SuccessPage />,
+            },
+            {
+                path: "fail",
+                element: <FailPage />,
+            },
+            {
+                path: "orders/:userId/:orderId/details",
+                element: <PaymentsDetail />,
+            },
+            {
+                path: "buy",
+                element: <Buy />,
+            },
 
-      {
-        path: "purchaselist",
-        element: <PurchaseList />,
-      },
-      {
-        path: "catAdd",
-        element: <CatAdd />,
-      },
-    ],
-  },
+            {
+                path: "purchaselist",
+                element: <PurchaseList />,
+            },
+            {
+                path: "catAdd",
+                element: <CatAdd />,
+            },
+        ],
+        errorElement: <NotFound />,
+    },
 ]);
