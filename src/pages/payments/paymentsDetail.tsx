@@ -6,83 +6,33 @@ import styled from "styled-components";
 import { Text, PageWrapper, Divider, Block, Img } from "../../styles/ui";
 
 const PaymentsDetail: React.FC = () => {
-    const [responseData, setResponseData] = useState<IResponseData | null>(null);
-    const { userId, orderId } = useParams<{ userId: string; orderId: string }>();
+  const [responseData, setResponseData] = useState<IResponseData | null>(null);
+  const { userId, orderId } = useParams<{ userId: string; orderId: string }>();
 
-    useEffect(() => {
-        const fetchOrderDetails = async () => {
-            if (!orderId || !userId) return;
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      if (!orderId || !userId) return;
 
-            try {
-                const response = await orderAPI.getOrder(Number(userId), orderId);
-                setResponseData(response.data);
-            } catch (error) {
-                console.error("주문 상세 정보 요청 중 오류 발생:", error);
-            }
-        };
-
-        fetchOrderDetails();
-    }, [orderId, userId]);
-
-    const formatPhoneNumber = (phoneNumber: string | undefined) => {
-        if (!phoneNumber) return "";
-        return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      try {
+        const response = await orderAPI.getOrder(Number(userId), orderId);
+        setResponseData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("주문 상세 정보 요청 중 오류 발생:", error);
+      }
     };
 
-    if (!responseData)
-        return (
-            <Block.FlexBox width="100%" height="100vh" bgColor="white">
-                로딩 중...
-            </Block.FlexBox>
-        );
+    fetchOrderDetails();
+  }, [orderId, userId]);
 
-    const { order_info } = responseData;
+  const formatPhoneNumber = (phoneNumber: string | undefined) => {
+    if (!phoneNumber) return "";
+    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
 
-    return (
-        <MarketContainer>
-            <BoxSection>
-                <Title>주문 상세</Title>
-                <Grid>
-                    <div>
-                        <OrderNumber>No.{orderId}</OrderNumber>
-                    </div>
-                </Grid>
-                <Grid>
-                    <OrderDate>
-                        (
-                        {new Date(order_info.order_date)
-                            .toLocaleDateString("ko-KR", {
-                                year: "2-digit",
-                                month: "2-digit",
-                                day: "2-digit",
-                            })
-                            .replace(/\./g, ".")}
-                        )
-                    </OrderDate>
-                </Grid>
-                <Divider />
+  if (!responseData) return <div>Loading...</div>;
 
-                {/* 구매 상품 */}
-                <SectionTitle>구매 상품</SectionTitle>
-                {order_info.products.map((product, index) => (
-                    <ProductSection key={index}>
-                        <Grid>
-                            <Status>{order_info.status}</Status>
-                            <ProductCompany>{product.product_company}</ProductCompany>
-                        </Grid>
-                        <Grid>
-                            <ProductInfo>
-                                <ProductImage src={product.product_image} alt={product.product_name} />
-                                <div>
-                                    <ProductName>{product.product_name}</ProductName>
-                                    <ProductOptions>{product.options}</ProductOptions>
-                                </div>
-                            </ProductInfo>
-                            <ProductPrice>{Number(product.price).toLocaleString()}원</ProductPrice>
-                        </Grid>
-                        <Divider />
-                    </ProductSection>
-                ))}
+  const { order_info } = responseData;
 
   const shippingStatuses = [
     "배송준비중",

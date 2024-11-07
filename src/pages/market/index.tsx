@@ -93,52 +93,119 @@ export default function Market() {
       params.cursor = decodeURIComponent(cursor);
     }
 
-    return (
-        <MarketContainer ref={containerRef} style={{ height: "100vh", overflowY: "auto" }}>
-            <ChannelTalk />
-            <Block.FlexBox padding="80px 0 60px 0">
-                <ProductGrid>
-                    {products.map((product, index) => (
-                        <ProductCard
-                            key={`${product.product_id}-${index}`} // Unique key
-                            onClick={() => handleClick(product.product_id.toString())}
-                        >
-                            <ProductImageContainer>
-                                <ProductImage src={product.thumbnail_url} alt={product.name} />
-                                {product.remain_count === 0 && (
-                                    <SoldoutBox width="100%" height="100%">
-                                        SOLD OUT
-                                    </SoldoutBox>
-                                )}
-                            </ProductImageContainer>
-                            <ProductDetails>
-                                <ProductCompany>{product.company}</ProductCompany>
-                                <ProductName>{product.name}</ProductName>
-                                <ProductPrice>
-                                    {product.discount_rate !== "0.00" ? (
-                                        <>
-                                            <OriginalPrice>
-                                                {Math.round(product.price).toLocaleString()}원
-                                            </OriginalPrice>
-                                            <br />
-                                            <DiscountRate>{Math.round(Number(product.discount_rate))}%</DiscountRate>
-                                            <DiscountedPrice>
-                                                {Math.round(product.discounted_price).toLocaleString()}원
-                                            </DiscountedPrice>
-                                        </>
-                                    ) : (
-                                        <DiscountedPrice>
-                                            {Math.round(product.price).toLocaleString()}원
-                                        </DiscountedPrice>
-                                    )}
-                                </ProductPrice>
-                            </ProductDetails>
-                        </ProductCard>
-                    ))}
-                </ProductGrid>
-            </Block.FlexBox>
-            {isFetching && <div>Loading more products...</div>}
-            {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
-        </MarketContainer>
-    );
+    try {
+      const response = await productAPI.getProducts(params);
+      const { results, next } = response.data;
+      setProducts((prevProducts) => [...prevProducts, ...results]);
+      setIsDataLoaded(true);
+
+      const nextCursor = next ? new URL(next).searchParams.get("cursor") : null;
+      if (nextCursor) {
+        setCursor(nextCursor);
+
+        const savedCursors = JSON.parse(
+          sessionStorage.getItem(cursorListKey) || "[]"
+        );
+        if (!savedCursors.includes(nextCursor)) {
+          savedCursors.push(nextCursor);
+          sessionStorage.setItem(cursorListKey, JSON.stringify(savedCursors));
+        }
+      }
+
+      setHasMore(Boolean(next));
+    } catch (error) {
+      setError(error as AxiosError);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  // Initial load if there are no products
+  useEffect(() => {
+    if (!isFetching && products.length === 0) {
+      fetchProducts();
+    }
+  }, [isFetching, products.length]);
+
+  // Throttled scroll handler to control API calls during scrolling
+  const handleScroll = useCallback(() => {
+    if (isFetching || !hasMore || !containerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      if (cursor) {
+        fetchProducts(cursor);
+      }
+    }
+  }, [isFetching, hasMore, cursor]);
+
+  // Attach scroll event listener
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [handleScroll]);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <MarketContainer
+      ref={containerRef}
+      style={{ height: "100vh", overflowY: "auto" }}
+    >
+      <ChannelTalk />
+      <Block.FlexBox padding="80px 0 60px 0">
+        <ProductGrid>
+          {products.map((product, index) => (
+            <ProductCard
+              key={`${product.product_id}-${index}`} // Unique key
+              onClick={() => handleClick(product.product_id.toString())}
+            >
+              <ProductImageContainer>
+                <ProductImage src={product.thumbnail_url} alt={product.name} />
+                {product.remain_count === 0 && (
+                  <SoldoutBox width="100%" height="100%">
+                    SOLD OUT
+                  </SoldoutBox>
+                )}
+              </ProductImageContainer>
+              <ProductDetails>
+                <ProductCompany>{product.company}</ProductCompany>
+                <ProductName>{product.name}</ProductName>
+                <ProductPrice>
+                  {product.discount_rate !== "0.00" ? (
+                    <>
+                      <OriginalPrice>
+                        {Math.round(product.price).toLocaleString()}원
+                      </OriginalPrice>
+                      <br />
+                      <DiscountRate>
+                        {Math.round(Number(product.discount_rate))}%
+                      </DiscountRate>
+                      <DiscountedPrice>
+                        {Math.round(product.discounted_price).toLocaleString()}
+                        원
+                      </DiscountedPrice>
+                    </>
+                  ) : (
+                    <DiscountedPrice>
+                      {Math.round(product.price).toLocaleString()}원
+                    </DiscountedPrice>
+                  )}
+                </ProductPrice>
+              </ProductDetails>
+            </ProductCard>
+          ))}
+        </ProductGrid>
+      </Block.FlexBox>
+      {isFetching && <div>Loading more products...</div>}
+      {!hasMore && <div>모든 상품이 로드되었습니다.</div>}
+    </MarketContainer>
+  );
 }

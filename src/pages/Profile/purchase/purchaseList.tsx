@@ -5,7 +5,7 @@ import { useUserId } from "../../../hooks/useUserId";
 import { Block, Text, Img } from "../../../styles/ui";
 import { IOrderProduct } from "../../../interfaces/product";
 
-export interface Order {
+interface Order {
   orderId: string;
   order_date: string;
   original_amount: string;
@@ -25,150 +25,108 @@ export interface Order {
 }
 
 export default function PurchaseList() {
-    const [ordersByDate, setOrdersByDate] = useState<{ [date: string]: Order[] }>({});
-    const [loading, setLoading] = useState<boolean>(true);
-    const userId = useUserId();
-    const navigate = useNavigate();
-    const containerRef = useRef<HTMLDivElement>(null);
-    const scrollPositionKey = "purchaseListScrollPosition";
+  const [ordersByDate, setOrdersByDate] = useState<{ [date: string]: Order[] }>(
+    {}
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  const userId = useUserId();
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollPositionKey = "purchaseListScrollPosition";
 
-    useEffect(() => {
-        if (userId) {
-            orderAPI
-                .getOrders(userId)
-                .then(response => {
-                    console.log("전체 응답 데이터:", response.data);
-                    const data = response.data;
+  useEffect(() => {
+    if (userId) {
+      orderAPI
+        .getOrders(userId)
+        .then((response) => {
+          console.log("전체 응답 데이터:", response.data);
+          const data = response.data;
 
-                    if (Array.isArray(data)) {
-                        const groupedOrders: { [date: string]: Order[] } = {};
+          if (Array.isArray(data)) {
+            const groupedOrders: { [date: string]: Order[] } = {};
 
-                        data.forEach((order: any) => {
-                            const orderDate = new Date(order.order_date)
-                                .toLocaleDateString("ko-KR", {
-                                    year: "2-digit",
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                })
-                                .replace(/\.$/, "");
-
-                            if (!groupedOrders[orderDate]) groupedOrders[orderDate] = [];
-                            groupedOrders[orderDate].push({
-                                orderId: order.id,
-                                order_date: order.order_date,
-                                original_amount: order.original_amount,
-                                payment: order.payment,
-                                payment_method: order.payment_method,
-                                phone_number: order.phone_number,
-                                points_used: order.points_used,
-                                shipping_address: order.shipping_address,
-                                shipping_address_detail: order.shipping_address_detail,
-                                shipping_memo: order.shipping_memo,
-                                shipping_status: order.shipping_status,
-                                status: order.status,
-                                total_amount: Number(order.total_amount),
-                                user: order.user,
-                                user_name: order.user_name,
-                                items: order.products.map((product: any) => ({
-                                    product_id: product.product_id,
-                                    product_name: product.product_name,
-                                    quantity: product.quantity,
-                                    price: Number(product.price),
-                                    product_image: product.product_image,
-                                    product_company: product.product_company,
-                                    discount_rate: Number(product.discount_rate),
-                                })),
-                            });
-                        });
-
-                        setOrdersByDate(groupedOrders);
-                    } else {
-                        console.warn("API 응답이 배열이 아닙니다.");
-                    }
-
-                    setLoading(false);
+            data.forEach((order: any) => {
+              const orderDate = new Date(order.order_date)
+                .toLocaleDateString("ko-KR", {
+                  year: "2-digit",
+                  month: "2-digit",
+                  day: "2-digit",
                 })
-                .catch(error => {
-                    console.error("주문 데이터를 가져오는 데 실패했습니다.", error);
-                    setLoading(false);
-                });
-        }
-    }, [userId]);
+                .replace(/\.$/, "");
 
-    const handleClick = (productId: number) => {
-        if (containerRef.current) {
-            const currentScrollPosition = containerRef.current.scrollTop;
-            sessionStorage.setItem(scrollPositionKey, currentScrollPosition.toString());
-        }
-        navigate(`/market/${productId}`);
-    };
+              if (!groupedOrders[orderDate]) groupedOrders[orderDate] = [];
+              groupedOrders[orderDate].push({
+                orderId: order.id,
+                order_date: order.order_date,
+                original_amount: order.original_amount,
+                payment: order.payment,
+                payment_method: order.payment_method,
+                phone_number: order.phone_number,
+                points_used: order.points_used,
+                shipping_address: order.shipping_address,
+                shipping_address_detail: order.shipping_address_detail,
+                shipping_memo: order.shipping_memo,
+                shipping_status: order.shipping_status,
+                status: order.status,
+                total_amount: Number(order.total_amount),
+                user: order.user,
+                user_name: order.user_name,
+                items: order.products.map((product: any) => ({
+                  product_id: product.product_id,
+                  product_name: product.product_name,
+                  quantity: product.quantity,
+                  price: Number(product.price),
+                  product_image: product.product_image,
+                  product_company: product.product_company,
+                  discount_rate: Number(product.discount_rate),
+                })),
+              });
+            });
 
-    if (loading) {
-        return (
-            <Block.FlexBox width="100%" height="100vh" bgColor="white">
-                로딩 중...
-            </Block.FlexBox>
-        );
+            setOrdersByDate(groupedOrders);
+          } else {
+            console.warn("API 응답이 배열이 아닙니다.");
+          }
+
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("주문 데이터를 가져오는 데 실패했습니다.", error);
+          setLoading(false);
+        });
     }
+  }, [userId]);
 
-    return (
-        <Block.FlexBox
-            ref={containerRef}
-            width="100%"
-            height="100vh"
-            direction="column"
-            padding="20px"
-            style={{
-                marginTop: "20px",
-                overflowY: "auto",
-                maxHeight: "calc(100vh - 160px)",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-            }}
-        >
-            {Object.keys(ordersByDate).map(date => (
-                <div key={date} style={{ marginBottom: "20px" }}>
-                    <Text.Notice200 style={{ fontSize: "18px", marginBottom: "10px" }}>{date}</Text.Notice200>
-                    {ordersByDate[date].map(order => (
-                        <div key={order.orderId} style={{ marginBottom: "20px" }}>
-                            <Block.FlexBox
-                                direction="row"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                padding="16px"
-                            >
-                                <Text.Menu200
-                                    style={{
-                                        paddingLeft: "16px",
-                                        marginBottom: "8px",
-                                        color: "#666669",
-                                    }}
-                                >
-                                    {order.status === "completed" ? "구매확정" : "배송준비중"}
-                                </Text.Menu200>
-                                <Text.Notice200
-                                    pointer
-                                    color="Gray"
-                                    onClick={() => navigate(`/orders/${userId}/${order.orderId}/details`)}
-                                    style={{ cursor: "pointer" }}
-                                >
-                                    주문 상세
-                                </Text.Notice200>
-                            </Block.FlexBox>
+  const handleClick = (productId: number) => {
+    if (containerRef.current) {
+      const currentScrollPosition = containerRef.current.scrollTop;
+      sessionStorage.setItem(
+        scrollPositionKey,
+        currentScrollPosition.toString()
+      );
+    }
+    navigate(`/market/${productId}`);
+  };
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return (
+      <Block.FlexBox width="100%" height="100vh" bgColor="white">
+        로딩 중...
+      </Block.FlexBox>
+    );
   }
 
   return (
     <Block.FlexBox
       ref={containerRef}
+      width="100%"
+      height="100vh"
       direction="column"
       padding="20px"
       style={{
-        marginTop: "10px",
+        marginTop: "20px",
         overflowY: "auto",
-        maxHeight: "calc(100vh - 180px)",
+        maxHeight: "calc(100vh - 160px)",
         scrollbarWidth: "none",
         msOverflowStyle: "none",
       }}
@@ -193,7 +151,7 @@ export default function PurchaseList() {
                     color: "#666669",
                   }}
                 >
-                  {order.status === "completed" ? "구매확정" : "결제완료"}
+                  {order.status === "completed" ? "구매확정" : "배송준비중"}
                 </Text.Menu200>
                 <Text.Notice200
                   pointer
