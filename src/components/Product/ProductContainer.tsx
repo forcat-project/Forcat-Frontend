@@ -4,20 +4,21 @@ export const MarketContainer = styled.div`
     width: 100%;
     height: 100vh;
     overflow-y: auto; // 스크롤 가능하게 설정
-    height: calc(100vh - 103px - 93px); // 전체 화면 높이에서 header와 navigator 높이를 뺀 값
     scrollbar-width: none;
     -ms-overflow-style: none;
     &::-webkit-scrollbar {
         display: none;
     }
+    /* margin-bottom: 250px; */
+    /* border: 1px solid red; */
 `;
 
 export const ProductGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 10px;
     padding: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 160px;
     width: 100%;
 `;
 

@@ -18,6 +18,7 @@ import {
     SoldoutBox,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 import { ProductQueryParams, productAPI } from "../../../api/resourses/products";
+import { Block } from "../../../styles/ui";
 
 export default function MdRecommend() {
     const [products, setProducts] = useState<IProducts[]>([]);
@@ -43,6 +44,7 @@ export default function MdRecommend() {
     }
 
     return (
+        <Block.FlexBox padding="120px 0 0 0">
         <MarketContainer>
             <ProductGrid>
                 {products.map(product => (
@@ -82,5 +84,6 @@ export default function MdRecommend() {
                 ))}
             </ProductGrid>
         </MarketContainer>
+        </Block.FlexBox>
     );
 }
