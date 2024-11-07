@@ -85,7 +85,9 @@ export default function Purchase() {
           borderRadius: "8px",
           margin: "10px 0",
           border: "1px solid #e8e9eb",
+          cursor: "pointer", // 클릭 가능한 UI 표시
         }}
+        onClick={() => navigate(`/orders/${userId}/${order.orderId}/details`)}
       >
         <Text.Menu200
           style={{
