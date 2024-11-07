@@ -12,6 +12,7 @@ import {
   ProfileDisabled,
 } from "../assets/svg";
 import { Block, NavContainer, Text } from "../styles/ui";
+import { useUserId } from '../hooks/useUserId';
 
 type Props = {
   isLoginPage: boolean;
@@ -27,6 +28,7 @@ type Props = {
   isPaymentsDetailPage: boolean;
 };
 
+ 
 export default function Navigator({
   isLoginPage,
   isSignupPage,
