@@ -1,14 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Market,
   MarketDisabled,
-  Search,
   SearchDisabled,
-  Home,
   HomeDisabled,
-  Cart,
   CartDisabled,
-  Profile,
   ProfileDisabled,
   CatYellow,
   SearchYellow,

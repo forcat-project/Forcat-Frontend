@@ -6,10 +6,10 @@ import { useUserId } from "../../hooks/useUserId";
 import { catAPI } from "../../api/resourses/cats";
 import ReactModal from "react-modal";
 import { useNavigate } from "react-router-dom";
-
+import styled from "styled-components";
 export default function Cats() {
   const [cats, setCats] = useState<Cat[]>([]);
-  const [, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
   const userId = useUserId();
@@ -24,6 +24,8 @@ export default function Cats() {
   }, [userId]);
 
   const fetchCats = () => {
+    setLoading(true); // 로딩 시작
+
     catAPI
       .getCats(Number(userId))
       .then((response) => {
@@ -38,7 +40,10 @@ export default function Cats() {
         setLoading(false);
       });
   };
-
+  // 로딩 중일 때 로딩 상태 표시
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   const getMonthsFromDays = (days: number) => {
     if (days === undefined || days < 0) {
       return "정보 없음";
@@ -84,100 +89,112 @@ export default function Cats() {
         </Text.Notice200>
       </Block.FlexBox>
 
-      {cats.map((cat, index) => (
-        <Block.FlexBox
-          key={index}
-          direction="row"
-          justifyContent="space-between"
-          padding="20px 20px"
-          alignItems="center"
-          style={{
-            borderRadius: "8px",
-            margin: "10px 0",
-            border: "1px solid #e8e9eb",
-            cursor: "pointer", // 클릭 가능한 UI 표시
-            marginTop: "20px",
-          }}
-        >
-          <Block.FlexBox direction="column">
-            <Text.TitleMenu300 style={{ marginBottom: "10px" }}>
-              {cat.name || "이름 없음"}
-            </Text.TitleMenu300>
-            <Block.FlexBox margin="5px 0">
-              <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                견종
-              </Text.Notice200>
-              <Text.Notice200>
-                {String(cat.cat_breed_name) || "정보 없음"}
-              </Text.Notice200>
-            </Block.FlexBox>
-            <Block.FlexBox margin="5px 0">
-              <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                나이
-              </Text.Notice200>
-              <Text.Notice200>
-                {getMonthsFromDays(cat.days_since_birth || 0)}
-              </Text.Notice200>
-            </Block.FlexBox>
-            <Block.FlexBox margin="5px 0">
-              <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                성별
-              </Text.Notice200>
-              <Text.Notice200>
-                {cat.gender === 0 ? "여아" : "남아"}
-              </Text.Notice200>
-            </Block.FlexBox>
-            <Block.FlexBox margin="5px 0">
-              <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                중성화
-              </Text.Notice200>
-              <Text.Notice200>
-                {cat.is_neutered === 1 ? "수술 완료" : "수술 미완료"}
-              </Text.Notice200>
-            </Block.FlexBox>
-            <Block.FlexBox margin="5px 0">
-              <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                몸무게
-              </Text.Notice200>
-              <Text.Notice200>{cat.weight}kg</Text.Notice200>
-            </Block.FlexBox>
-          </Block.FlexBox>
-
+      {cats.length === 0 ? (
+        // 고양이가 없을 때 표시할 내용
+        <ContentWrapper>
+          <StyledImage src="/unregister/unregister.jpg" alt="탈퇴 이미지" />
+          <Text.TitleMenu200 style={{ color: "#80818C", marginBottom: "10px" }}>
+            앗! 현재 추가하신 고양이가 없어요
+          </Text.TitleMenu200>
+        </ContentWrapper>
+      ) : (
+        // 고양이가 있을 때 고양이 목록 표시
+        cats.map((cat, index) => (
           <Block.FlexBox
+            key={index}
+            direction="row"
+            justifyContent="space-between"
+            padding="20px 20px"
             alignItems="center"
-            width="150px"
-            height="150px"
-            direction="column"
+            style={{
+              borderRadius: "8px",
+              margin: "10px 0",
+              border: "1px solid #e8e9eb",
+              cursor: "pointer",
+              marginTop: "20px",
+            }}
           >
-            {cat.profile_image ? (
-              <img
-                src={
-                  cat.profile_image ||
-                  "https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
-                }
-                alt="Cat Profile"
-                width="100"
-                height="100"
-                style={{ borderRadius: "50%" }}
-              />
-            ) : (
-              <img
-                src="https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
-                alt="Default Cat Profile"
-                width="100"
-                height="100"
-                style={{ borderRadius: "50%" }}
-              />
-            )}
-            <Button.EditButton
-              style={{ marginTop: "15px" }}
-              onClick={() => openEditModal(cat)}
+            <Block.FlexBox direction="column">
+              <Text.TitleMenu300 style={{ marginBottom: "10px" }}>
+                {cat.name || "이름 없음"}
+              </Text.TitleMenu300>
+              <Block.FlexBox margin="5px 0">
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
+                  견종
+                </Text.Notice200>
+                <Text.Notice200>
+                  {String(cat.cat_breed_name) || "정보 없음"}
+                </Text.Notice200>
+              </Block.FlexBox>
+              <Block.FlexBox margin="5px 0">
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
+                  나이
+                </Text.Notice200>
+                <Text.Notice200>
+                  {getMonthsFromDays(cat.days_since_birth || 0)}
+                </Text.Notice200>
+              </Block.FlexBox>
+              <Block.FlexBox margin="5px 0">
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
+                  성별
+                </Text.Notice200>
+                <Text.Notice200>
+                  {cat.gender === 0 ? "여아" : "남아"}
+                </Text.Notice200>
+              </Block.FlexBox>
+              <Block.FlexBox margin="5px 0">
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
+                  중성화
+                </Text.Notice200>
+                <Text.Notice200>
+                  {cat.is_neutered === 1 ? "수술 완료" : "수술 미완료"}
+                </Text.Notice200>
+              </Block.FlexBox>
+              <Block.FlexBox margin="5px 0">
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
+                  몸무게
+                </Text.Notice200>
+                <Text.Notice200>{cat.weight}kg</Text.Notice200>
+              </Block.FlexBox>
+            </Block.FlexBox>
+
+            <Block.FlexBox
+              alignItems="center"
+              width="150px"
+              height="150px"
+              direction="column"
             >
-              <Text.Mini>편집</Text.Mini>
-            </Button.EditButton>
+              {cat.profile_image ? (
+                <img
+                  src={
+                    cat.profile_image ||
+                    "https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
+                  }
+                  alt="Cat Profile"
+                  width="100"
+                  height="100"
+                  style={{ borderRadius: "50%" }}
+                />
+              ) : (
+                <img
+                  src="https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
+                  alt="Default Cat Profile"
+                  width="100"
+                  height="100"
+                  style={{ borderRadius: "50%" }}
+                />
+              )}
+              <Button.EditButton
+                style={{ marginTop: "15px" }}
+                onClick={() => openEditModal(cat)}
+              >
+                <Text.Mini>편집</Text.Mini>
+              </Button.EditButton>
+            </Block.FlexBox>
           </Block.FlexBox>
-        </Block.FlexBox>
-      ))}
+        ))
+      )}
+
       <ReactModal
         isOpen={isEditModalOpen}
         onRequestClose={closeEditModal}
@@ -213,3 +230,18 @@ export default function Cats() {
     </Block.FlexBox>
   );
 }
+
+// Styled Components for the empty state
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const StyledImage = styled.img`
+  width: 40%;
+  max-width: 150px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+`;
