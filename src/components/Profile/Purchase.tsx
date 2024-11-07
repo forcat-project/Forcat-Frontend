@@ -133,7 +133,9 @@ export default function Purchase() {
               direction="row"
               alignItems="center"
               padding="16px"
-              onClick={() => handleClick(item.product_id)}
+              onClick={() =>
+                navigate(`/orders/${userId}/${order.orderId}/details`)
+              }
               style={{ cursor: "pointer" }}
             >
               <Img.AngledIcon

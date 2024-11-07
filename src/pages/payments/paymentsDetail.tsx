@@ -155,7 +155,7 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
   };
 
   return (
-    <PageWrapper style={{ marginTop: "70px" }}>
+    <PageWrapper style={{ marginTop: "130px" }}>
       <BoxSection>
         <Grid>
           <Text.TitleMenu200>
@@ -475,6 +475,7 @@ const Grid = styled.div`
   margin-top: 10px;
   padding: 15px;
   font-size: 16px;
+  margin-bottom: -5px;
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -504,7 +505,7 @@ const Button2 = styled.button`
   border: 1px solid #e8e9eb;
   border-radius: 8px;
   background-color: white;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   cursor: pointer;
   &:hover {
     background-color: #f5f5f5;
