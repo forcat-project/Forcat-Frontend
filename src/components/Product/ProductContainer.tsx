@@ -9,6 +9,7 @@ export const MarketContainer = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
+
     /* margin-bottom: 250px; */
     /* border: 1px solid red; */
 `;
