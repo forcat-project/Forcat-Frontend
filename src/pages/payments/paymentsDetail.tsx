@@ -104,13 +104,6 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
     }
   };
 
-  // 재구매 클릭 핸들러 추가
-  // const handleReorder = () => {
-  //   const productIds = order_info.products.map((item) => item.product_id);
-  //   // 결제 페이지로 이동, product_ids를 쿼리 파라미터로 전달
-  //   navigate(`/checkout?product_ids=${productIds.join(",")}`);
-  // };
-
   const handleReorder = () => {
     // 주문된 상품 정보 구성
     const selectedItems = order_info.products.map((item) => ({
@@ -132,6 +125,28 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
         products: selectedItems,
       },
     });
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!userId || !orderId) {
+      alert("잘못된 접근입니다.");
+      return;
+    }
+
+    const confirmDelete = window.confirm(
+      "정말로 주문 내역을 삭제하시겠습니까?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await orderAPI.deleteOrder(Number(userId), orderId);
+      alert("주문 내역이 삭제되었습니다.");
+      onReload && onReload(); // 삭제 후 페이지를 새로고침하고 싶다면 onReload 호출
+      navigate("/purchaselist");
+    } catch (error) {
+      console.error("주문 내역 삭제 중 오류 발생:", error);
+      alert("주문 내역 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -205,6 +220,9 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
             margin: "10px 0",
             border: "1px solid #e8e9eb",
           }}
+          onClick={() =>
+            navigate(`/orders/${userId}/${order_info.orderId}/details`)
+          }
         >
           {order_info.products.map((product, index) => (
             <Block.FlexBox
@@ -387,8 +405,7 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
             <Text.Menu>{order_info.payment_method}</Text.Menu>
           </Block.FlexBox>
         </Block.FlexBox>
-        <Button2>주문 내역 삭제</Button2>
-
+        <Button2 onClick={handleDeleteOrder}>주문 내역 삭제</Button2>
         {/* 주문취소 모달 */}
         <ForcatModal
           isOpen={isModalOpen}
