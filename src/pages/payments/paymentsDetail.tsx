@@ -110,15 +110,17 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
       product: {
         product_id: item.product_id,
         name: item.product_name,
+
         thumbnail_url: item.product_image,
-        price: item.product_price,
-        discounted_price: item.discounted_price,
+        calculatedOriginalPrice: item.discounted_price,
         discount_rate: item.discount_rate,
         company: item.product_company,
+        discounted_price: item.price,
+        count: item.quantity, // 원래 주문 수량 사용
       },
       count: item.quantity, // 원래 주문 수량 사용
     }));
-
+    console.log(selectedItems);
     // state를 통해 /buy 페이지로 이동
     navigate("/buy", {
       state: {

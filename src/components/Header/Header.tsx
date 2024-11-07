@@ -91,7 +91,7 @@ export default function Header({
     {
       path: "/orders/:userId/:orderId/details",
       title: "주문 상세",
-      component: WithOnlyBackHeader,
+      component: ProfileHeader,
     },
     {
       path: "/login",
