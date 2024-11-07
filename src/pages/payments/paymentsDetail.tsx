@@ -212,21 +212,18 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
               : "결제완료"}
           </Text.TitleMenu200>
         </Block.FlexBox>
-
-        <Block.FlexBox
-          direction="column"
-          alignItems="center"
-          padding="16px"
-          style={{
-            borderRadius: "8px",
-            margin: "10px 0",
-            border: "1px solid #e8e9eb",
-          }}
-          onClick={() =>
-            navigate(`/orders/${userId}/${order_info.orderId}/details`)
-          }
-        >
-          {order_info.products.map((product, index) => (
+        {order_info.products.map((product, index) => (
+          <Block.FlexBox
+            direction="column"
+            alignItems="center"
+            padding="16px"
+            style={{
+              borderRadius: "8px",
+              margin: "10px 0",
+              border: "1px solid #e8e9eb",
+            }}
+            onClick={() => navigate(`/market/${product.product_id}`)}
+          >
             <Block.FlexBox
               key={index}
               direction="row"
@@ -277,8 +274,8 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
                 </Text.TitleMenu200>
               </Block.FlexBox>
             </Block.FlexBox>
-          ))}
-        </Block.FlexBox>
+          </Block.FlexBox>
+        ))}
         <ButtonContainer>
           <Button1
             onClick={() => {
