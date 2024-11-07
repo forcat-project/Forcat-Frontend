@@ -151,8 +151,13 @@ export default function PurchaseList() {
                     color: "#666669",
                   }}
                 >
-                  {order.status === "completed" ? "구매확정" : "배송준비중"}
+                  {order.status === "completed"
+                    ? "구매확정"
+                    : order.status === "canceled"
+                    ? "결제취소"
+                    : "결제완료"}
                 </Text.Menu200>
+
                 <Text.Notice200
                   pointer
                   color="Gray"

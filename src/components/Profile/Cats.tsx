@@ -170,7 +170,6 @@ export default function Cats() {
           </Block.FlexBox>
         </Block.FlexBox>
       ))}
-
       <ReactModal
         isOpen={isEditModalOpen}
         onRequestClose={closeEditModal}
@@ -180,6 +179,7 @@ export default function Cats() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            zIndex: "999",
           },
           content: {
             border: "none",
