@@ -14,29 +14,29 @@ import {
 import { Block, NavContainer, Text } from "../styles/ui";
 
 type Props = {
-  isLoginPage: boolean;
-  isSignupPage: boolean;
-  isMarketDetailPage: boolean;
-  isBuyPage: boolean;
-  isPrivacyPolicyPage: boolean;
-  isTermsOfUsePage: boolean;
-  isUnregister1Page: boolean;
-  isUnregister2Page: boolean;
-  isCartPage: boolean;
-  isCatAddPage: boolean;
+    isLoginPage: boolean;
+    isSignupPage: boolean;
+    isMarketDetailPage: boolean;
+    isBuyPage: boolean;
+    isPrivacyPolicyPage: boolean;
+    isTermsOfUsePage: boolean;
+    isUnregister1Page: boolean;
+    isUnregister2Page: boolean;
+    isCartPage: boolean;
+    isCatAddPage: boolean;
 };
 
 export default function Navigator({
-  isLoginPage,
-  isSignupPage,
-  isMarketDetailPage,
-  isBuyPage,
-  isPrivacyPolicyPage,
-  isTermsOfUsePage,
-  isUnregister1Page,
-  isUnregister2Page,
-  isCartPage,
-  isCatAddPage,
+    isLoginPage,
+    isSignupPage,
+    isMarketDetailPage,
+    isBuyPage,
+    isPrivacyPolicyPage,
+    isTermsOfUsePage,
+    isUnregister1Page,
+    isUnregister2Page,
+    isCartPage,
+    isCatAddPage,
 }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -68,45 +68,39 @@ export default function Navigator({
             path: "/profile",
         },
     ];
- 
-  return (
-    <>
-      {!isLoginPage &&
-        !isSignupPage &&
-        !isMarketDetailPage &&
-        !isBuyPage &&
-        !isPrivacyPolicyPage &&
-        !isTermsOfUsePage &&
-        !isUnregister1Page &&
-        !isUnregister2Page &&
-        !isCartPage &&
-        !isCatAddPage && (
-                    <NavContainer>
-            <Block.FlexBox>
-              {navItems.map((item, index) => {
-                const isActive = location.pathname.startsWith(item.path);
- 
 
-                                return (
-                                    <Block.FlexBox
-                                        key={index}
-                                        width="100%"
-                                        height="100px"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        direction="column"
-                                        gap="10px"
-                                        pointer
-                                        onClick={() => navigate(item.path)}
-                                    >
-                                        {item.icon}
-                                        <Text.Notice200 style={{ color: isActive ? "#000" : "#C9CBD4" }}>
-                                            {item.label}
-                                        </Text.Notice200>
-                                    </Block.FlexBox>
-                                );
-                            })}
-                        </Block.FlexBox>
+    return (
+        <>
+            {!isLoginPage &&
+                !isSignupPage &&
+                !isMarketDetailPage &&
+                !isBuyPage &&
+                !isPrivacyPolicyPage &&
+                !isTermsOfUsePage &&
+                !isUnregister1Page &&
+                !isUnregister2Page &&
+                !isCartPage &&
+                !isCatAddPage && (
+                    <NavContainer>
+                        {navItems.map((item, index) => {
+                            const isActive = location.pathname.startsWith(item.path);
+
+                            return (
+                                <Block.FlexBox
+                                    key={index}
+                                    alignItems="center"
+                                    direction="column"
+                                    gap="10px"
+                                    pointer
+                                    onClick={() => navigate(item.path)}
+                                >
+                                    {item.icon}
+                                    <Text.Notice200 style={{ color: isActive ? "#000" : "#C9CBD4" }}>
+                                        {item.label}
+                                    </Text.Notice200>
+                                </Block.FlexBox>
+                            );
+                        })}
                     </NavContainer>
                 )}
         </>

@@ -48,9 +48,9 @@ export default function UserInfo({ onReload }: UserInfoProps) {
     };
 
     return (
-        <Block.FlexBox direction="column" padding="0 40px" bgColor="white">
-            <Block.FlexBox alignItems="center">
-                <Block.FlexBox alignItems="center">
+        <Block.FlexBox direction="column" padding="0 30px" bgColor="white">
+            <Block.FlexBox justifyContent="space-between" alignItems="center" margin="0 0 10px 0">
+                <Block.FlexBox direction="row" alignItems="center">
                     <Block.FlexBox width="70px" height="70px">
                         {user?.profile_picture ? (
                             <img
@@ -58,14 +58,22 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                                 alt="User Profile"
                                 width="70"
                                 height="70"
-                                style={{ borderRadius: "50%" }}
+                                style={{ borderRadius: "20px" }}
                             />
                         ) : (
                             <UserProfile />
                         )}
                     </Block.FlexBox>
-                    <Block.FlexBox margin="0 0 0 20px">
+                    <Block.FlexBox direction="column" margin="0 0 0 20px" gap="10px">
                         <Text.TitleMenu300>{user?.nickname}</Text.TitleMenu300>
+
+                        <Block.FlexBox alignItems="center">
+                            {/* <Text.TitleMenu300 style={{ marginRight: "10px" }}>🎣</Text.TitleMenu300> */}
+                            <Text.Menu color="Gray" style={{ marginRight: "10px" }}>
+                                생선 포인트
+                            </Text.Menu>
+                            <Text.Menu200>{user?.points} P</Text.Menu200>
+                        </Block.FlexBox>
                     </Block.FlexBox>
                 </Block.FlexBox>
 
@@ -74,13 +82,7 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                 </Button.EditButton>
             </Block.FlexBox>
             {/* 생선 포인트 UI 추가 */}
-            <Block.FlexBox direction="row" alignItems="center" style={{ marginLeft: "10px" }}>
-                <Text.TitleMenu300 style={{ marginRight: "10px" }}>🎣</Text.TitleMenu300>
-                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
-                    모은 생선 포인트
-                </Text.Notice200>
-                <Text.Notice200>{user?.points} P</Text.Notice200>
-            </Block.FlexBox>
+
             <Modal
                 isOpen={isEditModalOpen}
                 onRequestClose={toggleEditModal}

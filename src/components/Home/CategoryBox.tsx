@@ -56,8 +56,8 @@ export default function CategoryBox({ categoryId, categoryName, morePagePath, or
     }
 
     return (
-        <Block.FlexBox direction="column" width="100%" padding="0 15px">
-            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="20px 0">
+        <Block.FlexBox direction="column" width="100%" height="360px">
+            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="20px">
                 <Text.TitleMenu300>{categoryName}</Text.TitleMenu300>
                 <MoreButton onClick={() => navigate(morePagePath)}>더보기</MoreButton>
             </Block.FlexBox>

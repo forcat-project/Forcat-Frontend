@@ -17,6 +17,7 @@ export function CartList() {
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
     const [quantity, setQuantity] = useState<{ [key: number]: number }>({});
 
+ 
 
     const handlePayment = () => {
         // 선택된 상품들의 정보를 구성
@@ -53,51 +54,52 @@ useEffect(() => {
             setIsLoading(false);
             return;
         }
+ 
 
-        try {
-            const response = await cartProductAPI.getCartProducts(userId);
-            setProducts(response.data);
+            try {
+                const response = await cartProductAPI.getCartProducts(userId);
+                setProducts(response.data);
 
-            // Initialize quantities
-            const initialQuantities = response.data.reduce(
-                (acc: { [key: number]: number }, item: { product: IProduct; quantity: number }) => {
-                    acc[item.product.product_id] = item.quantity;
-                    return acc;
-                },
-                {}
-            );
-            setQuantity(initialQuantities);
-            
-            // 모든 상품을 선택된 상태로 초기화
-            setSelectedProducts(response.data.map(item => item.product.product_id));
-            setIsAllCheckButtonClick(true);
-            
-            setIsLoading(false);
-        } catch (err) {
-            setError("장바구니 상품을 불러오는데 실패했습니다.");
-            setIsLoading(false);
-        }
-    };
+                // Initialize quantities
+                const initialQuantities = response.data.reduce(
+                    (acc: { [key: number]: number }, item: { product: IProduct; quantity: number }) => {
+                        acc[item.product.product_id] = item.quantity;
+                        return acc;
+                    },
+                    {}
+                );
+                setQuantity(initialQuantities);
 
-    fetchCartProducts();
-}, [userId]);
+                // 모든 상품을 선택된 상태로 초기화
+                setSelectedProducts(response.data.map(item => item.product.product_id));
+                setIsAllCheckButtonClick(true);
 
-// quantity 변경을 위한 별도의 useEffect
-useEffect(() => {
-    const updateProducts = async () => {
-        if (userId === undefined) return;
-        if (userId === null) return;
+                setIsLoading(false);
+            } catch (err) {
+                setError("장바구니 상품을 불러오는데 실패했습니다.");
+                setIsLoading(false);
+            }
+        };
 
-        try {
-            const response = await cartProductAPI.getCartProducts(userId);
-            setProducts(response.data);
-        } catch (err) {
-            console.error("상품 수량 업데이트 실패:", err);
-        }
-    };
+        fetchCartProducts();
+    }, [userId]);
 
-    updateProducts();
-}, [quantity, userId]);
+    // quantity 변경을 위한 별도의 useEffect
+    useEffect(() => {
+        const updateProducts = async () => {
+            if (userId === undefined) return;
+            if (userId === null) return;
+
+            try {
+                const response = await cartProductAPI.getCartProducts(userId);
+                setProducts(response.data);
+            } catch (err) {
+                console.error("상품 수량 업데이트 실패:", err);
+            }
+        };
+
+        updateProducts();
+    }, [quantity, userId]);
 
     const groupedProducts = products.reduce((acc, item) => {
         const company = item.product.company || "기타";
@@ -143,12 +145,12 @@ useEffect(() => {
 
         try {
             await cartProductAPI.updateCartProductPartial(userId, productId, {
-                quantity: newQuantity
+                quantity: newQuantity,
             });
 
             setQuantity(prev => ({
                 ...prev,
-                [productId]: newQuantity
+                [productId]: newQuantity,
             }));
         } catch (err) {
             console.error("수량 업데이트 실패:", err);
@@ -164,7 +166,7 @@ useEffect(() => {
 
     if (isLoading) {
         return (
-            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+            <Block.FlexBox width="100%" height="100vh" justifyContent="center">
                 <Text.TitleMenu200>로딩중...</Text.TitleMenu200>
             </Block.FlexBox>
         );
@@ -172,7 +174,7 @@ useEffect(() => {
 
     if (error) {
         return (
-            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+            <Block.FlexBox width="100%" height="100vh" justifyContent="center">
                 <Text.TitleMenu200 color="Warning">{error}</Text.TitleMenu200>
             </Block.FlexBox>
         );
@@ -180,14 +182,14 @@ useEffect(() => {
 
     if (products.length === 0) {
         return (
-            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+            <Block.FlexBox width="100%" height="100vh" justifyContent="center" alignItems="center">
                 <Text.TitleMenu200>장바구니가 비어있습니다.</Text.TitleMenu200>
             </Block.FlexBox>
         );
     }
 
     return (
-        <Block.FlexBox margin="110px 0 0 0" direction="column">
+        <Block.FlexBox margin="230px 0 0 0" direction="column">
             <Block.FlexBox justifyContent="center">
                 <Block.FlexBox
                     width="90%"
@@ -208,8 +210,8 @@ useEffect(() => {
 
             <Block.FlexBox
                 width="100%"
-                height="87%"
-                padding="0 0 30px 0"
+                height="100vh"
+                padding="0 0 230px 0"
                 direction="column"
                 style={{
                     overflowY: "scroll",
@@ -300,22 +302,19 @@ useEffect(() => {
                 ))}
             </Block.FlexBox>
 
-
             <Block.AbsoluteBox
                 width="100%"
-                height="90px"
                 bgColor="white"
                 bottom="0"
+                padding="20px"
                 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             >
                 <Button.Confirm isDisabled={selectedProducts.length === 0} onClick={handlePayment}>
                     <Text.TitleMenu200 color="White">
                         {totalPrice.toLocaleString()}원 결제하기 ({selectedProducts.length}개)
-
                     </Text.TitleMenu200>
-                 </Button.Confirm>
-                </Block.AbsoluteBox>
-            </Block.FlexBox>
- 
-    )
+                </Button.Confirm>
+            </Block.AbsoluteBox>
+        </Block.FlexBox>
+    );
 }

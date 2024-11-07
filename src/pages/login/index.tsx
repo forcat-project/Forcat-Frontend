@@ -13,10 +13,10 @@ export default function Login() {
     };
     const handleGoogleLoginClick = () => {
         window.location.href = `${GOOGLE_LOGIN_URL}`;
-    }
-    const handleNaverLoginClick =() => {
+    };
+    const handleNaverLoginClick = () => {
         window.location.href = `${NAVER_LOGIN_URL}`;
-    }
+    };
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,15 +24,15 @@ export default function Login() {
     const userId = useUserId();
 
     useEffect(() => {
-      const queryParams = new URLSearchParams(location.search);
-      const accessToken = queryParams.get("access_token");
-      const refreshToken = queryParams.get("refresh_token");
-  
-      if (accessToken && refreshToken) {
-        sessionStorage.setItem("access_token", accessToken);
-        sessionStorage.setItem("refresh_token", refreshToken);
-        navigate("/");
-      }
+        const queryParams = new URLSearchParams(location.search);
+        const accessToken = queryParams.get("access_token");
+        const refreshToken = queryParams.get("refresh_token");
+
+        if (accessToken && refreshToken) {
+            sessionStorage.setItem("access_token", accessToken);
+            sessionStorage.setItem("refresh_token", refreshToken);
+            navigate("/");
+        }
     }, [location.search]);
 
     const deleteUser = async () => {
@@ -47,7 +47,7 @@ export default function Login() {
     return (
         <>
             {/* 삭제하고 제출할 것 */}
-            <Block.AbsoluteBox width="200px" left="0" border="1px solid red" onClick={deleteUser}>
+            <Block.AbsoluteBox width="200px" left="0" onClick={deleteUser}>
                 임시 유저 삭제 버튼
             </Block.AbsoluteBox>
             {/*  */}

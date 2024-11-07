@@ -62,7 +62,7 @@ export default function Cats() {
 
     return (
         <Block.FlexBox padding="20px" direction="column">
-            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="0 20px">
+            <Block.FlexBox justifyContent="space-between" alignItems="center" padding="10px">
                 <Text.TitleMenu200>우리집 냐옹이들</Text.TitleMenu200>
                 <Text.Notice200 color="Gray" pointer onClick={() => navigate("/catadd")}>
                     추가
