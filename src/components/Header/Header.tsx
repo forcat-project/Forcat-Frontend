@@ -17,6 +17,7 @@ export default function Header({ isLoginPage, isSignupPage, handleBackButtonClic
     const currentPath = location.pathname;
 
   const pageData = [
+    { path: "", title:"홈", component: HomeHeader },
     { path: "/home", title: "홈", component: HomeHeader },
     { path: "/market", title: "마켓", component: MarketHeader },
     { path: "/profile", title: "프로필", component: ProfileHeader },
