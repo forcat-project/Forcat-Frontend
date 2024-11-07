@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { orderAPI } from "../../api/resourses/orders";
 import { useUserId } from "../../hooks/useUserId";
 import { Block, Text, Img } from "../../styles/ui";
 import { IOrderProduct } from "../../interfaces/product"; // Existing interface
-
+import styled from "styled-components";
 interface Order {
   orderId: string;
   order_date: string;
@@ -15,11 +15,14 @@ interface Order {
 
 export default function Purchase() {
   const [order, setOrder] = useState<Order | null>(null);
-  const [, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const userId = useUserId();
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setLoading(true); // 로딩 시작
+
     if (userId) {
       orderAPI
         .getOrders(userId)
@@ -51,24 +54,31 @@ export default function Purchase() {
         });
     }
   }, [userId]);
-
+  // 로딩 중일 때 로딩 상태 표시
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   if (!order) {
     return (
-      <Text.TitleMenu200
-        style={{ marginLeft: "20px", marginTop: "20px", marginBottom: "20px" }}
-      >
-        구매/취소내역
-      </Text.TitleMenu200>
+      <Block.FlexBox direction="column" padding="20px">
+        <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
+        <ContentWrapper>
+          <StyledImage src="/no_order.jpg" alt="고양이 없음 이미지" />
+          <Text.TitleMenu200 style={{ color: "#80818C", marginBottom: "10px" }}>
+            구매/취소내역이 비어있습니다
+          </Text.TitleMenu200>
+        </ContentWrapper>
+      </Block.FlexBox>
     );
   }
 
   return (
-    <Block.FlexBox direction="column" padding="20px">
+    <Block.FlexBox direction="column" padding="20px" ref={containerRef}>
       <Block.FlexBox
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        padding="0 0 10px 0"
+        padding="10px"
       >
         <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
         <Text.Notice200
@@ -85,24 +95,17 @@ export default function Purchase() {
           borderRadius: "8px",
           margin: "10px 0",
           border: "1px solid #e8e9eb",
-          cursor: "pointer", // 클릭 가능한 UI 표시
         }}
-        onClick={() => navigate(`/orders/${userId}/${order.orderId}/details`)}
       >
-        <Text.TitleMenu200
+        <Text.Menu200
           style={{
             paddingLeft: "16px",
             marginTop: "20px",
-            // color: "#666669",
-            color: order.status === "canceled" ? "#fa7586" : "#939292",
+            color: "#666669",
           }}
         >
-          {order.status === "completed"
-            ? "구매확정"
-            : order.status === "canceled"
-            ? "주문취소"
-            : "결제완료"}{" "}
-        </Text.TitleMenu200>
+          {order.status === "completed" ? "구매확정" : "배송준비중"}
+        </Text.Menu200>
         <div
           style={{
             height: "1px",
@@ -111,7 +114,6 @@ export default function Purchase() {
             marginTop: "20px",
           }}
         ></div>
-
         <Block.FlexBox direction="column" alignItems="center" padding="16px">
           {order.items.map((item, itemIndex) => (
             <Block.FlexBox
@@ -119,6 +121,10 @@ export default function Purchase() {
               direction="row"
               alignItems="center"
               padding="16px"
+              onClick={() =>
+                navigate(`/orders/${userId}/${order.orderId}/details`)
+              }
+              style={{ cursor: "pointer" }}
             >
               <Img.AngledIcon
                 src={item.product_image}
@@ -159,7 +165,7 @@ export default function Purchase() {
                   {item.quantity}개
                 </Text.Menu>
                 <Text.TitleMenu200>
-                  {Number(order.total_amount).toLocaleString()}원
+                  {Math.round(order.total_amount).toLocaleString()}원
                 </Text.TitleMenu200>
               </Block.FlexBox>
             </Block.FlexBox>
@@ -169,3 +175,18 @@ export default function Purchase() {
     </Block.FlexBox>
   );
 }
+
+// Styled Components for the empty state
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+`;

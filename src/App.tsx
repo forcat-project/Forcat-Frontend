@@ -23,14 +23,21 @@ function App() {
     navigate(-1);
     useScrollRestoration();
   };
-
+  const handleLoginBackButtonClick = () => {
+    navigate("/home");
+  };
   const handleProfileClick = () => {
     navigate("/profile");
   };
   const handlePaymentBackButtonClick = () => {
     navigate("/purchaselist");
   };
-
+  const handleProfileButtonClick = () => {
+    navigate("/search/onlysearch");
+  };
+  const handleCartButtonClick = () => {
+    navigate("/cart");
+  };
   return (
     <>
       <Block.FlexBox bgColor="white">
@@ -40,6 +47,9 @@ function App() {
           handleBackButtonClick={handleBackButtonClick}
           handleProfileClick={handleProfileClick}
           handlePaymentBackButtonClick={handlePaymentBackButtonClick}
+          handleLoginBackButtonClick={handleLoginBackButtonClick}
+          handleProfileButtonClick={handleProfileButtonClick}
+          handleCartButtonClick={handleCartButtonClick}
         />
 
         <Outlet />

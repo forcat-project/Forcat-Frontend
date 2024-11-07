@@ -89,6 +89,8 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
       });
       setIsModalOpen(false); // 모달 닫기
       onReload && onReload(); // onReload가 정의된 경우에만 호출
+
+      window.location.reload(); // 페이지 새로고침
     } catch (error) {
       console.error("주문 취소 중 오류 발생:", error);
       alert("주문 취소에 실패했습니다.");
@@ -97,7 +99,7 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
 
   const handleAlreadyCancel = async () => {
     // 이미 취소된 주문인지 확인
-    if (order_info.status === "canceled") {
+    if (order_info.status === "주문 취소") {
       alert("이미 취소된 주문입니다");
       setIsModalOpen(false); // 모달 닫기
       return;
@@ -111,20 +113,23 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
         product_id: item.product_id,
         name: item.product_name,
         thumbnail_url: item.product_image,
-        price: item.product_price,
-        discounted_price: item.discounted_price,
+        calculatedOriginalPrice: item.discounted_price,
         discount_rate: item.discount_rate,
         company: item.product_company,
+        discounted_price: item.price,
+        count: item.quantity, // 원래 주문 수량 사용
       },
       count: item.quantity, // 원래 주문 수량 사용
     }));
+    console.log(selectedItems);
 
-    // state를 통해 /buy 페이지로 이동
+    // state를 통해 /buy 페이지로 이동 후 새로고침
     navigate("/buy", {
       state: {
         products: selectedItems,
       },
     });
+    window.location.reload(); // 페이지 새로고침
   };
 
   const handleDeleteOrder = async () => {
@@ -150,7 +155,7 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
   };
 
   return (
-    <PageWrapper style={{ marginTop: "70px" }}>
+    <PageWrapper style={{ marginTop: "130px" }}>
       <BoxSection>
         <Grid>
           <Text.TitleMenu200>
@@ -200,31 +205,28 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
           </Text.Menu200>
           <Text.TitleMenu200
             style={{
-              color: order_info.status === "canceled" ? "#fa7586" : "#939292",
+              color: order_info.status === "주문 취소" ? "#fa7586" : "#939292",
             }}
           >
             {order_info.status === "completed"
               ? "구매확정"
-              : order_info.status === "canceled"
+              : order_info.status === "주문 취소"
               ? "주문취소"
               : "결제완료"}
           </Text.TitleMenu200>
         </Block.FlexBox>
-
-        <Block.FlexBox
-          direction="column"
-          alignItems="center"
-          padding="16px"
-          style={{
-            borderRadius: "8px",
-            margin: "10px 0",
-            border: "1px solid #e8e9eb",
-          }}
-          onClick={() =>
-            navigate(`/orders/${userId}/${order_info.orderId}/details`)
-          }
-        >
-          {order_info.products.map((product, index) => (
+        {order_info.products.map((product, index) => (
+          <Block.FlexBox
+            direction="column"
+            alignItems="center"
+            padding="16px"
+            style={{
+              borderRadius: "8px",
+              margin: "10px 0",
+              border: "1px solid #e8e9eb",
+            }}
+            onClick={() => navigate(`/market/${product.product_id}`)}
+          >
             <Block.FlexBox
               key={index}
               direction="row"
@@ -275,8 +277,8 @@ const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
                 </Text.TitleMenu200>
               </Block.FlexBox>
             </Block.FlexBox>
-          ))}
-        </Block.FlexBox>
+          </Block.FlexBox>
+        ))}
         <ButtonContainer>
           <Button1
             onClick={() => {
@@ -473,6 +475,7 @@ const Grid = styled.div`
   margin-top: 10px;
   padding: 15px;
   font-size: 16px;
+  margin-bottom: -5px;
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -502,7 +505,7 @@ const Button2 = styled.button`
   border: 1px solid #e8e9eb;
   border-radius: 8px;
   background-color: white;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   cursor: pointer;
   &:hover {
     background-color: #f5f5f5;

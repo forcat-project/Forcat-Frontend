@@ -3,18 +3,18 @@ import { Block, HeaderContainer, Text } from "../../styles/ui";
 
 type Props = {
   title: string;
-  handleBackButtonClick: () => void;
+  handleLoginBackButtonClick: () => void;
 };
-export default function WithOnlyBackHeader({
+export default function LoginBackHeader({
   title,
-  handleBackButtonClick,
+  handleLoginBackButtonClick,
 }: Props) {
   return (
     <>
       <HeaderContainer>
         <HeaderBackArrow
           width={24}
-          onClick={handleBackButtonClick}
+          onClick={handleLoginBackButtonClick}
           cursor="pointer"
         />
         <Block.FlexBox justifyContent="center">
