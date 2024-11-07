@@ -1,27 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Checked, MinusGray, PlusGray, RemoveGray, Unchecked } from "../../assets/svg";
 import { Block, Button, Img, Text } from "../../styles/ui";
 import { IProduct } from "../../interfaces/product";
+import { cartProductAPI } from "../../api/resourses/cartProducts";
+import { useUserId } from "../../hooks/useUserId";
 
 type Props = {
     onPayment: () => void;
-    products: IProduct[];
 };
 
-export function CartList({ onPayment, products }: Props) {
+export function CartList({ onPayment }: Props) {
+    const userId = useUserId();
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [products, setProducts] = useState<{ product: IProduct; quantity: number }[]>([]);
     const [isAllCheckButtonClick, setIsAllCheckButtonClick] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-    const [quantity, setQuantity] = useState<{ [key: number]: number }>(
-        products.reduce((acc, product) => {
-            acc[product.product_id] = 1;
-            return acc;
-        }, {} as { [key: number]: number })
-    );
+    const [quantity, setQuantity] = useState<{ [key: number]: number }>({});
 
-    const groupedProducts = products.reduce((acc, product) => {
-        (acc[product.company] = acc[product.company] || []).push(product);
+// 초기 데이터 로드를 위한 useEffect
+useEffect(() => {
+    const fetchCartProducts = async () => {
+        if (userId === undefined) return; // Wait for userId to be determined
+        if (userId === null) {
+            setError("로그인이 필요합니다.");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const response = await cartProductAPI.getCartProducts(userId);
+            setProducts(response.data);
+
+            // Initialize quantities
+            const initialQuantities = response.data.reduce(
+                (acc: { [key: number]: number }, item: { product: IProduct; quantity: number }) => {
+                    acc[item.product.product_id] = item.quantity;
+                    return acc;
+                },
+                {}
+            );
+            setQuantity(initialQuantities);
+            
+            // 모든 상품을 선택된 상태로 초기화
+            setSelectedProducts(response.data.map(item => item.product.product_id));
+            setIsAllCheckButtonClick(true);
+            
+            setIsLoading(false);
+        } catch (err) {
+            setError("장바구니 상품을 불러오는데 실패했습니다.");
+            setIsLoading(false);
+        }
+    };
+
+    fetchCartProducts();
+}, [userId]);
+
+// quantity 변경을 위한 별도의 useEffect
+useEffect(() => {
+    const updateProducts = async () => {
+        if (userId === undefined) return;
+        if (userId === null) return;
+
+        try {
+            const response = await cartProductAPI.getCartProducts(userId);
+            setProducts(response.data);
+        } catch (err) {
+            console.error("상품 수량 업데이트 실패:", err);
+        }
+    };
+
+    updateProducts();
+}, [quantity, userId]);
+
+    const groupedProducts = products.reduce((acc, item) => {
+        const company = item.product.company || "기타";
+        (acc[company] = acc[company] || []).push(item);
         return acc;
-    }, {} as { [company: string]: IProduct[] });
+    }, {} as { [company: string]: { product: IProduct; quantity: number }[] });
 
     const handleProductCheckToggle = (productId: number) => {
         setSelectedProducts(prev => {
@@ -37,29 +93,72 @@ export function CartList({ onPayment, products }: Props) {
         if (isAllCheckButtonClick) {
             setSelectedProducts([]);
         } else {
-            setSelectedProducts(products.map(product => product.product_id));
+            setSelectedProducts(products.map(item => item.product.product_id));
         }
         setIsAllCheckButtonClick(prev => !prev);
     };
 
-    const handleProductRemove = () => {
-        console.log("지우기");
+    const handleProductRemove = async (productId: number) => {
+        if (!userId) return;
+
+        try {
+            await cartProductAPI.deleteCartProduct(userId, productId);
+            setProducts(prev => prev.filter(item => item.product.product_id !== productId));
+            setSelectedProducts(prev => prev.filter(id => id !== productId));
+        } catch (err) {
+            console.error("상품 삭제 실패:", err);
+        }
     };
 
-    const handleQuantityChange = (productId: number, delta: number) => {
-        setQuantity(prev => {
-            const currentQuantity = prev[productId] || 1;
-            const newQuantity = Math.max(currentQuantity + delta, 1);
-            return { ...prev, [productId]: newQuantity };
-        });
+    const handleQuantityChange = async (productId: number, delta: number) => {
+        if (!userId) return;
+
+        const newQuantity = Math.max((quantity[productId] || 1) + delta, 1);
+
+        try {
+            await cartProductAPI.updateCartProductPartial(userId, productId, {
+                quantity: newQuantity
+            });
+
+            setQuantity(prev => ({
+                ...prev,
+                [productId]: newQuantity
+            }));
+        } catch (err) {
+            console.error("수량 업데이트 실패:", err);
+        }
     };
 
     const totalPrice = selectedProducts.reduce((total, productId) => {
-        const product = products.find(p => p.product_id === productId);
+        const item = products.find(p => p.product.product_id === productId);
         const productQuantity = quantity[productId] || 1;
-        const discountedPrice = product?.discounted_price || 0;
+        const discountedPrice = item?.product.discounted_price || 0;
         return total + discountedPrice * productQuantity;
     }, 0);
+
+    if (isLoading) {
+        return (
+            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+                <Text.TitleMenu200>로딩중...</Text.TitleMenu200>
+            </Block.FlexBox>
+        );
+    }
+
+    if (error) {
+        return (
+            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+                <Text.TitleMenu200 color="Warning">{error}</Text.TitleMenu200>
+            </Block.FlexBox>
+        );
+    }
+
+    if (products.length === 0) {
+        return (
+            <Block.FlexBox margin="110px 0 0 0" justifyContent="center">
+                <Text.TitleMenu200>장바구니가 비어있습니다.</Text.TitleMenu200>
+            </Block.FlexBox>
+        );
+    }
 
     return (
         <Block.FlexBox margin="110px 0 0 0" direction="column">
@@ -91,10 +190,10 @@ export function CartList({ onPayment, products }: Props) {
                     scrollbarWidth: "none",
                 }}
             >
-                {Object.entries(groupedProducts).map(([company, products]) => (
+                {Object.entries(groupedProducts).map(([company, items]) => (
                     <Block.FlexBox padding="30px 40px" gap="30px" direction="column" key={company}>
                         <Text.TitleMenu300>{company}</Text.TitleMenu300>
-                        {products.map(product => (
+                        {items.map(({ product, quantity }) => (
                             <Block.FlexBox key={product.product_id}>
                                 <Block.FlexBox
                                     width="23px"
@@ -122,18 +221,18 @@ export function CartList({ onPayment, products }: Props) {
                                         <Text.TitleMenu100>{product.name}</Text.TitleMenu100>
                                         <Block.FlexBox alignItems="flex-end">
                                             <Block.FlexBox width="100px" direction="column" gap="3px">
-                                                {Number(product?.discount_rate) > 0 ? (
+                                                {Number(product.discount_rate) > 0 ? (
                                                     <>
                                                         <Text.OriginalPrice>
-                                                            {Math.floor(Number(product?.price)).toLocaleString()}원
+                                                            {Math.floor(Number(product.price)).toLocaleString()}원
                                                         </Text.OriginalPrice>
                                                         <Text.TitleMenu200>
-                                                            {Math.floor(product?.discounted_price).toLocaleString()}원
+                                                            {Math.floor(product.discounted_price).toLocaleString()}원
                                                         </Text.TitleMenu200>
                                                     </>
                                                 ) : (
                                                     <Text.TitleMenu200>
-                                                        {Math.floor(product?.discounted_price).toLocaleString()}원
+                                                        {Math.floor(product.discounted_price).toLocaleString()}원
                                                     </Text.TitleMenu200>
                                                 )}
                                             </Block.FlexBox>
@@ -152,7 +251,7 @@ export function CartList({ onPayment, products }: Props) {
                                                 height={21}
                                                 onClick={() => handleQuantityChange(product.product_id, -1)}
                                             />
-                                            <Text.Notice100>{quantity[product.product_id]}</Text.Notice100>
+                                            <Text.Notice100>{quantity}</Text.Notice100>
                                             <PlusGray
                                                 cursor="pointer"
                                                 width={10}
@@ -163,19 +262,18 @@ export function CartList({ onPayment, products }: Props) {
                                     </Block.FlexBox>
                                 </Block.FlexBox>
 
-                                <Block.FlexBox
-                                    width="30px"
-                                    direction="column"
-                                    justifyContent="space-between"
-                                    alignItems="flex-end"
-                                >
-                                    <RemoveGray width={10} cursor="pointer" onClick={handleProductRemove} />
-                                </Block.FlexBox>
+                                <RemoveGray
+                                    width={15}
+                                    height={20}
+                                    cursor="pointer"
+                                    onClick={() => handleProductRemove(product.product_id)}
+                                />
                             </Block.FlexBox>
                         ))}
                     </Block.FlexBox>
                 ))}
             </Block.FlexBox>
+
 
             <Block.AbsoluteBox
                 width="100%"
@@ -187,9 +285,11 @@ export function CartList({ onPayment, products }: Props) {
                 <Button.Confirm isDisabled={selectedProducts.length === 0} onClick={onPayment}>
                     <Text.TitleMenu200 color="White">
                         {totalPrice.toLocaleString()}원 결제하기 ({selectedProducts.length}개)
+
                     </Text.TitleMenu200>
-                </Button.Confirm>
-            </Block.AbsoluteBox>
-        </Block.FlexBox>
-    );
+                 </Button.Confirm>
+                </Block.AbsoluteBox>
+            </Block.FlexBox>
+ 
+    )
 }
