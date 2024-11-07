@@ -7,6 +7,7 @@ import BannerSlider from "../../components/Home/Banner"; // BannerSlider import
 import ChannelTalk from "../../components/Home/ChannelTalk"; // ChannelTalk import
 import { productAPI } from "../../api/resourses/products"; // productAPI import
 import { useNavigate } from "react-router-dom"; // useNavigate import
+import HiddenImage from "../../components/Home/RandomPoint";
 
 export default function Home() {
     const [popularKeywords, setPopularKeywords] = useState<string[]>([]);
@@ -39,6 +40,7 @@ export default function Home() {
 
     return (
         <>
+            <HiddenImage />
             <ChannelTalk />
             <Block.FlexBox
                 width="100%"

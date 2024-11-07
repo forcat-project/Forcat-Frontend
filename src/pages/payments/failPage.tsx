@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MarketContainer } from "../../components/Product/ProductContainer";
 import styled from "styled-components";
+import { Block, Text } from "../../styles/ui";
 
 interface ErrorData {
     code: string | null;
@@ -36,20 +37,14 @@ const FailPage: React.FC = () => {
         <MarketContainer>
             <BoxSection>
                 <Image src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png" alt="결제 실패" />
-                <h2>결제를 실패했어요</h2>
 
-                <Grid>
-                    <div>
-                        <b>에러 메시지</b>
-                    </div>
-                    <div>{errorData.message || "알 수 없는 오류가 발생했습니다."}</div>
-                </Grid>
-                <Grid>
-                    <div>
-                        <b>에러 코드</b>
-                    </div>
-                    <div>{errorData.code || "N/A"}</div>
-                </Grid>
+                <Block.FlexBox direction="column" gap="10px">
+                    <Text.TitleMenu200>결제를 실패했어요</Text.TitleMenu200>
+                    <Text.TitleMenu300 color="Warning">
+                        {errorData.message || "알 수 없는 오류가 발생했습니다."}
+                    </Text.TitleMenu300>
+                </Block.FlexBox>
+
                 <div
                     style={{
                         marginTop: "30px",
@@ -75,24 +70,19 @@ const FailPage: React.FC = () => {
 export default FailPage;
 
 const BoxSection = styled.div`
-    /* width: 600px; */
     text-align: center;
     margin: 20px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    justify-content: center;
 `;
 
 const Image = styled.img`
     width: 100px;
-`;
-
-const Grid = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 16px;
-
-    &.title {
-        margin-top: 50px;
-    }
 `;
 
 const Button = styled.button`

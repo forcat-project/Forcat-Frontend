@@ -6,7 +6,6 @@ import { cartProductAPI } from "../../api/resourses/cartProducts";
 import { useUserId } from "../../hooks/useUserId";
 import { useNavigate } from "react-router-dom";
 
-
 export function CartList() {
     const navigate = useNavigate();
     const userId = useUserId();
@@ -17,8 +16,6 @@ export function CartList() {
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
     const [quantity, setQuantity] = useState<{ [key: number]: number }>({});
 
- 
-
     const handlePayment = () => {
         // 선택된 상품들의 정보를 구성
         const selectedItems = products
@@ -26,35 +23,34 @@ export function CartList() {
             .map(item => ({
                 product: {
                     product_id: item.product.product_id,
-                    
+
                     name: item.product.name,
                     thumbnail_url: item.product.thumbnail_url,
                     price: item.product.price,
                     discounted_price: item.product.discounted_price,
                     discount_rate: item.product.discount_rate,
-                    company: item.product.company
+                    company: item.product.company,
                 },
                 count: quantity[item.product.product_id] || item.quantity,
             }));
 
         // state를 통해 /buy 페이지로 이동
-        navigate('/buy', {
+        navigate("/buy", {
             state: {
                 products: selectedItems,
-            }
+            },
         });
     };
-    
-// 초기 데이터 로드를 위한 useEffect
-useEffect(() => {
-    const fetchCartProducts = async () => {
-        if (userId === undefined) return; // Wait for userId to be determined
-        if (userId === null) {
-            setError("로그인이 필요합니다.");
-            setIsLoading(false);
-            return;
-        }
- 
+
+    // 초기 데이터 로드를 위한 useEffect
+    useEffect(() => {
+        const fetchCartProducts = async () => {
+            if (userId === undefined) return; // Wait for userId to be determined
+            if (userId === null) {
+                setError("로그인이 필요합니다.");
+                setIsLoading(false);
+                return;
+            }
 
             try {
                 const response = await cartProductAPI.getCartProducts(userId);
@@ -220,7 +216,7 @@ useEffect(() => {
             >
                 {Object.entries(groupedProducts).map(([company, items]) => (
                     <Block.FlexBox padding="30px 40px" gap="30px" direction="column" key={company}>
-                        <Text.TitleMenu300>{company}</Text.TitleMenu300>
+                        <Text.TitleMenu200>{company}</Text.TitleMenu200>
                         {items.map(({ product, quantity }) => (
                             <Block.FlexBox key={product.product_id}>
                                 <Block.FlexBox

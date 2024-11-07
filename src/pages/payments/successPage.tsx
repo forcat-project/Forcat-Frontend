@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { MarketContainer } from "../../components/Product/ProductContainer";
 import { PaymentData, ResponseData } from "../../interfaces/product";
+import { Block, Margin, Text } from "../../styles/ui";
 
 const SuccessPage: React.FC = () => {
     const [paymentData, setPaymentData] = useState<PaymentData>({
@@ -63,20 +64,23 @@ const SuccessPage: React.FC = () => {
         <MarketContainer>
             <BoxSection>
                 <Image src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" alt="결제 성공" />
-                <h2>결제를 완료했어요</h2>
+                <Margin direction="column" size={20} />
+                <Text.TitleMenu200>결제를 완료했어요</Text.TitleMenu200>
 
-                <Grid>
-                    <div>
-                        <b>결제금액</b>
-                    </div>
-                    <div>{paymentData.amount}원</div>
-                </Grid>
-                <Grid>
-                    <div>
-                        <b>주문번호</b>
-                    </div>
-                    <div>No.{paymentData.orderId}</div>
-                </Grid>
+                <Margin direction="column" size={20} />
+
+                <Block.FlexBox justifyContent="center" margin="50px 50px">
+                    <Block.FlexBox width="120px" alignItems="flex-start" direction="column" gap="10px">
+                        <Text.TitleMenu200>결제금액</Text.TitleMenu200>
+                        <Text.TitleMenu200>주문번호</Text.TitleMenu200>
+                    </Block.FlexBox>
+
+                    <Block.FlexBox width="120px" alignItems="flex-end" direction="column" gap="10px">
+                        <Text.TitleMenu200 color="Gray500">{paymentData.amount}원</Text.TitleMenu200>
+                        <Text.TitleMenu200 color="Gray500">No.{paymentData.orderId}</Text.TitleMenu200>
+                    </Block.FlexBox>
+                </Block.FlexBox>
+
                 <div
                     style={{
                         marginTop: "30px",
@@ -105,9 +109,15 @@ const SuccessPage: React.FC = () => {
 export default SuccessPage;
 
 const BoxSection = styled.div`
-    /* width: 600px; */
     text-align: center;
     margin: 20px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    justify-content: center;
 `;
 
 const Image = styled.img`

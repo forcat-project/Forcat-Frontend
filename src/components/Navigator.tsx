@@ -1,49 +1,54 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Market,
-  MarketDisabled,
-  Search,
-  SearchDisabled,
-  Home,
-  HomeDisabled,
-  Cart,
-  CartDisabled,
-  Profile,
-  ProfileDisabled,
+    Market,
+    MarketDisabled,
+    Search,
+    SearchDisabled,
+    Home,
+    HomeDisabled,
+    Cart,
+    CartDisabled,
+    Profile,
+    ProfileDisabled,
+    CatYellow,
+    SearchYellow,
+    HomeYellow,
+    CartYellow,
+    ProfileYellow,
 } from "../assets/svg";
 import { Block, NavContainer, Text } from "../styles/ui";
-import { useUserId } from '../hooks/useUserId';
+import { useUserId } from "../hooks/useUserId";
 
 type Props = {
-  isLoginPage: boolean;
-  isSignupPage: boolean;
-  isMarketDetailPage: boolean;
-  isBuyPage: boolean;
-  isPrivacyPolicyPage: boolean;
-  isTermsOfUsePage: boolean;
-  isUnregister1Page: boolean;
-  isUnregister2Page: boolean;
-  isCartPage: boolean;
-  isCatAddPage: boolean;
-  isPaymentsDetailPage: boolean;
+    isLoginPage: boolean;
+    isSignupPage: boolean;
+    isMarketDetailPage: boolean;
+    isBuyPage: boolean;
+    isPrivacyPolicyPage: boolean;
+    isTermsOfUsePage: boolean;
+    isUnregister1Page: boolean;
+    isUnregister2Page: boolean;
+    isCartPage: boolean;
+    isCatAddPage: boolean;
+    isPaymentsDetailPage: boolean;
 };
 
- 
 export default function Navigator({
-  isLoginPage,
-  isSignupPage,
-  isMarketDetailPage,
-  isBuyPage,
-  isPrivacyPolicyPage,
-  isTermsOfUsePage,
-  isUnregister1Page,
-  isUnregister2Page,
-  isCartPage,
-  isCatAddPage,
-  isPaymentsDetailPage,
+    isLoginPage,
+    isSignupPage,
+    isMarketDetailPage,
+    isBuyPage,
+    isPrivacyPolicyPage,
+    isTermsOfUsePage,
+    isUnregister1Page,
+    isUnregister2Page,
+    isCartPage,
+    isCatAddPage,
+    isPaymentsDetailPage,
 }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
+
     const userId = useUserId();
 
     const handleNavigation = (path: string) => {
@@ -139,4 +144,5 @@ export default function Navigator({
         )}
     </>
   );
+ 
 }

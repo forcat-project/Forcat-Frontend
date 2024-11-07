@@ -167,9 +167,10 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px;
+    padding: 64px 0 0 0;
     overflow: auto;
     width: 100%;
+    height: 100vh;
 `;
 
 const MaxWidthContainer = styled.div`
