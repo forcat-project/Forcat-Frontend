@@ -113,10 +113,10 @@ export default function UserEdit({ user, onClose, onReload }: UserEditProps) {
             <img
               src={profilePicture || "https://via.placeholder.com/150"}
               alt="User Profile"
-              width="80"
-              height="80"
+              width="70"
+              height="70"
               style={{
-                borderRadius: "50%",
+                borderRadius: "20%",
                 marginBottom: "10px",
                 cursor: "pointer",
               }}
