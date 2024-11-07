@@ -4,11 +4,13 @@ import MarketHeader from "./MarketHeader";
 import ProfileHeader from "./ProfileHeader";
 import WithOnlyBackHeader from "./WithOnlyBackHeader";
 import WithBackAndIconHeader from "./WithBackAndIconHeader";
+import PaymentBackHeader from "./PaymentBackHeader";
 
 type Props = {
   isLoginPage: boolean;
   isSignupPage: boolean;
   handleBackButtonClick: () => void;
+  handlePaymentBackButtonClick: () => void;
   handleProfileClick: () => void;
 };
 
@@ -17,6 +19,7 @@ export default function Header({
   isSignupPage,
   handleBackButtonClick,
   handleProfileClick,
+  handlePaymentBackButtonClick,
 }: Props) {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -86,7 +89,7 @@ export default function Header({
     {
       path: "/orders/:userId/:orderId/details",
       title: "주문 상세",
-      component: WithOnlyBackHeader,
+      component: PaymentBackHeader,
     },
   ];
 
@@ -105,6 +108,7 @@ export default function Header({
       title={title}
       handleBackButtonClick={handleBackButtonClick}
       handleProfileClick={handleProfileClick}
+      handlePaymentBackButtonClick={handlePaymentBackButtonClick}
     />
   );
 }

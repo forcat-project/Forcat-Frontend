@@ -536,6 +536,13 @@ export const Divider = styled.div`
     margin: 20px 0;
 `;
 
+export const Divider2 = styled.div`
+  width: 100%;
+  height: 2px;
+  background-color: #f0f0f0;
+  margin: 20px 0;
+`;
+
 export const HeaderContainer = styled.div`
     position: fixed;
     top: 0;

@@ -167,4 +167,5 @@ export default function Cats() {
             </ReactModal>
         </Block.FlexBox>
     );
+
 }
