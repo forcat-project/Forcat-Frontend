@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { KAKAO_LOGIN_URL } from "../../api/constants";
+import { GOOGLE_LOGIN_URL, KAKAO_LOGIN_URL, NAVER_LOGIN_URL } from "../../api/constants";
 import { BtnGoogle, BtnKakao, BtnNaver, LoginLogo } from "../../assets/svg";
 import { Block, Img, Text } from "../../styles/ui";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +11,12 @@ export default function Login() {
     const handleKakaoLoginClick = () => {
         window.location.href = `${KAKAO_LOGIN_URL}`;
     };
+    const handleGoogleLoginClick = () => {
+        window.location.href = `${GOOGLE_LOGIN_URL}`;
+    }
+    const handleNaverLoginClick =() => {
+        window.location.href = `${NAVER_LOGIN_URL}`;
+    }
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -64,8 +70,8 @@ export default function Login() {
                 <Text.Notice100 color="Gray">SNS 계정으로 빠르게 시작해보세요!</Text.Notice100>
                 <Block.FlexBox justifyContent="center" gap="45px">
                     <BtnKakao onClick={handleKakaoLoginClick} width={46} cursor="pointer" />
-                    <BtnGoogle width={46} />
-                    <BtnNaver width={46} />
+                    <BtnGoogle onClick={handleGoogleLoginClick} width={46} />
+                    <BtnNaver onClick={handleNaverLoginClick} width={46} />
                 </Block.FlexBox>
             </Block.FlexBox>
         </>
