@@ -294,7 +294,6 @@ const SearchHeader = styled.div`
     position: sticky;
     top: 0; // 스크롤 시에도 상단에 고정
     z-index: 10;
-    border: 1px solid red;
 `;
 
 const SearchBar = styled.div`

@@ -18,6 +18,7 @@ import {
     SoldoutBox,
 } from "../../../components/Product/ProductContainer"; // 공통 Styled Components 가져오기
 import { ProductQueryParams, productAPI } from "../../../api/resourses/products";
+import { Block } from "../../../styles/ui";
 
 export default function OnlyForCat() {
     const [products, setProducts] = useState<IProducts[]>([]);
@@ -93,6 +94,7 @@ export default function OnlyForCat() {
     }
 
     return (
+        <Block.FlexBox padding="160px 0 0 0">
         <MarketContainer>
             <ProductGrid>
                 {products.map(product => (
@@ -133,5 +135,6 @@ export default function OnlyForCat() {
             </ProductGrid>
             {isFetching && <div>Loading more products...</div>}
         </MarketContainer>
+        </Block.FlexBox>
     );
 }
