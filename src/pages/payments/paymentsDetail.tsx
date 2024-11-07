@@ -84,6 +84,14 @@ const PaymentsDetail: React.FC = () => {
                     </ProductSection>
                 ))}
 
+  const shippingStatuses = [
+    "배송준비중",
+    "상품발송",
+    "택배사도착",
+    "배송중",
+    "배송완료",
+  ];
+
   return (
     <PageWrapper style={{ marginTop: "70px" }}>
       <BoxSection>
@@ -253,7 +261,16 @@ const PaymentsDetail: React.FC = () => {
           >
             배송 현황{" "}
           </Text.Menu200>
-          <div>{order_info.shipping_status}</div>
+          <ShippingStatusContainer>
+            {shippingStatuses.map((status, index) => (
+              <StatusText
+                key={index}
+                isActive={status === order_info.shipping_status}
+              >
+                {status}
+              </StatusText>
+            ))}
+          </ShippingStatusContainer>
         </Block.FlexBox>
         <Divider />
 
@@ -325,4 +342,14 @@ const Button = styled.button`
   &:hover {
     background-color: #f5f5f5;
   }
+`;
+
+const ShippingStatusContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const StatusText = styled.span<{ isActive: boolean }>`
+  color: ${(props) => (props.isActive ? "#F4B647" : "#000")};
 `;
