@@ -144,19 +144,20 @@ export default function PurchaseList() {
                 alignItems="center"
                 padding="16px"
               >
-                <Text.Menu200
+                <Text.TitleMenu200
                   style={{
                     paddingLeft: "16px",
                     marginBottom: "8px",
-                    color: "#666669",
+                    // color: "#666669",
+                    color: order.status === "canceled" ? "#fa7586" : "#939292",
                   }}
                 >
                   {order.status === "completed"
                     ? "구매확정"
                     : order.status === "canceled"
-                    ? "결제취소"
+                    ? "주문취소"
                     : "결제완료"}
-                </Text.Menu200>
+                </Text.TitleMenu200>
 
                 <Text.Notice200
                   pointer

@@ -89,15 +89,20 @@ export default function Purchase() {
         }}
         onClick={() => navigate(`/orders/${userId}/${order.orderId}/details`)}
       >
-        <Text.Menu200
+        <Text.TitleMenu200
           style={{
             paddingLeft: "16px",
             marginTop: "20px",
-            color: "#666669",
+            // color: "#666669",
+            color: order.status === "canceled" ? "#fa7586" : "#939292",
           }}
         >
-          {order.status === "completed" ? "구매확정" : "배송준비중"}
-        </Text.Menu200>
+          {order.status === "completed"
+            ? "구매확정"
+            : order.status === "canceled"
+            ? "주문취소"
+            : "결제완료"}{" "}
+        </Text.TitleMenu200>
         <div
           style={{
             height: "1px",
@@ -106,6 +111,7 @@ export default function Purchase() {
             marginTop: "20px",
           }}
         ></div>
+
         <Block.FlexBox direction="column" alignItems="center" padding="16px">
           {order.items.map((item, itemIndex) => (
             <Block.FlexBox

@@ -3,28 +3,50 @@ import { useParams } from "react-router-dom";
 import { orderAPI } from "../../api/resourses/orders";
 import { IResponseData } from "../../interfaces/product";
 import styled from "styled-components";
-import { Text, PageWrapper, Block, Img, Divider2 } from "../../styles/ui";
-import axios from "axios"; // axios를 추가하여 문제 해결
+import {
+  Text,
+  PageWrapper,
+  Block,
+  Img,
+  Divider2,
+  Button,
+} from "../../styles/ui";
+import ForcatModal from "../../components/Modal/ForcatModal";
+import { Warning } from "../../assets/svg";
+import { useNavigate } from "react-router-dom";
+interface OrderInfoProps {
+  onReload?: () => void; // 선택적인 prop으로 수정
+}
 
-const PaymentsDetail: React.FC = () => {
+const PaymentsDetail: React.FC<OrderInfoProps> = ({ onReload }) => {
   const [responseData, setResponseData] = useState<IResponseData | null>(null);
   const { userId, orderId } = useParams<{ userId: string; orderId: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false); // 주문 취소 모달 상태 추가
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
+  const fetchOrderDetails = async () => {
+    if (!orderId || !userId) return;
+
+    try {
+      const response = await orderAPI.getOrder(Number(userId), orderId);
+      setResponseData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("주문 상세 정보 요청 중 오류 발생:", error);
+    }
+  };
+
+  // 초기 로딩 시 주문 데이터 가져오기
   useEffect(() => {
-    const fetchOrderDetails = async () => {
-      if (!orderId || !userId) return;
-
-      try {
-        const response = await orderAPI.getOrder(Number(userId), orderId);
-        setResponseData(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("주문 상세 정보 요청 중 오류 발생:", error);
-      }
-    };
-
     fetchOrderDetails();
   }, [orderId, userId]);
+
+  // 모달이 닫힐 때 데이터 리렌더링
+  useEffect(() => {
+    if (!isModalOpen) {
+      fetchOrderDetails();
+    }
+  }, [isModalOpen]);
 
   const formatPhoneNumber = (phoneNumber: string | undefined) => {
     if (!phoneNumber) return "";
@@ -36,7 +58,7 @@ const PaymentsDetail: React.FC = () => {
   const { order_info } = responseData;
 
   const shippingStatuses = [
-    "배송 준비 중",
+    "배송 준비중",
     "➔",
     "상품 발송",
     "➔",
@@ -47,11 +69,14 @@ const PaymentsDetail: React.FC = () => {
     "배송완료",
   ];
 
-  // 주문 취소 함수 추가
   const handleCancelOrder = async () => {
     try {
       await orderAPI.updateOrder(Number(userId), String(orderId));
       alert("주문이 취소되었습니다.");
+
+      // 주문 취소 후 데이터 새로고침
+      await fetchOrderDetails();
+
       setResponseData((prevData) => {
         if (!prevData) return prevData;
         return {
@@ -62,10 +87,51 @@ const PaymentsDetail: React.FC = () => {
           },
         };
       });
+      setIsModalOpen(false); // 모달 닫기
+      onReload && onReload(); // onReload가 정의된 경우에만 호출
     } catch (error) {
       console.error("주문 취소 중 오류 발생:", error);
       alert("주문 취소에 실패했습니다.");
     }
+  };
+
+  const handleAlreadyCancel = async () => {
+    // 이미 취소된 주문인지 확인
+    if (order_info.status === "canceled") {
+      alert("이미 취소된 주문입니다");
+      setIsModalOpen(false); // 모달 닫기
+      return;
+    }
+  };
+
+  // 재구매 클릭 핸들러 추가
+  // const handleReorder = () => {
+  //   const productIds = order_info.products.map((item) => item.product_id);
+  //   // 결제 페이지로 이동, product_ids를 쿼리 파라미터로 전달
+  //   navigate(`/checkout?product_ids=${productIds.join(",")}`);
+  // };
+
+  const handleReorder = () => {
+    // 주문된 상품 정보 구성
+    const selectedItems = order_info.products.map((item) => ({
+      product: {
+        product_id: item.product_id,
+        name: item.product_name,
+        thumbnail_url: item.product_image,
+        price: item.product_price,
+        discounted_price: item.discounted_price,
+        discount_rate: item.discount_rate,
+        company: item.product_company,
+      },
+      count: item.quantity, // 원래 주문 수량 사용
+    }));
+
+    // state를 통해 /buy 페이지로 이동
+    navigate("/buy", {
+      state: {
+        products: selectedItems,
+      },
+    });
   };
 
   return (
@@ -89,33 +155,20 @@ const PaymentsDetail: React.FC = () => {
         <Block.FlexBox direction="column" margin="0 0 0 10px" flexGrow="1">
           <Text.Notice200
             style={{
-              // color: "#161616",
               marginBottom: "15px",
               fontSize: "20px",
             }}
           >
             {order_info.user_name}
           </Text.Notice200>
-          <Text.Menu
-            style={{
-              marginBottom: "10px",
-            }}
-          >
+          <Text.Menu style={{ marginBottom: "10px" }}>
             {formatPhoneNumber(order_info.phone_number)}
           </Text.Menu>
-          <Text.Menu
-            style={{
-              marginBottom: "10px",
-            }}
-          >
+          <Text.Menu style={{ marginBottom: "10px" }}>
             {order_info.shipping_address} {order_info.shipping_address_detail}
           </Text.Menu>
-          <Text.Menu
-            style={{
-              marginBottom: "10px",
-            }}
-          >
-            {order_info.shipping_memo}{" "}
+          <Text.Menu style={{ marginBottom: "10px" }}>
+            {order_info.shipping_memo}
           </Text.Menu>
         </Block.FlexBox>
         <Divider2 />
@@ -125,27 +178,20 @@ const PaymentsDetail: React.FC = () => {
           direction="column"
           margin="0 0 0 10px"
           flexGrow="1"
-          style={{
-            marginLeft: "10px",
-          }}
+          style={{ marginLeft: "10px" }}
         >
-          <Text.Menu200
-            style={{
-              fontSize: "20px",
-              marginBottom: "20px",
-            }}
-          >
+          <Text.Menu200 style={{ fontSize: "20px", marginBottom: "20px" }}>
             주문상품 {order_info.products.length}개
           </Text.Menu200>
           <Text.TitleMenu200
             style={{
-              color: order_info.status === "canceled" ? "#fa7586" : "#e8e9eb",
+              color: order_info.status === "canceled" ? "#fa7586" : "#939292",
             }}
           >
             {order_info.status === "completed"
               ? "구매확정"
               : order_info.status === "canceled"
-              ? "결제취소"
+              ? "주문취소"
               : "결제완료"}
           </Text.TitleMenu200>
         </Block.FlexBox>
@@ -166,7 +212,6 @@ const PaymentsDetail: React.FC = () => {
               direction="row"
               alignItems="center"
               padding="16px"
-              // onClick={() => handleClick(item.product_id)}
               style={{ cursor: "pointer" }}
             >
               <Img.AngledIcon
@@ -215,8 +260,22 @@ const PaymentsDetail: React.FC = () => {
           ))}
         </Block.FlexBox>
         <ButtonContainer>
-          <Button>재구매</Button>
-          <Button onClick={() => handleCancelOrder()}>주문 취소</Button>
+          <Button1
+            onClick={() => {
+              handleReorder();
+            }}
+          >
+            재구매
+          </Button1>
+          <Button1
+            onClick={() => {
+              setIsModalOpen(true);
+              handleAlreadyCancel();
+            }}
+          >
+            주문 취소
+          </Button1>{" "}
+          {/* 주문 취소 버튼 클릭 시 모달 열기 */}
         </ButtonContainer>
         <Divider2 />
 
@@ -225,17 +284,10 @@ const PaymentsDetail: React.FC = () => {
           direction="column"
           margin="0 0 0 10px"
           flexGrow="1"
-          style={{
-            marginLeft: "10px",
-          }}
+          style={{ marginLeft: "10px" }}
         >
-          <Text.Menu200
-            style={{
-              fontSize: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            배송 현황{" "}
+          <Text.Menu200 style={{ fontSize: "20px", marginBottom: "20px" }}>
+            배송 현황
           </Text.Menu200>
           <ShippingStatusContainer>
             {shippingStatuses.map((status, index) => (
@@ -250,22 +302,15 @@ const PaymentsDetail: React.FC = () => {
         </Block.FlexBox>
         <Divider2 />
 
-        {/*========== 결제 내역 */}
+        {/* 결제 내역 */}
         <Block.FlexBox
           direction="column"
           margin="0 0 0 10px"
           flexGrow="1"
-          style={{
-            marginLeft: "10px",
-          }}
+          style={{ marginLeft: "10px" }}
         >
-          <Text.Menu200
-            style={{
-              fontSize: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            결제 내역{" "}
+          <Text.Menu200 style={{ fontSize: "20px", marginBottom: "20px" }}>
+            결제 내역
           </Text.Menu200>
         </Block.FlexBox>
 
@@ -343,6 +388,56 @@ const PaymentsDetail: React.FC = () => {
           </Block.FlexBox>
         </Block.FlexBox>
         <Button2>주문 내역 삭제</Button2>
+
+        {/* 주문취소 모달 */}
+        <ForcatModal
+          isOpen={isModalOpen}
+          setIsOpen={(isOpen) => {
+            setIsModalOpen(isOpen);
+            if (!isOpen) {
+              fetchOrderDetails(); // 모달이 닫힐 때 데이터 새로고침
+              onReload && onReload(); // onReload가 정의된 경우에만 호출
+            }
+          }}
+          title=""
+          width="100%"
+          height="215px"
+        >
+          {/* 모달 내용 */}
+          <Block.FlexBox
+            width="100%"
+            height="100%"
+            direction="column"
+            alignItems="center"
+            gap="26px"
+          >
+            <Warning width="24px" height="24px" />
+            <Text.TitleMenu300>주문을 취소하시겠습니까?</Text.TitleMenu300>
+            <Block.FlexBox
+              width="100%"
+              justifyContent="center"
+              alignItems="center"
+              gap="12px"
+            >
+              <Button.CartButton
+                onClick={() => setIsModalOpen(false)}
+                isSoldOut={false}
+              >
+                취소
+              </Button.CartButton>
+              <Button.BuyButton
+                cursor="pointer"
+                isSoldOut={false}
+                onClick={() => {
+                  handleCancelOrder();
+                  setIsModalOpen(false);
+                }}
+              >
+                주문취소
+              </Button.BuyButton>
+            </Block.FlexBox>
+          </Block.FlexBox>
+        </ForcatModal>
       </BoxSection>
     </PageWrapper>
   );
@@ -351,12 +446,8 @@ const PaymentsDetail: React.FC = () => {
 export default PaymentsDetail;
 
 const BoxSection = styled.div`
-  /* width: 600px; */
-
-  /* margin: 10px auto; */
   padding: 0px 24px;
   background-color: #ffffff;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 `;
 
 const Grid = styled.div`
@@ -371,10 +462,9 @@ const ButtonContainer = styled.div`
   justify-content: space-around;
   margin-top: 20px;
   padding: 10px 0;
-  /* border-top: 1px solid #e8e9eb; */
 `;
 
-const Button = styled.button`
+const Button1 = styled.button`
   width: 48%;
   padding: 10px;
   font-size: 16px;
