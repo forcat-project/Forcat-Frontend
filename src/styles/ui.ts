@@ -530,8 +530,9 @@ export const Section = styled.div`
 `;
 
 export const Divider = styled.div`
-    width: 100%;
-    height: 10px;
+    width: 92%;
+    height: 1px;
+    border-radius: 50px;
     background-color: #f0f0f0;
     margin: 20px 0;
 `;

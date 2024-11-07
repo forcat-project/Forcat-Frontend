@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import React from "react";
 import Modal from "react-modal";
 import UserProfile from "../../assets/svg/UserProfile";
 import { Block, Text, Button } from "../../styles/ui";
@@ -49,9 +48,9 @@ export default function UserInfo({ onReload }: UserInfoProps) {
     };
 
     return (
-        <Block.FlexBox direction="column" padding="20px" bgColor="white">
-            <Block.FlexBox direction="row" justifyContent="space-between" alignItems="center">
-                <Block.FlexBox direction="row" alignItems="center">
+        <Block.FlexBox direction="column" padding="0 40px" bgColor="white">
+            <Block.FlexBox alignItems="center">
+                <Block.FlexBox alignItems="center">
                     <Block.FlexBox width="70px" height="70px">
                         {user?.profile_picture ? (
                             <img
@@ -71,16 +70,16 @@ export default function UserInfo({ onReload }: UserInfoProps) {
                 </Block.FlexBox>
 
                 <Button.EditButton onClick={toggleEditModal}>
-                    <Text.Mini>편집</Text.Mini>
+                    <Text.Mini color="Gray600">편집</Text.Mini>
                 </Button.EditButton>
             </Block.FlexBox>
             {/* 생선 포인트 UI 추가 */}
             <Block.FlexBox direction="row" alignItems="center" style={{ marginLeft: "10px" }}>
                 <Text.TitleMenu300 style={{ marginRight: "10px" }}>🎣</Text.TitleMenu300>
-                <Text.Notice100 color="Gray" style={{ marginRight: "10px" }}>
+                <Text.Notice200 color="Gray" style={{ marginRight: "10px" }}>
                     모은 생선 포인트
-                </Text.Notice100>
-                <Text.TitleMenu300>{user?.points} P</Text.TitleMenu300>
+                </Text.Notice200>
+                <Text.Notice200>{user?.points} P</Text.Notice200>
             </Block.FlexBox>
             <Modal
                 isOpen={isEditModalOpen}
