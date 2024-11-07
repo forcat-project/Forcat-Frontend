@@ -5,21 +5,23 @@ import ProfileHeader from "./ProfileHeader";
 import WithOnlyBackHeader from "./WithOnlyBackHeader";
 import WithBackAndIconHeader from "./WithBackAndIconHeader";
 import PaymentBackHeader from "./PaymentBackHeader";
-
+import LoginBackHeader from "./LoginBackHeader";
 type Props = {
   isLoginPage: boolean;
   isSignupPage: boolean;
   handleBackButtonClick: () => void;
   handlePaymentBackButtonClick: () => void;
   handleProfileClick: () => void;
+  handleLoginBackButtonClick: () => void;
 };
 
 export default function Header({
-  isLoginPage,
+  // isLoginPage,
   isSignupPage,
   handleBackButtonClick,
   handleProfileClick,
   handlePaymentBackButtonClick,
+  handleLoginBackButtonClick,
 }: Props) {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -91,13 +93,18 @@ export default function Header({
       title: "주문 상세",
       component: PaymentBackHeader,
     },
+    {
+      path: "/login",
+      title: "",
+      component: LoginBackHeader,
+    },
   ];
 
   const currentPage = pageData.find((page) =>
     matchPath(page.path, currentPath)
   );
 
-  if (isLoginPage || isSignupPage || !currentPage) {
+  if (isSignupPage || !currentPage) {
     return null;
   }
 
@@ -109,6 +116,7 @@ export default function Header({
       handleBackButtonClick={handleBackButtonClick}
       handleProfileClick={handleProfileClick}
       handlePaymentBackButtonClick={handlePaymentBackButtonClick}
+      handleLoginBackButtonClick={handleLoginBackButtonClick}
     />
   );
 }

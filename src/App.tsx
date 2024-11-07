@@ -23,7 +23,9 @@ function App() {
     navigate(-1);
     useScrollRestoration();
   };
-
+  const handleLoginBackButtonClick = () => {
+    navigate("/home");
+  };
   const handleProfileClick = () => {
     navigate("/profile");
   };
@@ -40,6 +42,7 @@ function App() {
           handleBackButtonClick={handleBackButtonClick}
           handleProfileClick={handleProfileClick}
           handlePaymentBackButtonClick={handlePaymentBackButtonClick}
+          handleLoginBackButtonClick={handleLoginBackButtonClick}
         />
 
         <Outlet />
