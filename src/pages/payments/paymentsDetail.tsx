@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { orderAPI } from "../../api/resourses/orders";
-import { MarketContainer } from "../../components/Product/ProductContainer";
 import { IResponseData } from "../../interfaces/product";
 import styled from "styled-components";
-import { Block } from "../../styles/ui";
+import { Text, PageWrapper, Divider, Block, Img } from "../../styles/ui";
 
 const PaymentsDetail: React.FC = () => {
     const [responseData, setResponseData] = useState<IResponseData | null>(null);
@@ -86,17 +85,10 @@ const PaymentsDetail: React.FC = () => {
                 ))}
 
   return (
-    <MarketContainer>
+    <PageWrapper style={{ marginTop: "70px" }}>
       <BoxSection>
-        <h2>주문 상세</h2>
         <Grid>
-          <div>
-            <b>No.{orderId}</b>
-          </div>
-        </Grid>
-        <Grid>
-          <div>
-            <b>Date</b>(
+          <Text.TitleMenu200>
             {new Date(order_info.order_date)
               .toLocaleDateString("ko-KR", {
                 year: "2-digit",
@@ -104,90 +96,166 @@ const PaymentsDetail: React.FC = () => {
                 day: "2-digit",
               })
               .replace(/\./g, ".")}
-            )
-          </div>
+          </Text.TitleMenu200>
+          <div>No.{orderId}</div>
         </Grid>
-        <hr />
-        <h3>구매 상품</h3>
-        {order_info.products.map((product, index) => (
-          <BoxSection key={index}>
-            <Grid>
-              <div>
-                <b>{product.product_company}</b>
-              </div>
-            </Grid>
-            <Grid>
-              <div>{order_info.status}</div>
-            </Grid>
-            <Grid>
-              <div>
-                <b>상품명</b>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={product.product_image}
-                  alt={product.product_name}
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    marginRight: "0px",
-                    borderRadius: "5px",
-                  }}
-                />
-                {product.product_name}
-                {product.product_status}
-              </div>
-            </Grid>
-            <Grid>
-              <div>
-                <b>구매 수량</b>
-              </div>
-              <div>{product.quantity}개</div>
-            </Grid>
-            <Grid>
-              <div>
-                <b>상품 금액</b>
-              </div>
-              <div>{Number(product.price).toLocaleString()}원</div>
-            </Grid>
-            <hr />
-          </BoxSection>
-        ))}
+        <Divider />
 
-        <h2>배송 현황</h2>
-        <Grid>
-          <div>{order_info.shipping_status}</div>
-        </Grid>
-        <hr />
-
-        <h2>배송 정보</h2>
-        <Grid>
-          <div>
-            <b>수령인</b>
-          </div>
-          <div>{order_info.user_name}</div>
-        </Grid>
-        <Grid>
-          <div>
-            <b>휴대폰</b>
-          </div>
-          <div>{formatPhoneNumber(order_info.phone_number)}</div>
-        </Grid>
-        <Grid>
-          <div>
-            <b>주소</b>
-          </div>
-          <div>
+        {/* 유저정보 */}
+        <Block.FlexBox direction="column" margin="0 0 0 10px" flexGrow="1">
+          <Text.Notice200
+            style={{
+              // color: "#161616",
+              marginBottom: "15px",
+              fontSize: "20px",
+            }}
+          >
+            {order_info.user_name}
+          </Text.Notice200>
+          <Text.Menu
+            style={{
+              marginBottom: "10px",
+            }}
+          >
+            {formatPhoneNumber(order_info.phone_number)}
+          </Text.Menu>
+          <Text.Menu
+            style={{
+              marginBottom: "10px",
+            }}
+          >
             {order_info.shipping_address} {order_info.shipping_address_detail}
-          </div>
-        </Grid>
-        <Grid>
-          <div>
-            <b>배송 메모</b>
-          </div>
-          <div>{order_info.shipping_memo}</div>
-        </Grid>
-        <hr />
+          </Text.Menu>
+          <Text.Menu
+            style={{
+              marginBottom: "10px",
+            }}
+          >
+            {order_info.shipping_memo}{" "}
+          </Text.Menu>
+        </Block.FlexBox>
+        <Divider />
+
+        {/* 주문상품 정보 */}
+        <Block.FlexBox
+          direction="column"
+          margin="0 0 0 10px"
+          flexGrow="1"
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          <Text.Menu200
+            style={{
+              fontSize: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            주문상품 {order_info.products.length}개
+          </Text.Menu200>
+          <Text.TitleMenu100
+            style={
+              {
+                // paddingLeft: "-30px",
+                // marginBottom: "8px",
+                // color: "#666669",
+              }
+            }
+          >
+            {order_info.status === "completed" ? "구매확정" : "결제완료"}
+          </Text.TitleMenu100>
+        </Block.FlexBox>
+
+        <Block.FlexBox
+          direction="column"
+          alignItems="center"
+          padding="16px"
+          style={{
+            borderRadius: "8px",
+            margin: "10px 0",
+            border: "1px solid #e8e9eb",
+          }}
+        >
+          {order_info.products.map((product, index) => (
+            <Block.FlexBox
+              key={index}
+              direction="row"
+              alignItems="center"
+              padding="16px"
+              // onClick={() => handleClick(item.product_id)}
+              style={{ cursor: "pointer" }}
+            >
+              <Img.AngledIcon
+                src={product.product_image}
+                width="80px"
+                height="80px"
+              />
+              <Block.FlexBox
+                direction="column"
+                margin="0 0 0 20px"
+                flexGrow="1"
+              >
+                <Text.Notice200
+                  style={{
+                    color: "#161616",
+                    marginBottom: "5px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {product.product_company}
+                </Text.Notice200>
+                <Text.Menu
+                  margin="5px 0"
+                  style={{
+                    color: "#161616",
+                    marginBottom: "5px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {product.product_name}
+                </Text.Menu>
+                <Text.Menu
+                  color="Gray"
+                  style={{
+                    marginBottom: "10px",
+                    fontSize: "13px",
+                  }}
+                >
+                  {product.quantity}개
+                </Text.Menu>
+                <Text.TitleMenu200>
+                  {Math.round(order_info.total_amount).toLocaleString()}원
+                </Text.TitleMenu200>
+              </Block.FlexBox>
+            </Block.FlexBox>
+          ))}
+        </Block.FlexBox>
+        <ButtonContainer>
+          <Button>재구매</Button>
+          <Button>주문 취소</Button>
+        </ButtonContainer>
+        <Divider />
+
+        {/* 배송현황 */}
+        <Block.FlexBox
+          direction="column"
+          margin="0 0 0 10px"
+          flexGrow="1"
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          <Text.Menu200
+            style={{
+              fontSize: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            배송 현황{" "}
+          </Text.Menu200>
+          <div>{order_info.shipping_status}</div>
+        </Block.FlexBox>
+        <Divider />
 
         <h2>결제 내역</h2>
         <Grid>
@@ -216,7 +284,7 @@ const PaymentsDetail: React.FC = () => {
           <div>{order_info.payment_method}</div>
         </Grid>
       </BoxSection>
-    </MarketContainer>
+    </PageWrapper>
   );
 };
 
@@ -224,8 +292,8 @@ export default PaymentsDetail;
 
 const BoxSection = styled.div`
   /* width: 600px; */
-  text-align: center;
-  margin: 20px auto;
+
+  /* margin: 10px auto; */
   padding: 0px 24px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -234,9 +302,27 @@ const BoxSection = styled.div`
 const Grid = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-top: 10px;
   padding: 15px;
   font-size: 16px;
-  border-bottom: 1px solid #f5f6f8;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding: 10px 0;
+  /* border-top: 1px solid #e8e9eb; */
+`;
+
+const Button = styled.button`
+  width: 48%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #e8e9eb;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;

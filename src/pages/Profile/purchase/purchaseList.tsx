@@ -5,23 +5,23 @@ import { useUserId } from "../../../hooks/useUserId";
 import { Block, Text, Img } from "../../../styles/ui";
 import { IOrderProduct } from "../../../interfaces/product";
 
-interface Order {
-    orderId: string;
-    order_date: string;
-    original_amount: string;
-    payment: number;
-    payment_method: string;
-    phone_number: string;
-    points_used: string;
-    shipping_address: string;
-    shipping_address_detail: string;
-    shipping_memo: string;
-    shipping_status: string;
-    status: string;
-    total_amount: number;
-    user: number;
-    user_name: string;
-    items: IOrderProduct[];
+export interface Order {
+  orderId: string;
+  order_date: string;
+  original_amount: string;
+  payment: number;
+  payment_method: string;
+  phone_number: string;
+  points_used: string;
+  shipping_address: string;
+  shipping_address_detail: string;
+  shipping_memo: string;
+  shipping_status: string;
+  status: string;
+  total_amount: number;
+  user: number;
+  user_name: string;
+  items: IOrderProduct[];
 }
 
 export default function PurchaseList() {
@@ -156,66 +156,125 @@ export default function PurchaseList() {
                                 </Text.Notice200>
                             </Block.FlexBox>
 
-                            <Block.FlexBox
-                                direction="column"
-                                alignItems="center"
-                                padding="16px"
-                                style={{
-                                    borderRadius: "8px",
-                                    margin: "10px 0",
-                                    border: "1px solid #e8e9eb",
-                                }}
-                            >
-                                {order.items.map((item, itemIndex) => (
-                                    <Block.FlexBox
-                                        key={itemIndex}
-                                        direction="row"
-                                        alignItems="center"
-                                        padding="16px"
-                                        onClick={() => handleClick(item.product_id)}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        <Img.AngledIcon src={item.product_image} width="80px" height="80px" />
-                                        <Block.FlexBox direction="column" margin="0 0 0 20px" flexGrow="1">
-                                            <Text.Notice200
-                                                style={{
-                                                    color: "#161616",
-                                                    marginBottom: "5px",
-                                                    fontSize: "13px",
-                                                }}
-                                            >
-                                                {item.product_company}
-                                            </Text.Notice200>
-                                            <Text.Menu
-                                                margin="5px 0"
-                                                style={{
-                                                    color: "#161616",
-                                                    marginBottom: "5px",
-                                                    fontSize: "13px",
-                                                }}
-                                            >
-                                                {item.product_name}
-                                            </Text.Menu>
-                                            <Text.Menu
-                                                color="Gray"
-                                                style={{
-                                                    marginBottom: "10px",
-                                                    fontSize: "13px",
-                                                }}
-                                            >
-                                                {item.quantity}개
-                                            </Text.Menu>
-                                            <Text.TitleMenu200>
-                                                {Math.round(order.total_amount).toLocaleString()}원
-                                            </Text.TitleMenu200>
-                                        </Block.FlexBox>
-                                    </Block.FlexBox>
-                                ))}
-                            </Block.FlexBox>
-                        </div>
-                    ))}
-                </div>
-            ))}
-        </Block.FlexBox>
-    );
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  return (
+    <Block.FlexBox
+      ref={containerRef}
+      direction="column"
+      padding="20px"
+      style={{
+        marginTop: "10px",
+        overflowY: "auto",
+        maxHeight: "calc(100vh - 180px)",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+    >
+      {Object.keys(ordersByDate).map((date) => (
+        <div key={date} style={{ marginBottom: "20px" }}>
+          <Text.Notice200 style={{ fontSize: "18px", marginBottom: "10px" }}>
+            {date}
+          </Text.Notice200>
+          {ordersByDate[date].map((order) => (
+            <div key={order.orderId} style={{ marginBottom: "20px" }}>
+              <Block.FlexBox
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                padding="16px"
+              >
+                <Text.Menu200
+                  style={{
+                    paddingLeft: "16px",
+                    marginBottom: "8px",
+                    color: "#666669",
+                  }}
+                >
+                  {order.status === "completed" ? "구매확정" : "결제완료"}
+                </Text.Menu200>
+                <Text.Notice200
+                  pointer
+                  color="Gray"
+                  onClick={() =>
+                    navigate(`/orders/${userId}/${order.orderId}/details`)
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  주문 상세
+                </Text.Notice200>
+              </Block.FlexBox>
+
+              <Block.FlexBox
+                direction="column"
+                alignItems="center"
+                padding="16px"
+                style={{
+                  borderRadius: "8px",
+                  margin: "10px 0",
+                  border: "1px solid #e8e9eb",
+                }}
+              >
+                {order.items.map((item, itemIndex) => (
+                  <Block.FlexBox
+                    key={itemIndex}
+                    direction="row"
+                    alignItems="center"
+                    padding="16px"
+                    onClick={() => handleClick(item.product_id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Img.AngledIcon
+                      src={item.product_image}
+                      width="80px"
+                      height="80px"
+                    />
+                    <Block.FlexBox
+                      direction="column"
+                      margin="0 0 0 20px"
+                      flexGrow="1"
+                    >
+                      <Text.Notice200
+                        style={{
+                          color: "#161616",
+                          marginBottom: "5px",
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.product_company}
+                      </Text.Notice200>
+                      <Text.Menu
+                        margin="5px 0"
+                        style={{
+                          color: "#161616",
+                          marginBottom: "5px",
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.product_name}
+                      </Text.Menu>
+                      <Text.Menu
+                        color="Gray"
+                        style={{
+                          marginBottom: "10px",
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.quantity}개
+                      </Text.Menu>
+                      <Text.TitleMenu200>
+                        {Math.round(order.total_amount).toLocaleString()}원
+                      </Text.TitleMenu200>
+                    </Block.FlexBox>
+                  </Block.FlexBox>
+                ))}
+              </Block.FlexBox>
+            </div>
+          ))}
+        </div>
+      ))}
+    </Block.FlexBox>
+  );
 }
