@@ -153,7 +153,11 @@ export default function Purchase() {
                   {item.quantity}개
                 </Text.Menu>
                 <Text.TitleMenu200>
+<<<<<<< Updated upstream
                   {Number(order.total_amount).toLocaleString()}원
+=======
+                  {Number(item.price).toLocaleString()}원
+>>>>>>> Stashed changes
                 </Text.TitleMenu200>
               </Block.FlexBox>
             </Block.FlexBox>
