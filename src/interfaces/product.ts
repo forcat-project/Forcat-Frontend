@@ -73,22 +73,30 @@ export interface IInputData {
 
 // 상품 상세 페이지 데이터 PaymentsDetail.tsx 사용
 export interface IResponseData {
-  orderId: string;
-  paymentDate: string;
-  items: Array<{
-    company: string;
-    name: string;
-    quantity: number;
-    price: number;
-    thumbnail_url: string;
-  }>;
-  shippingStatus: string;
-  recipientName: string;
-  recipientPhone: string;
-  address: string;
-  shippingMemo: string;
-  productAmount: number;
-  totalAmount: number;
+  order_info: {
+    order_date: string;
+    user_name: string;
+    phone_number: string;
+    shipping_address: string;
+    shipping_address_detail: string;
+    shipping_memo: string;
+    status: string;
+    total_amount: number;
+    points_used: number;
+    original_amount: number;
+    payment_method: string;
+    shipping_status: string;
+    products: {
+      product_id: number;
+      product_name: string;
+      product_image: string;
+      discounted_price: number;
+      discount_rate: number;
+      product_company: string;
+      price: number;
+      quantity: number;
+    }[];
+  };
 }
 
 // 주문 상품 인터페이스 PaymentComponent.tsx 사용
