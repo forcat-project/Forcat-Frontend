@@ -40,6 +40,7 @@ export default function CheckoutPage() {
         pointsUsed,
         originalAmount,
         totalAmount,
+        cancellationDate,
         products,
     } = location.state || {};
 
@@ -98,6 +99,7 @@ export default function CheckoutPage() {
                 paymentMethod: "card",
                 shippingMemo,
                 pointsUsed,
+                cancellationDate,
                 products: products.map(
                     (product: {
                         product_id: number;
