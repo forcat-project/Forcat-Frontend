@@ -27,6 +27,9 @@ function App() {
   const handleProfileClick = () => {
     navigate("/profile");
   };
+  const handlePaymentBackButtonClick = () => {
+    navigate("/purchaselist");
+  };
 
   return (
     <>
@@ -36,6 +39,7 @@ function App() {
           isSignupPage={isSignupPage}
           handleBackButtonClick={handleBackButtonClick}
           handleProfileClick={handleProfileClick}
+          handlePaymentBackButtonClick={handlePaymentBackButtonClick}
         />
 
         <Outlet />

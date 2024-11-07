@@ -60,7 +60,7 @@ export const orderAPI = {
     userId: number,
     orderId: string
   ): Promise<AxiosResponse<IResponseData>> =>
-    axiosInstance.patch(`/users/${userId}/orders/${orderId}`),
+    axiosInstance.patch(`/users/${userId}/orders/${orderId}/cancel`),
 
   // 주문 목록 조회
   getOrders: (userId: number): Promise<AxiosResponse<IResponseData>> =>
