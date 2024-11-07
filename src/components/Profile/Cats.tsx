@@ -73,7 +73,9 @@ export default function Cats() {
         alignItems="center"
         padding="0 20px"
       >
-        <Text.TitleMenu200>우리집 냐옹이들</Text.TitleMenu200>
+        <Text.TitleMenu200 style={{ marginLeft: "-20px" }}>
+          우리집 냐옹이들
+        </Text.TitleMenu200>
         <Text.Notice200
           color="Gray"
           pointer
@@ -90,6 +92,13 @@ export default function Cats() {
           justifyContent="space-between"
           padding="20px 20px"
           alignItems="center"
+          style={{
+            borderRadius: "8px",
+            margin: "10px 0",
+            border: "1px solid #e8e9eb",
+            cursor: "pointer", // 클릭 가능한 UI 표시
+            marginTop: "20px",
+          }}
         >
           <Block.FlexBox direction="column">
             <Text.TitleMenu300 style={{ marginBottom: "10px" }}>
