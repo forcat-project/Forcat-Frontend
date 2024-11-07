@@ -141,6 +141,7 @@ export default function CatAdd() {
         <>
             <Block.FlexBox
                 width="100%"
+                height="100vh"
                 direction="column"
                 justifyContent="space-between"
                 padding="97px 20px 23px 20px"
@@ -165,10 +166,11 @@ export default function CatAdd() {
                 </section>
             </Block.FlexBox>
             <Block.AbsoluteBox
-                width="599px"
+                width="100%"
                 height="93px"
                 bottom="0"
                 bgColor="white"
+                padding="20px"
                 style={{
                     boxShadow: "rgba(0, 0, 0, 0.15) 0px 0px 50px 0px",
                     display: "flex",

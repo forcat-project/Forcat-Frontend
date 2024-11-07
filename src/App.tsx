@@ -36,9 +36,8 @@ function App() {
                     handleBackButtonClick={handleBackButtonClick}
                     handleProfileClick={handleProfileClick}
                 />
-                <Block.FlexBox>
+
                     <Outlet />
-                </Block.FlexBox>
 
                 <Navigator
                     isLoginPage={isLoginPage}

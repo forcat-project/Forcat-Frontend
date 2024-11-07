@@ -10,7 +10,7 @@ export default function AccountManage() {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태 관리
 
     return (
-        <Block.FlexBox direction="column" padding="20px" maxWidth="600px" margin="0 auto">
+        <Block.FlexBox direction="column" padding="0 40px" maxWidth="600px" margin="0 auto">
             {/* 계정 관리 타이틀 */}
             <Text.TitleMenu200>계정관리</Text.TitleMenu200>
 

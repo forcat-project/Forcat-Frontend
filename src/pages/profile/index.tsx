@@ -28,6 +28,7 @@ export default function Profile() {
                 padding="20px 0"
                 width="100%"
                 margin="80px auto 100px"
+                alignItems="center"
                 key={reload.toString()} // `key`에 문자열로 변경
             >
                 <UserInfo onReload={handleReload} />
