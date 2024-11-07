@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Block, Text, Button, Divider, PageWrapper } from "../../styles/ui";
 import { useState } from "react";
-import ProductInfo from "../../components/Buy/productInfo";
-import DeliveryInfo from "../../components/Buy/deliveryInfo";
-import PointInfo from "../../components/Buy/pointInfo";
-import Total from "../../components/Buy/total";
-import { useUserId } from "../../hooks/useUserId";
+import ProductInfo from "../../components/Buy/ProductInfo";
+import DeliveryInfo from "../../components/Buy/DeliveryInfo";
+import PointInfo from "../../components/Buy/PointInfo";
+import Total from "../../components/Buy/Total";
+import { useUserId } from "../../hooks/useUserId"; // useUserId 훅 가져오기
 
 export default function Buy() {
   const location = useLocation();

@@ -6,18 +6,23 @@ import WithOnlyBackHeader from "./WithOnlyBackHeader";
 import WithBackAndIconHeader from "./WithBackAndIconHeader";
 
 type Props = {
-    isLoginPage: boolean;
-    isSignupPage: boolean;
-    handleBackButtonClick: () => void;
-    handleProfileClick: () => void;
+  isLoginPage: boolean;
+  isSignupPage: boolean;
+  handleBackButtonClick: () => void;
+  handleProfileClick: () => void;
 };
 
-export default function Header({ isLoginPage, isSignupPage, handleBackButtonClick, handleProfileClick }: Props) {
-    const location = useLocation();
-    const currentPath = location.pathname;
+export default function Header({
+  isLoginPage,
+  isSignupPage,
+  handleBackButtonClick,
+  handleProfileClick,
+}: Props) {
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const pageData = [
-    { path: "", title:"홈", component: HomeHeader },
+    { path: "", title: "홈", component: HomeHeader },
     { path: "/home", title: "홈", component: HomeHeader },
     { path: "/market", title: "마켓", component: MarketHeader },
     { path: "/profile", title: "프로필", component: ProfileHeader },
@@ -78,21 +83,28 @@ export default function Header({ isLoginPage, isSignupPage, handleBackButtonClic
       title: "고양이 정보 추가",
       component: WithOnlyBackHeader,
     },
+    {
+      path: "/orders/:userId/:orderId/details",
+      title: "주문 상세",
+      component: WithOnlyBackHeader,
+    },
   ];
 
-    const currentPage = pageData.find(page => matchPath(page.path, currentPath));
+  const currentPage = pageData.find((page) =>
+    matchPath(page.path, currentPath)
+  );
 
-    if (isLoginPage || isSignupPage || !currentPage) {
-        return null;
-    }
+  if (isLoginPage || isSignupPage || !currentPage) {
+    return null;
+  }
 
-    const { component: HeaderComponent, title } = currentPage;
+  const { component: HeaderComponent, title } = currentPage;
 
-    return (
-        <HeaderComponent
-            title={title}
-            handleBackButtonClick={handleBackButtonClick}
-            handleProfileClick={handleProfileClick}
-        />
-    );
+  return (
+    <HeaderComponent
+      title={title}
+      handleBackButtonClick={handleBackButtonClick}
+      handleProfileClick={handleProfileClick}
+    />
+  );
 }
