@@ -63,7 +63,7 @@ export default function Purchase() {
       <Block.FlexBox direction="column" padding="20px">
         <Text.TitleMenu200>구매/취소내역</Text.TitleMenu200>
         <ContentWrapper>
-          <StyledImage src="/no_order.jpg" alt="고양이 없음 이미지" />
+          <StyledImage src="/no_order.jpg" alt="구매상품 없음 이미지" />
           <Text.TitleMenu200 style={{ color: "#80818C", marginBottom: "10px" }}>
             구매/취소내역이 비어있습니다
           </Text.TitleMenu200>
