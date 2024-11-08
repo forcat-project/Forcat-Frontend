@@ -15,7 +15,7 @@ import CategoryDetail from "./pages/category/categoryDetail";
 import MarketDetail from "./pages/market/marketDetail";
 import Cart from "./pages/cart";
 import Profile from "./pages/profile";
-import TermsOfUse from "./pages/profile/privacyPolicy";
+import TermsOfUse from "./pages/profile/termsofUse";
 import PrivacyPolicy from "./pages/profile/privacyPolicy";
 import Unregister from "./pages/profile/unregister/unregister1";
 import Unregister2 from "./pages/profile/unregister/unregister2";
