@@ -1,5 +1,5 @@
 import ReactModal from "react-modal";
-import { Block, Text } from "../../style/ui";
+import { Block, Text } from "../../styles/ui";
 import { GrayClose } from "../../assets/svg";
 
 type Props = {
@@ -23,7 +23,9 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                     content: {
                         margin: "0 auto",
                         padding: 0,
-                        width,
+                        width: "100%",
+                        maxWidth: "599px",
+                        minWidth: "375px",
                         height,
                         maxHeight: "600px",
                         border: "solid 1px #d3d3d3",
@@ -36,24 +38,26 @@ export default function ForcatModal({ isOpen, title, width, height, children, se
                         bottom: "0",
                         left: "50%",
                         transform: "translateX(-50%)",
+                        outline: "none",
                     },
                 }}
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
                 className="MODAL"
             >
-                <Block.FlexBox width="599px" margin="40px 0" direction="column" justifyContent="center">
-                    <Block.FlexBox justifyContent="center">
+                <Block.FlexBox margin="40px 0 0 0" direction="column" justifyContent="center">
+                    <Block.FlexBox width="100%" justifyContent="center">
                         <Text.TitleMenu300>{title}</Text.TitleMenu300>
-                        <Block.AbsoluteBox
+                        <Block.FlexBox
                             width="21px"
+                            height="21px"
                             top="20px"
                             onClick={() => setIsOpen(false)}
-                            style={{ right: "20px" }}
+                            style={{ position: "absolute", right: "15px", top: "20px" }}
                             pointer
                         >
                             <GrayClose width={21} height={21} />
-                        </Block.AbsoluteBox>
+                        </Block.FlexBox>
                     </Block.FlexBox>
                     <Block.FlexBox justifyContent="center">{children}</Block.FlexBox>
                 </Block.FlexBox>

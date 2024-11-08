@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
-import { userState, inputState } from "../../recoil";
-import { Block, Input, Text } from "../../style/ui";
+import { userState, inputState } from "../../store/atoms";
+import { Block, Input, Text } from "../../styles/ui";
 import { Warning, WarningDisabled } from "../../assets/svg";
 import useFocus from "../../hooks/useFocus";
 import { useEffect } from "react";
@@ -25,7 +25,7 @@ export default function InputUserName() {
 
     return (
         <>
-            <Block.FlexBox direction="column" gap="10px">
+            <Block.FlexBox width="100%" direction="column" gap="10px">
                 <Text.FocusedMenu isFocused={isFocused}>이름</Text.FocusedMenu>
                 <Input.InfoBox
                     value={userInfo.username}

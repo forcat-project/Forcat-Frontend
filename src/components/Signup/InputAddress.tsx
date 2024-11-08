@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
-import { Block, Button, Input, Text } from "../../style/ui";
+import { Block, Button, Input, Text } from "../../styles/ui";
 import { useRecoilState } from "recoil";
-import { inputState, userState } from "../../recoil";
+import { inputState, userState } from "../../store/atoms";
 import useFocus from "../../hooks/useFocus";
 
 ReactModal.setAppElement("#root");
@@ -87,6 +87,7 @@ export default function InputAddress() {
                         contentLabel="주소 검색"
                         style={{
                             overlay: {
+                                zIndex: "999",
                                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                             },
                             content: {

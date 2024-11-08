@@ -1,27 +1,46 @@
-// import { useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import useFocus from "../../hooks/useFocus";
-import { Block, Input, Text } from "../../style/ui";
-// import { catState } from "../../recoil";
-import { useState } from "react";
+import { validateWeightDecimal, validateWeightWhole } from "../../util/validator";
+import { Block, Input, Text } from "../../styles/ui";
+import { useEffect, useState } from "react";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputCatWeight() {
     const [weight, setWeight] = useState({ whole: "", decimal: "", unit: "kg" });
-
-    // const [catInfo, setCatInfo] = useRecoilState(catState);
     const { isFocused, handleFocus, handleBlur } = useFocus();
 
+    const [, setCatInfo] = useRecoilState(catState);
+    const [, setInputData] = useRecoilState(inputState);
+
+    useEffect(() => {
+        if (weight.whole) {
+            const fullWeight = `${weight.whole}${weight.decimal ? "." + weight.decimal : ""}`;
+            setCatInfo(prev => ({ ...prev, weight: fullWeight }));
+            setInputData(prev => ({ ...prev, catWeight: fullWeight }));
+        } else {
+            setCatInfo(prev => ({ ...prev, weight: "" }));
+            setInputData(prev => ({ ...prev, catWeight: "" }));
+        }
+    }, [weight.whole, weight.decimal]);
+
     const handleWholeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setWeight(prev => ({
-            ...prev,
-            whole: event.target.value,
-        }));
+        const value = event.target.value;
+        if (validateWeightWhole(value)) {
+            setWeight(prev => ({
+                ...prev,
+                whole: value,
+            }));
+        }
     };
 
     const handleDecimalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setWeight(prev => ({
-            ...prev,
-            decimal: event.target.value,
-        }));
+        const value = event.target.value;
+        if (validateWeightDecimal(value)) {
+            setWeight(prev => ({
+                ...prev,
+                decimal: value,
+            }));
+        }
     };
 
     return (
@@ -29,7 +48,7 @@ export default function InputCatWeight() {
             <Block.FlexBox direction="column" gap="20px">
                 <Text.FocusedMenu isFocused={isFocused}>몸무게(kg)</Text.FocusedMenu>
 
-                <Block.FlexBox justifyContent="space-between" alignItems="flex-end">
+                <Block.FlexBox justifyContent="space-between" gap="4px" alignItems="flex-end">
                     <Input.WeightBox
                         value={weight.whole}
                         onFocus={handleFocus}
@@ -43,7 +62,7 @@ export default function InputCatWeight() {
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         onChange={handleDecimalChange}
-                        placeholder="소수점 아래 숫자를 입력해주세요"
+                        placeholder="00"
                     />
                 </Block.FlexBox>
             </Block.FlexBox>

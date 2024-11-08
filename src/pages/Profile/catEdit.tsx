@@ -7,13 +7,14 @@ import {
   StyledInput,
   ProfileImageWrapper,
   StyledTextButton,
-} from "../../style/modal";
-import { Block, Text, Button } from "../../style/ui";
+} from "../../styles/modal";
+import { Block, Text, Button } from "../../styles/ui";
 import { Cat } from "../../interfaces/info";
 import axios from "axios";
 import { BASE_URL } from "../../api/constants";
 import { uploadImage } from "../../api/upload";
 import { useUserId } from "../../hooks/useUserId";
+import ReactModal from "react-modal";
 
 interface CatEditProps {
   cat: Cat;
@@ -21,6 +22,7 @@ interface CatEditProps {
   onReload: () => void;
   onSave: (updatedCat: Cat) => void; // onSave prop 추가
 }
+ReactModal.setAppElement("#root");
 
 export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
   const [name, setName] = useState(cat.name || "");
@@ -36,6 +38,7 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const userId = useUserId();
+  console.log("catEdit :::::::::::::", userId);
 
   useEffect(() => {
     if (cat.birth_date) {
@@ -69,7 +72,7 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
 
   const handleResetImage = () => {
     setProfileImage(
-      "https://forcat-bucket.s3.amazonaws.com/imgs/3e53742c969111ef86e30242ac140003"
+      "https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
     ); // 프로필 이미지를 null 또는 빈 문자열로 설정하여 기본 이미지로 변경
     setSelectedFile(null); // 파일 선택도 초기화
   };
@@ -157,20 +160,13 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
                 style={{ borderRadius: "50%", cursor: "pointer" }}
               />
             ) : (
-              <div
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#D9D9D9",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                }}
-              >
-                기본이미지
-              </div>
+              <img
+                src="https://bff-images.bemypet.kr/media/medias/all/993-image_picker152967371293908462.jpg"
+                alt="Default Cat Profile"
+                width="80"
+                height="80"
+                style={{ borderRadius: "50%", cursor: "pointer" }}
+              />
             )}
           </label>
           <input
@@ -232,7 +228,7 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
           <Button.SelectInput
             onClick={() => handleGenderSelect(0)}
             isActive={gender === 0}
-            style={{ height: "40px", padding: "5px 10px" }}
+            style={{ height: "40px", padding: "5px 10px", marginRight: "5px" }}
           >
             여아
           </Button.SelectInput>
@@ -250,7 +246,7 @@ export default function CatEdit({ cat, onClose, onReload }: CatEditProps) {
           <Button.SelectInput
             onClick={() => handleNeuteredSelect(0)}
             isActive={isNeutered === 0}
-            style={{ height: "40px", padding: "5px 10px" }}
+            style={{ height: "40px", padding: "5px 10px", marginRight: "5px" }}
           >
             미완료
           </Button.SelectInput>

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Block, Input, Text } from "../../style/ui";
+import { Block, Input, Text } from "../../styles/ui";
 import useFocus from "../../hooks/useFocus";
 import { useRecoilState } from "recoil";
-import { inputState, userState } from "../../recoil";
-import { validatePhoneNumber } from "../../share/validator";
+import { inputState, userState } from "../../store/atoms";
+import { validatePhoneNumber } from "../../util/validator";
 
 export default function InputPhoneNumber() {
     const [phone, setPhone] = useState("");
@@ -45,8 +45,13 @@ export default function InputPhoneNumber() {
     };
 
     return (
-        <Block.FlexBox direction="column" gap="10px">
-            <Text.FocusedMenu isFocused={isFocused}>휴대폰 번호</Text.FocusedMenu>
+        <Block.FlexBox width="100%" direction="column" gap="10px">
+            <Block.FlexBox width="100%" alignItems="center" justifyContent="space-between">
+                <Text.FocusedMenu isFocused={isFocused}>휴대폰 번호</Text.FocusedMenu>
+                <Block.FlexBox width="200px">
+                    {!isValid && <Text.Warning color="Warning">올바른 전화번호 형식을 입력해주세요</Text.Warning>}
+                </Block.FlexBox>
+            </Block.FlexBox>
             <Input.InfoBox
                 value={phone}
                 placeholder="전화번호를 입력해주세요"
@@ -56,9 +61,6 @@ export default function InputPhoneNumber() {
                 type="text"
                 maxLength={11}
             />
-            <Block.AbsoluteBox width="550px" top="245px" style={{ display: "flex", justifyContent: "flex-end" }}>
-                {!isValid && <Text.Warning color="Warning">올바른 전화번호 형식을 입력해주세요</Text.Warning>}
-            </Block.AbsoluteBox>
         </Block.FlexBox>
     );
 }

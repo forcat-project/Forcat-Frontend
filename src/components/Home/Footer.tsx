@@ -1,5 +1,5 @@
 import { FooterLogo } from "../../assets/svg";
-import { Block, Text } from "../../style/ui";
+import { Block, Text } from "../../styles/ui";
 
 export default function Footer() {
     const companyInfo = [
@@ -15,10 +15,11 @@ export default function Footer() {
     return (
         <>
             <Block.FlexBox
-                width="599px"
+                width="100%"
                 height="446px"
                 direction="column"
                 padding="44px 25px 31px 25px"
+                margin="30px 0 95px 0"
                 bgColor="#f3f3f6"
                 gap="40px"
             >

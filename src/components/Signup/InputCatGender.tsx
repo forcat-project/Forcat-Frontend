@@ -1,14 +1,13 @@
-// import { useRecoilState } from "recoil";
 import { useRecoilState } from "recoil";
-import { Block, Button, Text } from "../../style/ui";
-// import { catState } from "../../recoil";
+import { Block, Button, Text } from "../../styles/ui";
 import { useState } from "react";
-import { catState } from "../../recoil";
+import { catState, inputState } from "../../store/atoms";
 
 export default function InputCatGender() {
     const [, setCatInfo] = useRecoilState(catState);
     const [isFemaleCat, setIsFemaleCat] = useState(true);
     const [isFocused, setIsFocused] = useState(false);
+    const [, setInputData] = useRecoilState(inputState);
 
     const handleGenderClick = (isFemale: boolean) => {
         setIsFemaleCat(isFemale);
@@ -16,6 +15,11 @@ export default function InputCatGender() {
             ...prev,
             gender: isFemale ? 0 : 1,
         }));
+        setInputData(prev => ({
+            ...prev,
+            catGender: isFemale ? 0 : 1,
+        }));
+
         setIsFocused(true);
     };
 
@@ -23,7 +27,7 @@ export default function InputCatGender() {
         <Block.FlexBox direction="column" gap="20px">
             <Text.FocusedMenu isFocused={isFocused}>성별</Text.FocusedMenu>
 
-            <Block.FlexBox justifyContent="space-between">
+            <Block.FlexBox justifyContent="space-between" gap="10px">
                 <Button.SelectInput
                     tabIndex={0}
                     onClick={() => handleGenderClick(true)}

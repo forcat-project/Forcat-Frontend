@@ -1,25 +1,32 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getCookie } from "../api/cookie";
 
 interface CustomJwtPayload {
-    user_id: string;
+    user_id: number;
 }
 
 export function useUserId() {
-    const [userId, setUserId] = useState<string | null>(null);
+    const [userId, setUserId] = useState<number | null | undefined>(undefined); // undefined 추가
 
     useEffect(() => {
-        const cookie = getCookie("access_token");
-
-        if (cookie) {
+        const getUserId = () => {
+            const accessToken = sessionStorage.getItem("access_token");
+            
+            if (!accessToken) {
+                setUserId(null);
+                return;
+            }
+            
             try {
-                const decoded = jwtDecode(cookie) as CustomJwtPayload;
+                const decoded = jwtDecode<CustomJwtPayload>(accessToken);
                 setUserId(decoded.user_id);
             } catch (error) {
-                console.log("유저 id 가져오기에 실패했습니다.");
+                console.error("유저 ID를 가져오는 데 실패했습니다.", error);
+                setUserId(null);
             }
-        }
+        };
+
+        getUserId();
     }, []);
 
     return userId;
