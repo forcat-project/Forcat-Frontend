@@ -24,7 +24,7 @@ const refreshTokenIfNeeded = async () => {
     try {
       const decoded = jwtDecode(access_token);
       const currentTime = Date.now() / 1000;
-      const timeLeft = decoded.exp - currentTime;
+      const timeLeft = (decoded.exp ?? 0) - currentTime; // exp가 없으면 기본값 0
 
       if (timeLeft < 300) {
         const response = await fetch(
@@ -58,19 +58,16 @@ const refreshTokenIfNeeded = async () => {
 // 인터셉터 설정
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // URL이 정의되어 있고, publicPaths에 포함되지 않은 경우에만 Authorization 헤더 추가
-
     if (
       config.url &&
-      !publicPaths.some((path) => config.url.startsWith(path))
+      !publicPaths.some((path) => config.url!.startsWith(path))
     ) {
-      let token = sessionStorage.getItem("access_token"); // sessionStorage에서 토큰 가져오기
+      let token = sessionStorage.getItem("access_token");
       if (token) {
-        token = await refreshTokenIfNeeded(); // 토큰 갱신 함수 호출
+        token = await refreshTokenIfNeeded();
         config.headers.Authorization = `Bearer ${token}`;
       } else {
-        // 로그인 페이지로 리다이렉트
-        alert("로그인이 필요합니다.")
+        alert("로그인이 필요합니다.");
         window.location.href = "/login";
       }
     }
