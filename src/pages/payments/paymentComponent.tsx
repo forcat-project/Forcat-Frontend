@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import styled from "styled-components";
 import { orderAPI } from "../../api/resourses/orders";
@@ -28,7 +28,6 @@ export default function CheckoutPage() {
     const [ready, setReady] = useState<boolean>(false);
     const [widgets, setWidgets] = useState<PaymentWidgetInstance | null>(null);
     const location = useLocation();
-    const navigate = useNavigate();
 
     const {
         userId,

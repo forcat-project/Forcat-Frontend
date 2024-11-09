@@ -55,7 +55,7 @@ export default function MarketDetail() {
     };
 
     const handleCartConfirmButtonClick = async () => {
-        if (userId !== null) {
+        if (userId) {
             try {
  
               const productData = {
@@ -83,13 +83,13 @@ export default function MarketDetail() {
     }
 
     const handleMinusCartClick = () => {
-        if (productDetail?.remain_count > 1 && cartCount > 1) {
+        if (productDetail && productDetail.remain_count && productDetail?.remain_count > 1 && cartCount > 1) {
             setCartCount(prev => prev - 1);
         }
     };
 
     const handlePlusCartClick = () => {
-        if (productDetail?.remain_count >= cartCount) {
+        if (productDetail && productDetail.remain_count && productDetail?.remain_count >= cartCount) {
             setCartCount(prev => prev + 1);
         } else {
             alert("재고 수량이 부족합니다.");
@@ -116,7 +116,7 @@ export default function MarketDetail() {
     };
 
     const handlePlusBuyClick = () => {
-        if (productDetail?.remain_count >= buyCount) {
+        if (productDetail && productDetail.remain_count && productDetail?.remain_count >= buyCount) {
             setBuyCount(prev => prev + 1);
         } else {
             alert("재고 수량이 부족합니다.");

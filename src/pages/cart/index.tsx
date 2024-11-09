@@ -15,10 +15,6 @@ export default function Cart() {
     navigate("/market");
   };
 
-  const handlePaymentButtonClick = () => {
-    console.log("결제하러 이동");
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,10 +32,7 @@ export default function Cart() {
       {productsInCart.length === 0 ? (
         <CartEmpty onContinueShopping={handleContinueShoppingButtonClick} />
       ) : (
-        <CartList
-          onPayment={handlePaymentButtonClick}
-          products={productsInCart}
-        />
+        <CartList/>
       )}
     </>
   );

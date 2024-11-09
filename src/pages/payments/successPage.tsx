@@ -124,16 +124,6 @@ const Image = styled.img`
     width: 100px;
 `;
 
-const Grid = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 16px;
-
-    &.title {
-        margin-top: 50px;
-    }
-`;
 
 const Button = styled.button`
     padding: 10px 20px;
